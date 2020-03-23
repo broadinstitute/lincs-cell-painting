@@ -135,7 +135,7 @@ combined_df = combined_df.loc[:, col_order]
 
 # Output to file
 output_file = "repurposing_info"
-combined_df.to_csv(".tsv".format(output_file), sep='\t', index=False)
+combined_df.to_csv("{}.tsv".format(output_file), sep='\t', index=False)
 
 print(combined_df.shape)
 combined_df.head()
@@ -221,7 +221,7 @@ long_combined_df.loc[long_combined_df.target_unique == "replace_with_na", "targe
 
 # Output to file
 output_file = "repurposing_info_long.tsv"
-combined_df.to_csv(output_file, sep='\t', index=False)
+long_combined_df.to_csv(output_file, sep='\t', index=False)
 
 print(long_combined_df.shape)
 long_combined_df.head()
