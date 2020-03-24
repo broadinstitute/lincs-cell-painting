@@ -104,12 +104,5 @@ basic_df.head()
 
 
 duplicated_pert_ids = basic_df.pert_id.loc[basic_df.pert_id.duplicated()]
-print("There are {} perturbation ids with alternative information".format(len(duplicated_pert_ids)))
-
-
-# In[12]:
-
-
-# What do the duplicated IDs look like?
-basic_df.query("pert_id in @duplicated_pert_ids").sort_values(by="pert_id").reset_index(drop=True)
+assert len(duplicated_pert_ids) == 0, "Warning! There are duplicated pert_ids"
 

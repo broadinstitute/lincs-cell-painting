@@ -22,7 +22,7 @@ import pandas as pd
 
 
 data_dir = "clue"
-date = "20180907"
+date = "20200322"
 
 
 # In[3]:
@@ -50,73 +50,14 @@ sample_df.head(2)
 # In[5]:
 
 
+# Assert that all pert_inames exist in both resources
 assert len(set(drug_df.pert_iname.values).difference(set(sample_df.pert_iname))) == 0
-set(sample_df.pert_iname.values).difference(set(drug_df.pert_iname))
-
-
-# Two perturbation names (`pert_iname`) are inconsistent.
-# Work towards reconciliation.
-
-# ### `YM-298198-desmethyl` 
-
-# In[6]:
-
-
-sample_df.loc[sample_df.pert_iname.str.contains("298198"), :]
-
-
-# In[7]:
-
-
-ym_drug = drug_df.loc[drug_df.pert_iname.str.contains("298198"), :].reset_index(drop=True)
-ym_drug.loc[0, "pert_iname"] = "YM-298198-desmethyl"
-ym_drug
-
-
-# In[8]:
-
-
-# solve the YM-298198 problem
-drug_df = pd.concat([drug_df, ym_drug], axis="rows").reset_index(drop=True)
-
-
-# #### `YM-298198-desmethyl` is absent in the drug data
-# 
-# [`YM-298198-desmethyl`](https://www.tocris.com/products/desmethyl-ym-298198_2447) is a derivative of [`YM-298198`](https://www.tocris.com/products/ym-298198-hydrochloride_2448), and therefore has a different structure. However, their MOA and target is the same.
-
-# ### `golgicide-A`
-
-# In[9]:
-
-
-sample_df.loc[sample_df.pert_iname.str.contains("golgicide"), :]
-
-
-# In[10]:
-
-
-drug_df.loc[drug_df.pert_iname.str.contains("golgicide"), :]
-
-
-# #### `golgicide` only differs by a capitalization and is equivalent
-
-# In[11]:
-
-
-# Solve the golgicide problem
-sample_df.loc[sample_df.pert_iname.str.contains("golgicide"), "pert_iname"] = "golgicide-a"
-
-
-# In[12]:
-
-
-# Now, assert that there are no differences
 assert len(set(sample_df.pert_iname.values).difference(set(drug_df.pert_iname))) == 0
 
 
 # ## Merge the Samples and Drugs data
 
-# In[13]:
+# In[6]:
 
 
 combined_df = (
@@ -149,7 +90,7 @@ combined_df.head()
 # Split the combined data on both MOA and target along each pipe and elongate the table.
 # This is done to reduce computational burden of multiple downstream analyses performing the same splits.
 
-# In[14]:
+# In[7]:
 
 
 # The splitting strategy does not work with missing values
@@ -158,14 +99,14 @@ combined_df.moa = combined_df.moa.fillna("replace_with_na")
 combined_df.target = combined_df.target.fillna("replace_with_na")
 
 
-# In[15]:
+# In[8]:
 
 
 # Make sure the original index is preserved
 split_col_index = "{}_index".format(output_file)
 
 
-# In[16]:
+# In[9]:
 
 
 moa_split_df = (
@@ -179,7 +120,7 @@ print(moa_split_df.shape)
 moa_split_df.head()
 
 
-# In[17]:
+# In[10]:
 
 
 target_split_df = (
@@ -194,7 +135,7 @@ print(target_split_df.shape)
 target_split_df.head()
 
 
-# In[18]:
+# In[11]:
 
 
 long_combined_df = (
