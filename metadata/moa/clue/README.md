@@ -11,13 +11,14 @@ Annotations specifically include compound name, chemical structure, clinical tri
 
 ## Citation
 
-> Corsello SM, et al. Nature Medicine. 2017 Apr 7;23(4):405-408. doi: 10.1038/nm.4306
+> Corsello SM, Bittker JA, Liu Z, Gould J, McCarren P, Hirschman JE, Johnston SE, Vrcic A, Wong B, Khan M, Asiedu J, Narayan R, Mader CC, Subramanian A, Golub TR.
+The Drug Repurposing Hub: a next-generation drug library and information resource Nature Medicine. 23, 405–408 (2017). doi: 10.1038/nm.4306
 
 ## Drug Information
 
 Pasted verbatim from CLUE:
 
-> Contains drug annotation-level information including compound name, clinical phase, mechanism of action, and protein target.
+> Contains annotation-level information including compound name, clinical phase, mechanism of action, and protein target.
 
 ## Sample Information
 
@@ -37,6 +38,5 @@ The two tables (drugs and samples) included in this repository retain the same a
 Pasted verbatim from CLUE:
 
 > DO I NEED TO REGISTER TO ACCESS INFORMATION FROM THE REPURPOSING HUB?
-No, the annotations provided in the hub are freely available for research use by any organization.
+No, the annotations provided in the Hub are freely available for research use by any organization.
 The information in the Repurposing Hub may not be repackaged or redistributed for commercial purposes without permission.
-
