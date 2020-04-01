@@ -106,3 +106,10 @@ basic_df.head()
 duplicated_pert_ids = basic_df.pert_id.loc[basic_df.pert_id.duplicated()]
 assert len(duplicated_pert_ids) == 0, "Warning! There are duplicated pert_ids"
 
+
+# In[12]:
+
+
+output_file = "repurposing_simple.tsv"
+basic_df.to_csv(output_file, index=False, sep="\t")
+
