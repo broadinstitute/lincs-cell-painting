@@ -22,7 +22,7 @@ import pandas as pd
 
 
 data_dir = "clue"
-date = "20200322"
+date = "20200324"
 
 
 # In[3]:
