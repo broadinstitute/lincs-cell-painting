@@ -1,6 +1,6 @@
 !Source	"The Drug Repurposing Hub, Broad Institute"										
 !URL	http://www.broadinstitute.org/repurposing										
-!File_date	3/22/2020										
+!File_date	3/24/2020										
 !Table_name	sample information										
 !API_available	We suggest using the available data API and/or custom web export function for additional annotation fields and database source information.										
 !Disclaimer	For research use only. Do not use the Repurposing Hub to make clinical treatment decisions. BROAD DOES NOT GUARANTEE OR WARRANT THE ACCURACY OF THE DATA WITHIN THE REPURPOSING HUB.  RELIANCE ON THE REPURPOSING HUB IS AT THE USER'S SOLE RISK.										
