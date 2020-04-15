@@ -4384,7 +4384,7 @@ UQGKUQLKSCSZGY,BRD-K78485176,olmesartan-medoxomil,angiotensin receptor antagonis
 UQLLWWBDSUHNEB,BRD-K25085912|BRD-K49880111,cephapirin,bacterial cell wall synthesis inhibitor,,BRD-K25085912|BRD-K49880111,cephapirin,bacterial cell wall synthesis inhibitor,,BRD-K25085912|BRD-K49880111,cephapirin,bacterial cell wall synthesis inhibitor,,BRD-K25085912|BRD-K49880111,cephapirin,bacterial cell wall synthesis inhibitor,
 UQNAFPHGVPVTAL,BRD-K11796549,NBQX,glutamate receptor antagonist,GRIA1|GRIA2|GRIA3|GRIA4|GRIK1|GRIN1|GRIN2A|GRIN2B,BRD-K11796549,NBQX,glutamate receptor antagonist,GRIA1|GRIA2|GRIA3|GRIA4|GRIK1|GRIN1|GRIN2A|GRIN2B,BRD-K11796549,NBQX,glutamate receptor antagonist,GRIA1|GRIA2|GRIA3|GRIA4|GRIK1|GRIN1|GRIN2A|GRIN2B,BRD-K11796549,NBQX,glutamate receptor antagonist,GRIA1|GRIA2|GRIA3|GRIA4|GRIK1|GRIN1|GRIN2A|GRIN2B
 UQOOPIMXBSPVJI,BRD-K46531780,methylbenzethonium-chloride,other antibiotic,,BRD-K46531780,methylbenzethonium-chloride,other antibiotic,,BRD-K46531780,methylbenzethonium-chloride,other antibiotic,,BRD-K46531780,methylbenzethonium-chloride,other antibiotic,
-UQOSBPRTQFFUOA,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K26122255,VLX600,antitumor agent|ubiquitin C-terminal hydrolase inhibitor,TP53|USP14
+UQOSBPRTQFFUOA,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K89053832,VLX600,ubiquitin C-terminal hydrolase inhibitor,USP14,BRD-K26122255|BRD-K89053832,VLX600,antitumor agent|ubiquitin C-terminal hydrolase inhibitor,TP53|USP14
 UQPMANVRZYYQMD,BRD-K42500029,CGP-57380,MAP kinase inhibitor,AURKB|LCK|MKNK1|MKNK2|SGK1,BRD-K42500029,CGP-57380,MAP kinase inhibitor,AURKB|LCK|MKNK1|MKNK2|SGK1,BRD-K42500029,CGP-57380,MAP kinase inhibitor,AURKB|LCK|MKNK1|MKNK2|SGK1,BRD-K42500029,CGP-57380,MAP kinase inhibitor,AURKB|LCK|MKNK1|MKNK2|SGK1
 UQRCJCNVNUFYDX,BRD-K69001009,golvatinib,VEGFR inhibitor,KDR|MET,BRD-K69001009,golvatinib,VEGFR inhibitor,KDR|MET,BRD-K69001009,golvatinib,VEGFR inhibitor,KDR|MET,BRD-K69001009,golvatinib,VEGFR inhibitor,KDR|MET
 UQRORFVVSGFNRO,BRD-K33251802,miglustat,Glycosyl transferase inhibitor,UGCG,BRD-K33251802,miglustat,Glycosyl transferase inhibitor,UGCG,BRD-K33251802,miglustat,Glycosyl transferase inhibitor,UGCG,BRD-K33251802,miglustat,glycosyl transferase inhibitor,UGCG
@@ -6367,59 +6367,6 @@ IXZOHGPZAQLIBH,,,,,,,,,,,,,BRD-K00003408,iberdomide,cereblon modulator,
 IYFNEFQTYQPVOC,,,,,,,,,,,,,BRD-K00003266,udenafil,phosphodiesterase inhibitor,
 IZJJFUQKKZFVLH,,,,,,,,,,,,,BRD-K00003146,MIW-815,interferon inducer,
 IZTQOLKUZKXIRV,,,,,,,,,,,,,BRD-K00003334,sincalide,cholecystokinin agonist,
-InChI=1S/C10H7,,,,,,,,,,,,,BRD-K60302405,CHC,monocarboxylate transporter inhibitor,SLC16A1
-InChI=1S/C10H8,,,,,,,,,,,,,BRD-K55420858,mirin,MRE11A exonuclease inhibitor,MRE11A
-InChI=1S/C11H1,,,,,,,,,,,,,BRD-K11696279,BU-239,imidazoline receptor agonist|imidazoline receptor ligand,
-InChI=1S/C12H6,,,,,,,,,,,,,BRD-K39120595,bithionol,autotaxin inhibitor,ESR1|ESR2|MCL1
-InChI=1S/C13H1,,,,,,,,,,,,,BRD-A12994259,pomalidomide,angiogenesis inhibitor|tumor necrosis factor production inhibitor,
-InChI=1S/C14H1,,,,,,,,,,,,,BRD-K48735772,PD-158780,EGFR inhibitor,EGFR
-InChI=1S/C14H2,,,,,,,,,,,,,BRD-K33521504,GSK-LSD-1,histone lysine demethylase inhibitor,KDM1A
-InChI=1S/C15H1,,,,,,,,,,,,,BRD-K11636097|BRD-K17743125,JNJ-7706621|belinostat,CDK inhibitor|HDAC inhibitor,AURKA|AURKB|CDK1|CDK2|HDAC1|HDAC10|HDAC11|HDAC2|HDAC3|HDAC4|HDAC5|HDAC6|HDAC7|HDAC8|HDAC9
-InChI=1S/C15H2,,,,,,,,,,,,,BRD-K21396683|BRD-K49921286,LMK-235|marimastat,HDAC inhibitor|matrix metalloprotease inhibitor,HDAC4|HDAC5|MMP1|MMP10|MMP11|MMP12|MMP13|MMP14|MMP15|MMP16|MMP17|MMP19|MMP2|MMP20|MMP21|MMP23A|MMP24|MMP25|MMP26|MMP27|MMP28|MMP3|MMP7|MMP8|MMP9
-InChI=1S/C16H1,,,,,,,,,,,,,BRD-K43449605,oncrasin-1,apoptosis stimulant,
-InChI=1S/C17H1,,,,,,,,,,,,,BRD-K05104363|BRD-K17702546|BRD-K24240364|BRD-K51137250|BRD-K89053832,GYKI-52466|ML297|PD-168393|PD-184352|VLX600,EGFR inhibitor|MEK inhibitor|antitumor agent|glutamate receptor antagonist|inward rectifier potassium channel activator|ubiquitin C-terminal hydrolase inhibitor,EGFR|ERBB2|GRIA1|GRIA2|GRIA3|GRIA4|KCNJ3|MAP2K1|MAP3K1|MAP3K2|SRC|TP53|USP14
-InChI=1S/C18H2,,,,,,,,,,,,,BRD-K40255344|BRD-K72414522,AZD5438|tyrphostin-A9,CDK inhibitor|protein tyrosine kinase inhibitor|tyrosine kinase inhibitor,|KCNH2
-InChI=1S/C18H3,,,,,,,,,,,,,BRD-K05048137,phytosphingosine,,
-InChI=1S/C19H1,,,,,,,,,,,,,BRD-K28567778|BRD-K44827188|BRD-K67868012|BRD-K73319509,PF-04217903|PI-103|neuropathiazol|vismodegib,PI3K inhibitor|c-Met inhibitor|hedgehog pathway inhibitor|mTOR inhibitor|neural stem cell inducer|smoothened receptor antagonist,BMP2|LIF|MET|MTOR|PIK3CA|PIK3CB|PIK3CD|PIK3CG|PRKDC|SMO
-InChI=1S/C19H2,,,,,,,,,,,,,BRD-K01825674|BRD-K24576554|BRD-K53734668,AT-9283|PRT062607|TC1,Aurora kinase inhibitor|JAK inhibitor|SYK inhibitor|beta-secretase inhibitor,AURKA|AURKB|BACE1|FGR|JAK2|JAK3|MAP3K9|RPS6KA6|STK17A|SYK
-InChI=1S/C19H3,,,,,,,,,,,,,BRD-A19633847,perhexiline,carnitine palmitoyltransferase inhibitor,CPT1A
-InChI=1S/C20H1,,,,,,,,,,,,,BRD-K59060513,A-1120,retinoid receptor ligand,RBP4
-InChI=1S/C20H2,,,,,,,,,,,,,BRD-K39484304|BRD-K45044657,TC-H-106|triptolide,HDAC inhibitor|RNA polymerase inhibitor,HDAC1|HDAC2|HDAC3|HDAC8|RELA
-InChI=1S/C20H3,,,,,,,,,,,,,BRD-K64054020,epoprostenol,prostacyclin analog,P2RY12|PTGER1|PTGER4|PTGIR|PTGIS
-InChI=1S/C21H1,,,,,,,,,,,,,BRD-K16730910,regorafenib,FGFR inhibitor|KIT inhibitor|PDGFR tyrosine kinase receptor inhibitor|RAF inhibitor|RET tyrosine kinase inhibitor|VEGFR inhibitor,ABL1|BRAF|DDR2|EPHA2|FGFR1|FGFR2|FLT1|FLT4|FRK|KDR|KIT|MAPK11|NTRK1|PDGFRA|PDGFRB|RAF1|RET|TEK
-InChI=1S/C21H2,,,,,,,,,,,,,BRD-K13662825|BRD-K67844266,dinaciclib|pevonedistat,CDK inhibitor|nedd activating enzyme inhibitor,CDK1|CDK2|CDK5|CDK9|NAE1|UBA3
-InChI=1S/C22H1,,,,,,,,,,,,,BRD-K60866521,idelalisib,PI3K inhibitor,PIK3CA|PIK3CB|PIK3CD|PIK3CG
-InChI=1S/C22H2,,,,,,,,,,,,,BRD-K08109215|BRD-K36627727|BRD-K70401845|BRD-K73838513,I-BET-762|cinacalcet|erlotinib|tamibarotene,EGFR inhibitor|bromodomain inhibitor|calcium channel activator|retinoid receptor agonist,BRD2|BRD3|BRD4|CASR|EGFR|NR1I2|RARA|RARB
-InChI=1S/C22H3,,,,,,,,,,,,,BRD-K52256627,chlorhexidine,membrane integrity inhibitor,
-InChI=1S/C23H2,,,,,,,,,,,,,BRD-A74914197|BRD-K25630527|BRD-K41783120|BRD-K52911425|BRD-K66538826,GDC-0941|LY2784544|STA-5326|amuvatinib|pralatrexate,FLT3 inhibitor|JAK inhibitor|KIT inhibitor|PDGFR tyrosine kinase receptor inhibitor|PI3K inhibitor|RAD51 inhibitor|RET tyrosine kinase inhibitor|dihydrofolate reductase inhibitor|interleukin synthesis inhibitor,DHFR|IL12A|JAK2|JAK3|KIT|MET|PIK3CA|PIK3CB|PIK3CD|PIK3CG
-InChI=1S/C23H3,,,,,,,,,,,,,BRD-K29424831,TCS-OX2-29,orexin receptor antagonist,HCRTR2
-InChI=1S/C24H1,,,,,,,,,,,,,BRD-K15107389,BRD7389,ribosomal protein inhibitor,RPS6KA1|RPS6KA2|RPS6KA3
-InChI=1S/C24H2,,,,,,,,,,,,,BRD-K13810148|BRD-K44844162|BRD-K50168500|BRD-K51313569|BRD-K54233340,canertinib|dorsomorphin|givinostat|palbociclib|taselisib,AMPK inhibitor|CDK inhibitor|EGFR inhibitor|HDAC inhibitor|PI3K inhibitor,ACVR1|AKT1|BMPR1A|BMPR1B|CDK4|CDK6|EGFR|EPHA2|ERBB2|ERBB4|FKBP1A|FLT1|FLT3|HDAC1|HDAC2|HDAC3|HDAC4|HDAC5|HDAC6|HDAC7|HDAC8|HDAC9|KDR|LCK|MKNK1|PIK3CA|PRKAA1|RPS6KA1|SRC
-InChI=1S/C24H3,,,,,,,,,,,,,BRD-K61397605,romidepsin,HDAC inhibitor,HDAC1|HDAC2|HDAC3|HDAC4|HDAC5|HDAC6|HDAC7|HDAC8|HDAC9
-InChI=1S/C25H1,,,,,,,,,,,,,BRD-K00337317,NU-7441,DNA dependent protein kinase inhibitor,PRKDC
-InChI=1S/C25H2,,,,,,,,,,,,,BRD-K31342827|BRD-K68065987|BRD-K70301465,GF109203X|MK-2206|ibrutinib,AKT inhibitor|Bruton's tyrosine kinase (BTK) inhibitor|PKC inhibitor,AKT1|AKT2|AKT3|BLK|BMX|BTK|PDPK1|PIM1|PRKCI|PRKCZ
-InChI=1S/C25H3,,,,,,,,,,,,,BRD-K32289541|BRD-K37764012,EHop-016|PF-03758309,Ras GTPase inhibitor|p21 activated kinase inhibitor,PAK4|RAC1|RAC3
-InChI=1S/C26H2,,,,,,,,,,,,,BRD-K29968218|BRD-K31309378,KX2-391|lucitanib,FGFR inhibitor|SRC inhibitor|VEGFR inhibitor|tubulin polymerization inhibitor,FGFR1|FLT1|KDR|KIT|PDGFRA|PDGFRB|RET|SRC
-InChI=1S/C26H3,,,,,,,,,,,,,BRD-K28392481|BRD-K63923597,AZD4547|barasertib-HQPA,Aurora kinase inhibitor|FGFR inhibitor,AURKB|FGFR1|FGFR2|FGFR3|FGFR4|IGF1R|KDR
-InChI=1S/C27H2,,,,,,,,,,,,,BRD-K04548931|BRD-K33610132|BRD-K44432556|BRD-K62965247|BRD-K75295174,ML228|alisertib|epirubicin|rociletinib|tipifarnib,Aurora kinase inhibitor|EGFR inhibitor|farnesyltransferase inhibitor|hypoxia inducible factor activator|topoisomerase inhibitor,AURKA|CHD1|EGFR|FNTA|FNTB|HIF1A|TOP2A
-InChI=1S/C27H3,,,,,,,,,,,,,BRD-K19540840|BRD-K41599323|BRD-K54256913,MK-1775|lonafarnib|saracatinib,SRC inhibitor|WEE1 kinase inhibitor|farnesyltransferase inhibitor,ABL1|FNTA|HRAS|KRAS|LCK|NRAS|SRC|WEE1|YES1
-InChI=1S/C28H2,,,,,,,,,,,,,BRD-K19975102|BRD-K51544265,GNF-5837|cabozantinib,RET tyrosine kinase inhibitor|VEGFR inhibitor|growth factor receptor inhibitor,KDR|MET|NTRK1|NTRK2|NTRK3|RET
-InChI=1S/C28H3,,,,,,,,,,,,,BRD-K64890080,BI-2536,PLK inhibitor,BRD4|PLK1|PLK2|PLK3
-InChI=1S/C30H2,,,,,,,,,,,,,BRD-K24556407,ETP-46464,ATR kinase inhibitor,
-InChI=1S/C30H3,,,,,,,,,,,,,BRD-K72827473,CEP-37440,ALK tyrosine kinase receptor inhibitor,ALK
-InChI=1S/C31H2,,,,,,,,,,,,,BRD-K62627508,idasanutlin,MDM inhibitor,MDM2|TP53
-InChI=1S/C31H4,,,,,,,,,,,,,BRD-K20545304,bardoxolone,like (NRF2) activator|nuclear factor erythroid derived,NOS2|PPARG
-InChI=1S/C32H4,,,,,,,,,,,,,BRD-K69694239|BRD-K74117820,bardoxolone-methyl|nelfinavir,HIV protease inhibitor|like (NRF2) activator|nuclear factor erythroid derived,CYP1A2|CYP2B6|CYP2C19|CYP2C9|CYP2D6|CYP3A4|CYP3A7|PPARG|STAT3
-InChI=1S/C34H3,,,,,,,,,,,,,BRD-K03449891,foretinib,VEGFR inhibitor,FLT1|FLT4|KDR|MET
-InChI=1S/C34H4,,,,,,,,,,,,,BRD-K57011718,UK-356618,metalloproteinase inhibitor,MMP13|MMP14|MMP2|MMP3|MMP9
-InChI=1S/C34H5,,,,,,,,,,,,,BRD-K69776681,volasertib,PLK inhibitor,PLK1
-InChI=1S/C36H4,,,,,,,,,,,,,BRD-K33226500,indinavir,HIV protease inhibitor,CYP3A4|CYP3A5|CYP3A7
-InChI=1S/C38H3,,,,,,,,,,,,,BRD-K09353376,tariquidar,P glycoprotein inhibitor,ABCB1
-InChI=1S/C42H4,,,,,,,,,,,,,BRD-K56301217,ABT-737,BCL inhibitor,BCL2|BCL2L1|BCL2L2
-InChI=1S/C42H5,,,,,,,,,,,,,BRD-K71221037,birinapant,XIAP inhibitor,BIRC2|XIAP
-InChI=1S/C8H9N,,,,,,,,,,,,,BRD-K41524689,paracetamol,cyclooxygenase inhibitor,FAAH|PTGS1|PTGS2|TRPV1
-InChI=1S/C9H11,,,,,,,,,,,,,BRD-K47832606,floxuridine,DNA synthesis inhibitor,TYMS
-InChI=1S/C9H13,,,,,,,,,,,,,BRD-K71847383,cytidine,,
 JBGYKRAZYDNCNV,,,,,,,,,,,,,BRD-K00003357,BAY1125976,AKT inhibitor,
 JBIWCJUYHHGXTC,,,,,,,,,,,,,BRD-K01825679|BRD-M28128163,doxycycline,bacterial 30S ribosomal subunit inhibitor|metalloproteinase inhibitor,MMP8
 JCINBYQJBYJGDM,,,,,,,,,,,,,BRD-K00003189,BMS-911543,JAK inhibitor,
