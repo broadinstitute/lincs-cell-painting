@@ -61,7 +61,7 @@ def merge_target(target):
     return out_target
 
 
-# In[ ]:
+# In[4]:
 
 
 samples_2017 = target_annotation(samples_2017, drugs_2017)
@@ -93,7 +93,7 @@ samples_2017.head()
 
 # The three dataframes are merged on InChIKey14
 
-# In[ ]:
+# In[7]:
 
 
 merged_df = samples_2017.merge(samples_2018, on='InChIKey14', how='outer')
@@ -107,4 +107,80 @@ merged_df.head()
 
 
 merged_df.to_csv('clue/broad_id_map.csv', index=False)
+
+
+# Check if deprecated_broad_id has additional information not captured already
+
+# In[9]:
+
+
+deprecated_broad_id_2018 = pd.read_csv('clue/repurposing_samples_20180907.txt',usecols=['deprecated_broad_id','InChIKey'],delimiter='\t', comment='!', encoding='iso-8859-1')
+deprecated_broad_id_2020 = pd.read_csv('clue/repurposing_samples_20200324.txt',usecols=['deprecated_broad_id','InChIKey'],delimiter='\t', comment='!', encoding='iso-8859-1')
+
+
+# In[10]:
+
+
+# Clean up depricated_broad_id
+
+def dep_id_cleanup(df, year):
+    df.deprecated_broad_id = df.deprecated_broad_id.apply(lambda x: str(x)[:13])
+    df.InChIKey = df.InChIKey.apply(lambda x: str(x)[:14])
+    df = df.drop_duplicates(['InChIKey','deprecated_broad_id']).reset_index(drop=True)
+    df = df.rename(columns={'InChIKey':'InChIKey14',
+                            'deprecated_broad_id':'deprecated_broad_id_'+year})
+
+    return df
+
+def dep_group_by_InChIKey14(df, year):
+    df = df.groupby('InChIKey14')['deprecated_broad_id_'+year].apply(lambda x: '|'.join(np.unique(x))).reset_index()
+
+    return df
+
+
+# In[11]:
+
+
+deprecated_broad_id_2018.dropna(inplace=True)
+deprecated_broad_id_2018.reset_index(drop=True, inplace=True)
+
+deprecated_broad_id_2020.dropna(inplace=True)
+deprecated_broad_id_2020.reset_index(drop=True, inplace=True)
+
+
+# In[12]:
+
+
+deprecated_broad_id_2018 = dep_id_cleanup(deprecated_broad_id_2018, "2018")
+deprecated_broad_id_2020 = dep_id_cleanup(deprecated_broad_id_2020, "2020")
+
+
+# In[13]:
+
+
+deprecated_broad_id_2018 = dep_group_by_InChIKey14(deprecated_broad_id_2018, "2018")
+deprecated_broad_id_2020 = dep_group_by_InChIKey14(deprecated_broad_id_2020, "2020")
+
+
+# In[14]:
+
+
+unique_to_2018 = deprecated_broad_id_2018.merge(samples_2017, on='InChIKey14', how='left', indicator=True)._merge!='both'
+unique_to_2020 = deprecated_broad_id_2020.merge(samples_2018, on='InChIKey14', how='left', indicator=True)._merge!='both'
+
+
+# The following compounds are not present in the 2017 version
+
+# In[15]:
+
+
+print(deprecated_broad_id_2018[unique_to_2018].reset_index(drop=True).to_markdown())
+
+
+# The following compounds are not present in the 2018 version
+
+# In[16]:
+
+
+print(deprecated_broad_id_2020[unique_to_2020].reset_index(drop=True).to_markdown())
 
