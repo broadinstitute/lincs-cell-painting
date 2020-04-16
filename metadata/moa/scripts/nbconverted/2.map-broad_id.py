@@ -35,29 +35,29 @@ samples_2017 = samples_2017.assign(deprecated_broad_id=np.nan)
 # Year names are appended to column names
 # For some rows InChI are extracted instead of InChIKey -> these are fixed
 
-def id_cleanup(df, year):
+def id_cleanup(df, version):
     df.dropna(subset=['InChIKey'], inplace=True)
     df.reset_index(drop=True, inplace=True)
     df.InChIKey = df.InChIKey.apply(lambda x: inchi.InchiToInchiKey(x) if (x.startswith('InChI')) else x)
     df.broad_id = df.broad_id.apply(lambda x: str(x)[:13])
     df.InChIKey = df.InChIKey.apply(lambda x: str(x)[:14])
     df = df.drop_duplicates(['InChIKey','pert_iname','broad_id','deprecated_broad_id']).reset_index(drop=True)
-    df = df.rename(columns={'pert_iname':'pert_iname_'+year,
-                            'broad_id':'broad_id_'+year,
-                            'deprecated_broad_id':'deprecated_broad_id_'+year,
+    df = df.rename(columns={'pert_iname':f'pert_iname_{version}',
+                            'broad_id':f'broad_id_{version}',
+                            'deprecated_broad_id':f'deprecated_broad_id_{version}',
                             'InChIKey':'InChIKey14'})
     return df
 
 # Grouping samples using InChIKey14 while all other fields are pipe delimited
 
-def group_by_InChIKey14(df, year):
+def group_by_InChIKey14(df, version):
     df = df.fillna('')
-    df = df.groupby('InChIKey14').agg({'broad_id_'+year : lambda x: '|'.join(np.unique(x)),
-                                       'deprecated_broad_id_'+year: lambda x: create_pipe_separated_list(list(x)),
-                                       'pert_iname_'+year: lambda x: '|'.join(np.unique(x))}).reset_index()
+    df = df.groupby('InChIKey14').agg({f'broad_id_{version}' : lambda x: '|'.join(np.unique(x)),
+                                       f'deprecated_broad_id_{version}': lambda x: create_pipe_separated_list(list(x)),
+                                       f'pert_iname_{version}': lambda x: '|'.join(np.unique(x))}).reset_index()
     return df
 
-# This function cleans up empty depredicated_broad_ids, de-duplicates them and then separates them with pipes
+# This function cleans up empty deprecated_broad_ids, de-duplicates them and then separates them with pipes
 
 def create_pipe_separated_list(target):
     joined_target = ('|'.join(target)).split('|')
@@ -70,10 +70,10 @@ def create_pipe_separated_list(target):
 # In[5]:
 
 
-samples_2017 = id_cleanup(samples_2017, "2017")
-samples_2018a = id_cleanup(samples_2018a, "2018a")
-samples_2018b = id_cleanup(samples_2018b, "2018b")
-samples_2020 = id_cleanup(samples_2020, "2020")
+samples_2017 = id_cleanup(samples_2017, "20170327")
+samples_2018a = id_cleanup(samples_2018a, "20180516")
+samples_2018b = id_cleanup(samples_2018b, "20180907")
+samples_2020 = id_cleanup(samples_2020, "20200324")
 
 samples_2017.head()
 
@@ -81,10 +81,10 @@ samples_2017.head()
 # In[6]:
 
 
-samples_2017 = group_by_InChIKey14(samples_2017, "2017")
-samples_2018a = group_by_InChIKey14(samples_2018a, "2018a")
-samples_2018b = group_by_InChIKey14(samples_2018b, "2018b")
-samples_2020 = group_by_InChIKey14(samples_2020, "2020")
+samples_2017 = group_by_InChIKey14(samples_2017, "20170327")
+samples_2018a = group_by_InChIKey14(samples_2018a, "20180516")
+samples_2018b = group_by_InChIKey14(samples_2018b, "20180907")
+samples_2020 = group_by_InChIKey14(samples_2020, "20200324")
 
 samples_2017.head()
 
