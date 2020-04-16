@@ -103,6 +103,12 @@ merged_df= merged_df.replace(to_replace='', value=np.nan)
 merged_df.head()
 
 
+# In[ ]:
+
+
+print(merged_df.shape)
+
+
 # In[8]:
 
 
@@ -110,8 +116,4 @@ map_file = os.path.join('clue', 'broad_id_map.csv')
 merged_df.to_csv(map_file, index=False)
 
 
-# In[9]:
-
-
-print(merged_df.shape)
 
