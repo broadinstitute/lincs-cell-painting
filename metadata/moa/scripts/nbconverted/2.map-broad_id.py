@@ -53,13 +53,13 @@ def id_cleanup(df, year):
 def group_by_InChIKey14(df, year):
     df = df.fillna('')
     df = df.groupby('InChIKey14').agg({'broad_id_'+year : lambda x: '|'.join(np.unique(x)),
-                                       'deprecated_broad_id_'+year: lambda x: merge_dep_id(list(x)),
+                                       'deprecated_broad_id_'+year: lambda x: create_pipe_separated_list(list(x)),
                                        'pert_iname_'+year: lambda x: '|'.join(np.unique(x))}).reset_index()
     return df
 
 # This function cleans up empty depredicated_broad_ids, de-duplicates them and then separates them with pipes
 
-def merge_dep_id(target):
+def create_pipe_separated_list(target):
     joined_target = ('|'.join(target)).split('|')
     while '' in joined_target:
         joined_target.remove('')
