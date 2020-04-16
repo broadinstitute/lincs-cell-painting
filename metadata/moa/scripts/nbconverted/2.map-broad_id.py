@@ -111,7 +111,5 @@ merged_df.to_csv('clue/broad_id_map.csv', index=False)
 # In[9]:
 
 
-print('Total number of rows %d' % len(merged_df))
-
-
+print(merged_df.shape)
 
