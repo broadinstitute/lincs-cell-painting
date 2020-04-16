@@ -7,6 +7,7 @@
 import pandas as pd
 import numpy as np
 import rdkit.Chem.inchi as inchi
+import os.path
 
 
 # Sample files from each version of the repurposing hub are read
@@ -105,7 +106,8 @@ merged_df.head()
 # In[8]:
 
 
-merged_df.to_csv('clue/broad_id_map.csv', index=False)
+map_file = os.path.join('clue', 'broad_id_map.csv')
+merged_df.to_csv(map_file, index=False)
 
 
 # In[9]:
