@@ -24,7 +24,7 @@ samples_2020 = pd.read_csv('clue/repurposing_samples_20200324.txt', usecols=['br
 
 
 # 2017 version is missing deprecated_broad_id
-samples_2017['deprecated_broad_id'] = np.nan
+samples_2017 = samples_2017.assign(deprecated_broad_id=np.nan)
 
 
 # In[4]:
