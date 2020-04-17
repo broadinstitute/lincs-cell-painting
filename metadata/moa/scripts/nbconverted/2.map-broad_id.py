@@ -38,16 +38,27 @@ samples_2017 = samples_2017.assign(deprecated_broad_id=np.nan)
 # For some rows InChI are extracted instead of InChIKey -> these are fixed
 
 def id_cleanup(df, version):
-    df.dropna(subset=['InChIKey'], inplace=True)
-    df.reset_index(drop=True, inplace=True)
-    df.InChIKey = df.InChIKey.apply(lambda x: inchi.InchiToInchiKey(x) if (x.startswith('InChI')) else x)
+    df = (
+        df.dropna(subset=['InChIKey'])
+        .reset_index(drop=True)
+    )
+
+    df.InChIKey = (
+        df.InChIKey.apply(lambda x: inchi.InchiToInchiKey(x) if (x.startswith('InChI')) else x)
+        .apply(lambda x: str(x)[:14])
+    )
+    
     df.broad_id = df.broad_id.apply(lambda x: str(x)[:13])
-    df.InChIKey = df.InChIKey.apply(lambda x: str(x)[:14])
-    df = df.drop_duplicates(['InChIKey','pert_iname','broad_id','deprecated_broad_id']).reset_index(drop=True)
-    df = df.rename(columns={'pert_iname':f'pert_iname_{version}',
+
+    df = (
+        df.drop_duplicates(['InChIKey','pert_iname','broad_id','deprecated_broad_id'])
+        .rename(columns={'pert_iname':f'pert_iname_{version}',
                             'broad_id':f'broad_id_{version}',
                             'deprecated_broad_id':f'deprecated_broad_id_{version}',
                             'InChIKey':'InChIKey14'})
+        .reset_index(drop=True)
+    )
+
     return df
 
 # Grouping samples using InChIKey14 while all other fields are pipe delimited
