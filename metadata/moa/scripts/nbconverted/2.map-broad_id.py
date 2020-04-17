@@ -15,10 +15,12 @@ import os.path
 # In[2]:
 
 
-samples_2017 = pd.read_csv('clue/repurposing_samples_20170327.txt',usecols=['broad_id','pert_iname','InChIKey'],delimiter='\t', comment='!', encoding='iso-8859-1')
-samples_2018a = pd.read_csv('clue/repurposing_samples_20180516.txt', usecols=['broad_id','pert_iname','InChIKey','deprecated_broad_id'], delimiter='\t', comment='!', encoding='iso-8859-1')
-samples_2018b = pd.read_csv('clue/repurposing_samples_20180907.txt', usecols=['broad_id','pert_iname','InChIKey','deprecated_broad_id'], delimiter='\t', comment='!', encoding='iso-8859-1')
-samples_2020 = pd.read_csv('clue/repurposing_samples_20200324.txt', usecols=['broad_id','pert_iname','InChIKey','deprecated_broad_id'], delimiter='\t', comment='!', encoding='iso-8859-1')
+cols = ['broad_id','pert_iname','InChIKey','deprecated_broad_id']
+
+samples_2017 = pd.read_csv('clue/repurposing_samples_20170327.txt',usecols=cols[:-1],delimiter='\t', comment='!', encoding='iso-8859-1')
+samples_2018a = pd.read_csv('clue/repurposing_samples_20180516.txt', usecols=cols, delimiter='\t', comment='!', encoding='iso-8859-1')
+samples_2018b = pd.read_csv('clue/repurposing_samples_20180907.txt', usecols=cols, delimiter='\t', comment='!', encoding='iso-8859-1')
+samples_2020 = pd.read_csv('clue/repurposing_samples_20200324.txt', usecols=cols, delimiter='\t', comment='!', encoding='iso-8859-1')
 
 
 # In[3]:
