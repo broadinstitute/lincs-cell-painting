@@ -96,26 +96,27 @@ samples_2017.head()
 # In[7]:
 
 
-merged_df = samples_2017.merge(samples_2018a, on='InChIKey14', how='outer')
-merged_df = merged_df.merge(samples_2018b, on='InChIKey14', how='outer')
-merged_df = merged_df.merge(samples_2020, on='InChIKey14', how='outer')
+merged_list = (
+    samples_2017.merge(samples_2018a, on='InChIKey14', how='outer')
+    .merge(samples_2018b, on='InChIKey14', how='outer')
+    .merge(samples_2020, on='InChIKey14', how='outer')
+    .replace(to_replace='', value=np.nan)
+)
 
-merged_df= merged_df.replace(to_replace='', value=np.nan)
-
-merged_df.head()
+merged_list.head()
 
 
 # In[8]:
 
 
-print(merged_df.shape)
+print(merged_list.shape)
 
 
 # In[9]:
 
 
 map_file = os.path.join('clue', 'broad_id_map.csv')
-merged_df.to_csv(map_file, index=False)
+merged_list.to_csv(map_file, index=False)
 
 
 
