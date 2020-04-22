@@ -20,6 +20,7 @@ get_ipython().run_line_magic('load_ext', 'nb_black')
 import os
 import numpy as np
 import pandas as pd
+import rdkit.Chem.inchi as inchi
 
 
 # ## Load Data
@@ -34,7 +35,7 @@ date = "20200324"
 # In[4]:
 
 
-drug_file = os.path.join(data_dir, "repurposing_drugs_{}.txt".format(date))
+drug_file = os.path.join(data_dir, f"repurposing_drugs_{date}.txt")
 drug_df = pd.read_csv(drug_file, encoding="ISO-8859-1", sep="\t", comment="!")
 
 print(drug_df.shape)
@@ -44,7 +45,7 @@ drug_df.head(2)
 # In[5]:
 
 
-sample_file = os.path.join(data_dir, "repurposing_samples_{}.txt".format(date))
+sample_file = os.path.join(data_dir, f"repurposing_samples_{date}.txt")
 sample_df = pd.read_csv(sample_file, encoding="ISO-8859-1", sep="\t", comment="!")
 
 print(sample_df.shape)
@@ -73,11 +74,15 @@ combined_df = drug_df.merge(sample_df, on="pert_iname", how="inner").reset_index
 # Move broad_id to first column
 col_order = combined_df.columns.tolist()
 col_order.insert(0, col_order.pop(col_order.index("broad_id")))
-combined_df = combined_df.loc[:, col_order]
+combined_df = combined_df.loc[:, col_order].assign(
+    InChIKey14=combined_df.InChIKey.apply(
+        lambda x: inchi.InchiToInchiKey(x) if (x.startswith("InChI")) else x
+    ).apply(lambda x: str(x)[:14])
+)
 
 # Output to file
 output_file = "repurposing_info"
-combined_df.to_csv("{}.tsv".format(output_file), sep="\t", index=False)
+combined_df.to_csv(f"{output_file}.tsv", sep="\t", index=False)
 
 print(combined_df.shape)
 combined_df.head()
@@ -104,7 +109,7 @@ combined_df.target = combined_df.target.fillna("replace_with_na")
 
 
 # Make sure the original index is preserved
-split_col_index = "{}_index".format(output_file)
+split_col_index = f"{output_file}_index"
 
 
 # In[10]:
@@ -165,8 +170,7 @@ long_combined_df.loc[
 ] = np.nan
 
 # Output to file
-output_file = "repurposing_info_long.tsv"
-long_combined_df.to_csv(output_file, sep="\t", index=False)
+long_combined_df.to_csv("repurposing_info_long.tsv", sep="\t", index=False)
 
 print(long_combined_df.shape)
 long_combined_df.head()
