@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 get_ipython().run_line_magic('load_ext', 'nb_black')
 
 
-# In[1]:
+# In[2]:
 
 
 import pandas as pd
@@ -18,7 +18,7 @@ import os.path
 
 # Sample files from each version of the repurposing hub are read
 
-# In[2]:
+# In[3]:
 
 
 cols = ["broad_id", "pert_iname", "InChIKey", "deprecated_broad_id"]
@@ -53,14 +53,14 @@ samples_2020 = pd.read_csv(
 )
 
 
-# In[3]:
+# In[4]:
 
 
 # 2017 version is missing deprecated_broad_id
 samples_2017 = samples_2017.assign(deprecated_broad_id=np.nan)
 
 
-# In[4]:
+# In[5]:
 
 
 # The first 13 characters of the Broad ID and the first 14 characters of InChIKey are extracted
@@ -127,7 +127,7 @@ def create_pipe_separated_list(target):
     return out_target
 
 
-# In[5]:
+# In[6]:
 
 
 samples_2017 = id_cleanup(samples_2017, "20170327")
@@ -138,7 +138,7 @@ samples_2020 = id_cleanup(samples_2020, "20200324")
 samples_2017.head()
 
 
-# In[6]:
+# In[7]:
 
 
 samples_2017 = group_by_InChIKey14(samples_2017, "20170327")
@@ -151,7 +151,7 @@ samples_2017.head()
 
 # The four data frames are merged on InChIKey14
 
-# In[7]:
+# In[8]:
 
 
 merged_list = (
@@ -164,17 +164,15 @@ merged_list = (
 merged_list.head()
 
 
-# In[8]:
+# In[9]:
 
 
 print(merged_list.shape)
 
 
-# In[9]:
+# In[10]:
 
 
-map_file = os.path.join('clue', 'broad_id_map.csv')
+map_file = os.path.join("clue", "broad_id_map.csv")
 merged_list.to_csv(map_file, index=False)
-
-
 

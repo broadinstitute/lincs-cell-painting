@@ -16,14 +16,15 @@
 # In[1]:
 
 
-import os
-import pandas as pd
+get_ipython().run_line_magic('load_ext', 'nb_black')
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 # In[2]:
 
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+import os
+import pandas as pd
 
 
 # In[3]:
@@ -37,11 +38,9 @@ use_cols = ["pert_id", "pert_iname", "moa", "target"]
 # In[4]:
 
 
-annotation_df = pd.read_csv("repurposing_info.tsv", sep='\t')
+annotation_df = pd.read_csv("repurposing_info.tsv", sep="\t")
 
-annotation_df = annotation_df.assign(
-    pert_id=annotation_df.broad_id.str.slice(0, 13)
-)
+annotation_df = annotation_df.assign(pert_id=annotation_df.broad_id.str.slice(0, 13))
 
 print(annotation_df.shape)
 annotation_df.head()
@@ -68,7 +67,7 @@ pert_counts.head(10)
 # In[7]:
 
 
-pert_counts.hist();
+pert_counts.hist()
 
 
 # In[8]:
@@ -78,7 +77,9 @@ pert_counts.hist();
 num_duplicate = (pert_counts > 1).sum()
 percent_duplicate = (num_duplicate / pert_counts.shape[0]) * 100
 
-print("There are {} ({}%) duplicated `pert_ids`".format(num_duplicate, percent_duplicate))
+print(
+    "There are {} ({}%) duplicated `pert_ids`".format(num_duplicate, percent_duplicate)
+)
 
 
 # In[9]:
