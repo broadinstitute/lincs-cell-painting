@@ -1,0 +1,16 @@
+name: lincs
+channels:
+- conda-forge
+dependencies:
+- conda-forge::pandas=1.0.1
+- conda-forge::tabulate=0.8.7
+- conda-forge::jupyter=1.0.0
+- conda-forge::ipykernel=5.1.0
+- conda-forge::nb_conda_kernels=2.2.1
+- conda-forge::widgetsnbextension=3.5.1
+- conda-forge::jupyter_contrib_nbextensions=0.5.1
+- conda-forge::matplotlib=3.1.3
+- conda-forge::rdkit=2019.09.3
+- conda-forge::nb_black=1.0.7
+- pip:
+  - git+https://github.com/cytomining/pycytominer@dd064c2185435e19541bafa7c976d55da15cf09e
