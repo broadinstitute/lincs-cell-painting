@@ -76,6 +76,7 @@ def id_cleanup(df, version):
     ).apply(lambda x: str(x)[:14])
 
     df.broad_id = df.broad_id.apply(lambda x: str(x)[:13])
+    df.deprecated_broad_id = df.deprecated_broad_id.apply(lambda x: str(x)[:13])
 
     df = (
         df.drop_duplicates(
@@ -123,6 +124,7 @@ def create_pipe_separated_list(target):
     joined_target = ("|".join(target)).split("|")
     while "" in joined_target:
         joined_target.remove("")
+    joined_target = [x for x in joined_target if x != "nan"]
     out_target = "|".join(np.unique(joined_target))
     return out_target
 
