@@ -502,6 +502,7 @@ moa_map_df = (
     pd.concat([platemap_moa_easy_df, first_step_resolve_df, alternative_resolved_df])
     .sort_values(by="broad_id")
     .reset_index(drop=True)
+    .drop("deprecated", axis="columns")
 )
 
 assert (
