@@ -74,7 +74,9 @@ broad_id_other_dates = ["20170327", "20180516", "20180907", "20200324"]
 
 # Load platemap data
 file = pathlib.PurePath("../platemaps/broad_sample_info.tsv")
-all_platemap_df = pd.read_csv(file, sep="\t")
+all_platemap_df = pd.read_csv(file, sep="\t").dropna(
+    subset=["broad_sample", "broad_id"]
+)
 
 print(all_platemap_df.shape)
 all_platemap_df.head()
@@ -158,7 +160,7 @@ merged_platemap_df = (
     )
     # We don't care about plate info here
     .drop_duplicates(subset=["broad_id", mapping_col]).loc[
-        :, ["broad_sample", "broad_id", mapping_col]
+        :, ["broad_sample", "broad_id", mapping_col, "broad_date"]
     ]
     # Drop DMSO
     .dropna(subset=["broad_sample"])
@@ -206,7 +208,7 @@ platemap_moa_df = merged_platemap_df.merge(
     moa_df.loc[:, [mapping_col, "pert_iname", "moa", "target"]].drop_duplicates(),
     on=mapping_col,
     how="left",
-).loc[:, ["broad_sample", "broad_id", mapping_col, "moa", "target"]]
+).loc[:, ["broad_sample", "broad_id", mapping_col, "moa", "target", "broad_date"]]
 
 print(platemap_moa_df.shape)
 platemap_moa_df.head()
@@ -410,7 +412,15 @@ first_step_resolve_df.head()
 # Remove these from other broad IDs that need to be resolved
 platemap_alternative_inchi_df = platemap_multiple_inchi_select_df.query(
     "broad_id not in @first_step_resolve"
+).drop_duplicates(["broad_id", "moa", "target"])
+
+platemap_alternative_inchi_df = platemap_alternative_inchi_df.assign(
+    deprecated=[x[0] for x in platemap_alternative_inchi_df.broad_date.str.split("_")]
 )
+
+assert (
+    len(platemap_alternative_inchi_df.deprecated.unique()) == 1
+), "Warning! Deprecated info should not be resolved"
 
 print(platemap_alternative_inchi_df.shape)
 platemap_alternative_inchi_df.head()
@@ -505,11 +515,18 @@ moa_map_df.head()
 # In[36]:
 
 
+# Interpretation: This is the CLUE version the 2020 CLUE version (most recent) used to map
+moa_map_df.broad_date.value_counts()
+
+
+# In[37]:
+
+
 map_output_file = "repurposing_info_external_moa_map_resolved.tsv"
 moa_map_df.to_csv(map_output_file, sep="\t", index=False)
 
 
-# In[37]:
+# In[38]:
 
 
 pd.DataFrame(
