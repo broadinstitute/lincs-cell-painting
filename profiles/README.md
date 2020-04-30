@@ -1,6 +1,6 @@
 # Image-Based Profiling
 
-Image-based profiling represents a series of data processing steps that turn Image-based readouts into more manageable data matrices for downstream analyses ([Caicedo et al. 2017](https://doi.org/10.1038/nmeth.4397)).
+Image-based profiling represents a series of data processing steps that turn image-based readouts into more manageable data matrices for downstream analyses ([Caicedo et al. 2017](https://doi.org/10.1038/nmeth.4397)).
 Typically, the image-based readouts are derived from CellProfiler ([McQuin et al. 2018](https://doi.org/10.1371/journal.pbio.2005970)) and represent single cell morphology measurements.
 In this folder, we process the CellProfiler derived morphology features using [pycytominer](https://github.com/cytomining/pycytominer) - a tool enabling reproducible image-based profiling.
 Specifically, we include:
@@ -28,6 +28,9 @@ This repository and workflow begins after we applied cytominer-database.
 | Level 4a | Normalized Profiles with Metadata | `.csv.gz` | Yes |
 | Level 4b | Normalized and Feature Selected Profiles with Metadata | `.csv.gz` | Yes |
 | Level 5 | Consensus Perturbation Profiles | `.csv.gz` | Yes |
+
+Importantly, we include files for _two_ different types of normalization: Whole-plate normalization, and DMSO-specific normalization.
+See [`profile.py`](profile.py) for more details.
 
 ^ Note that these files are being prepared
 
