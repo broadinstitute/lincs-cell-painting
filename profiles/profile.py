@@ -94,8 +94,8 @@ anno_df = anno_df.assign(
 )
 
 # Reoroder columns
-metadata_cols = cyto_utils.infer_cp_features(df, metadata=True)
-cp_cols = cyto_utils.infer_cp_features(df)
+metadata_cols = cyto_utils.infer_cp_features(anno_df, metadata=True)
+cp_cols = cyto_utils.infer_cp_features(anno_df)
 reindex_cols = metadata_cols + cp_cols
 anno_df = anno_df.reindex(reindex_cols, axis="columns")
 
