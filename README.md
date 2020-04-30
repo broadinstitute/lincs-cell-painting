@@ -1,7 +1,7 @@
 # Processed Cell Painting Data for the LINCS Drug Repurposing Project
 
 The repository stores data and data processing scripts for **a subset** of the LINCS Drug Repurposing Project.
-In the LINCS Cell Painting project, we perturbed A549 cells with ~1,500 compounds across 6 doses with ~4 biological replicates.
+In this project, we perturbed A549 cells with ~1,500 compounds across 6 doses with ~4 biological replicates.
 
 For a specific list of compounds tested, see [`metadata`](https://github.com/broadinstitute/lincs-cell-painting/tree/master/metadata).
 
