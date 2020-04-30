@@ -33,6 +33,7 @@ output_dir = args.output_dir
 os.makedirs(output_dir, exist_ok=True)
 os.makedirs(cell_count_dir, exist_ok=True)
 cell_id = "A549"
+aggregate_method = "median"
 norm_method = "mad_robustize"
 compression = "gzip"
 float_format = "%.5g"
@@ -46,17 +47,13 @@ feature_select_ops = [
 
 # Define external metadata to add to annotation
 moa_df = pd.read_csv(moa_file, sep="\t")
-barcode_platemap_df = pd.read_csv(barcode_platemap_file)
-external_metadata_df = moa_df.assign(
-    Assay_Plate_Barcode=barcode_platemap_df.Assay_Plate_Barcode.values[0],
-    Plate_Map_Name=barcode_platemap_df.Plate_Map_Name.values[0],
-    Batch_Number=barcode_platemap_df.Batch_Number.values[0],
-    Batch_Date=barcode_platemap_df.Batch_Date.values[0],
+barcode_platemap_df = pd.read_csv(barcode_platemap_file).query(
+    "Assay_Plate_Barcode == @plate_name"
 )
 
 # Aggregate profiles
 out_file = pathlib.PurePath(output_dir, f"{plate_name}.csv.gz")
-ap = AggregateProfiles(sql_file=sql_file, strata=strata)
+ap = AggregateProfiles(sql_file=sql_file, strata=strata, operation=aggregate_method)
 ap.aggregate_profiles(
     output_file=out_file, float_format=float_format, compression="gzip"
 )
@@ -77,7 +74,7 @@ anno_df = annotate(
     cell_id=cell_id,
     format_broad_cmap=True,
     perturbation_mode="chemical",
-    external_metadata=external_metadata_df,
+    external_metadata=moa_df,
     external_join_left=["Metadata_broad_sample"],
     external_join_right=["Metadata_broad_sample"],
 )
@@ -88,9 +85,26 @@ anno_df = anno_df.rename(
     axis="columns",
 )
 
+# Add barcode platemap info
+anno_df = anno_df.assign(
+    Metadata_Assay_Plate_Barcode=barcode_platemap_df.Assay_Plate_Barcode.values[0],
+    Metadata_Plate_Map_Name=barcode_platemap_df.Plate_Map_Name.values[0],
+    Metadata_Batch_Number=barcode_platemap_df.Batch_Number.values[0],
+    Metadata_Batch_Date=barcode_platemap_df.Batch_Date.values[0],
+)
+
+# Reoroder columns
+metadata_cols = cyto_utils.infer_cp_features(df, metadata=True)
+cp_cols = cyto_utils.infer_cp_features(df)
+reindex_cols = metadata_cols + cp_cols
+anno_df = anno_df.reindex(reindex_cols, axis="columns")
+
 # Output annotated file
 cyto_utils.output(
-    df=anno_df, output_filename=anno_file, float_format=float_format, compression="gzip"
+    df=anno_df,
+    output_filename=anno_file,
+    float_format=float_format,
+    compression=compression,
 )
 
 # Normalize Profiles (DMSO Control) - Level 4A Data
@@ -101,7 +115,7 @@ normalize(
     method=norm_method,
     output_file=norm_dmso_file,
     float_format=float_format,
-    compression="gzip",
+    compression=compression,
 )
 
 # Normalize Profiles (Whole Plate) - Level 4A Data
