@@ -6,6 +6,11 @@ import os
 import pathlib
 import subprocess
 import pandas as pd
+from profile_utils import get_pipeline_args, find_incomplete_plates
+
+# Load Command Line Arguments
+args = get_pipeline_args()
+overwrite = args.overwrite  # The default is False
 
 # Load constants
 project = "2015_10_05_DrugRepurposing_AravindSubramanian_GolubLab_Broad"
@@ -14,6 +19,8 @@ profile_dir = pathlib.PurePath(
     "/home/ubuntu/bucket/projects/", project, "workspace/backend"
 )
 barcode_platemap_dir = pathlib.PurePath("../metadata/platemaps")
+output_base_dir = "backend"
+completed_file_match = "normalized_feature_select.csv.gz"
 
 # Load barcode platemap information
 barcode_platemap_file = pathlib.PurePath(barcode_platemap_dir, "barcode_platemap.csv")
@@ -25,6 +32,12 @@ platemap_dir = pathlib.PurePath(barcode_platemap_dir, "platemap")
 # Load plate information
 plate_dir = pathlib.PurePath(profile_dir, batch)
 plates = [x for x in os.listdir(plate_dir) if x.startswith("SQ")]
+
+if not overwrite:
+    # Only process plates that are not already completely processed
+    plates = find_incomplete_plates(
+        plates=plates, output_dir=output_base_dir, file_match=completed_file_match
+    )
 
 # Load and check MOA information
 moa_file = pathlib.PurePath(
@@ -38,7 +51,7 @@ assert isinstance(
 # Process every plate
 for plate in plates:
     print(f"Now processing... Plate: {plate}")
-    output_dir = pathlib.PurePath("backend", plate)
+    output_dir = pathlib.PurePath(output_base_dir, plate)
     cell_count_dir = pathlib.PurePath("analysis", plate)
 
     platemap_id = barcode_platemap_df.query(
