@@ -11,10 +11,13 @@ def build_file_dictionary(base_dir, tool="pycytominer"):
         file_match["level_3"] = "augmented.csv.gz"
         file_match["level_4a"] = "normalized_dmso.csv.gz"
         file_match["level_4b"] = "normalized_feature_select_dmso.csv.gz"
+        file_match["pycytominer_select"] = "normalized_feature_select_dmso.csv.gz"
+
     elif tool == "cytominer":
         file_match["level_3"] = "augmented.csv"
         file_match["level_4a"] = "normalized.csv"
         file_match["level_4b"] = "normalized_variable_selected.csv"
+        file_match["pycytominer_select"] = "normalized.csv"
 
     file_dict = {}
     for plate in base_dir.iterdir():
@@ -30,6 +33,8 @@ def build_file_dictionary(base_dir, tool="pycytominer"):
                 file_dict[plate_name]["level_4a"] = plate_file
             if file_match["level_4b"] in plate_file_name:
                 file_dict[plate_name]["level_4b"] = plate_file
+            if file_match["pycytominer_select"] in plate_file_name:
+                file_dict[plate_name]["pycytominer_select"] = plate_file
 
     return file_dict
 
@@ -69,11 +74,19 @@ def load_data(
     if level in ["level_3", "level_4a"]:
         assert set(pycyto_features) == set(cyto_features), "features should be aligned!"
 
-    # Return a tuple of (pycyto data, cyto data) with aligned feature indices
-    return (
-        pycyto_df.reindex(set(pycyto_features), axis="columns").round(round_decimals),
-        cyto_df.reindex(set(cyto_features), axis="columns").round(round_decimals),
+    # Reindex and round data
+    pycyto_df = pycyto_df.reindex(set(pycyto_features), axis="columns").round(
+        round_decimals
     )
+    cyto_df = cyto_df.reindex(set(cyto_features), axis="columns").round(round_decimals)
+
+    # If we're testing pycytominer feature selection procedure,
+    # align cyto data with pycyto features
+    if level == "pycytominer_select":
+        cyto_df = cyto_df.reindex(set(pycyto_features), axis="columns")
+
+    # Return a tuple of (pycyto data, cyto data) with aligned feature indices
+    return (pycyto_df, cyto_df)
 
 
 def generate_output_filenames(output_dir, level, metrics=["median", "mean", "sum"]):
