@@ -256,6 +256,9 @@ for level in levels:
         "level == @level"
     ).reset_index(drop=True)
 
+    output_dir = pathlib.Path(f"{output_fig_dir}/{level}")
+    output_dir.mkdir(exist_ok=True)
+    
     # Figure 2 - Per feature plate differences
     per_feature_gg = (
         gg.ggplot(all_feature_results_subset_df, gg.aes(x="feature", y="metric_value"))
