@@ -9,8 +9,8 @@ def build_file_dictionary(base_dir, tool="pycytominer"):
     file_match = {}
     if tool == "pycytominer":
         file_match["level_3"] = "augmented.csv.gz"
-        file_match["level_4a"] = "normalized.csv.gz"
-        file_match["level_4b"] = "normalized_feature_select.csv.gz"
+        file_match["level_4a"] = "normalized_dmso.csv.gz"
+        file_match["level_4b"] = "normalized_feature_select_dmso.csv.gz"
     elif tool == "cytominer":
         file_match["level_3"] = "augmented.csv"
         file_match["level_4a"] = "normalized.csv"
@@ -74,6 +74,7 @@ def load_data(
         pycyto_df.reindex(set(pycyto_features), axis="columns").round(round_decimals),
         cyto_df.reindex(set(cyto_features), axis="columns").round(round_decimals),
     )
+
 
 def generate_output_filenames(output_dir, level, metrics=["median", "mean", "sum"]):
     output_files = {}
