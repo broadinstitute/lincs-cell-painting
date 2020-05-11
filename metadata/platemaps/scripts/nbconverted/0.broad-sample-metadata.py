@@ -21,7 +21,9 @@ import pandas as pd
 
 all_platemaps = list()
 
-platemap_dir = "platemap"
+batch = "2016_04_01_a549_48hr_batch1"
+platemap_dir = f"platemap/{batch}"
+
 for platemap_file in os.listdir(platemap_dir):
 
     # Load platemap
