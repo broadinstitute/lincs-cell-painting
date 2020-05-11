@@ -178,6 +178,14 @@ level_4b_completemedian_diff = {}
 level_4b_completesum_diff = {}
 level_4b_feature_select = []
 
+test_pycytominer_select_mean_diff = []
+test_pycytominer_select_completemean_diff = {}
+test_pycytominer_select_sum_diff = []
+test_pycytominer_select_median_diff = []
+test_pycytominer_select_completemedian_diff = {}
+test_pycytominer_select_completesum_diff = {}
+test_pycytominer_select_feature_select = []
+
 # Calculate metrics per plate
 for plate in list(cytominer_plates):
     # Calculate level 3 metrics
@@ -262,6 +270,33 @@ for plate in list(cytominer_plates):
     level_4b_sum_diff.append(sum_diff)
     level_4b_completesum_diff[plate] = complete_sum_diff
     level_4b_feature_select.append(feature_select_df)
+    
+    # Test pycytominer feature selection
+    pycyto_df, cyto_df = load_data(
+        plate,
+        pycytominer_plate_files,
+        cytominer_plate_files,
+        level="pycytominer_select",
+        round_decimals=round_decimals,
+    )
+    # Define features (note that the features were checked and aligned in load_data)
+    features = pycyto_df.columns.tolist()
+    # Get differences
+    (
+        mean_diff,
+        complete_mean_diff,
+        median_diff,
+        complete_median_diff,
+        sum_diff,
+        complete_sum_diff,
+    ) = get_metrics(pycyto_df, cyto_df, features)
+    # Store results
+    test_pycytominer_select_mean_diff.append(mean_diff)
+    test_pycytominer_select_completemean_diff[plate] = complete_mean_diff
+    test_pycytominer_select_median_diff.append(median_diff)
+    test_pycytominer_select_completemedian_diff[plate] = complete_median_diff
+    test_pycytominer_select_sum_diff.append(sum_diff)
+    test_pycytominer_select_completesum_diff[plate] = complete_sum_diff
 
 
 # ## Compile Results
@@ -334,9 +369,37 @@ level_4b_completesum_diff_df = pd.DataFrame(
 level_4b_feature_select_df = pd.concat(level_4b_feature_select, axis="columns")
 
 
+# In[12]:
+
+
+test_pycytominer_select_mean_diff_df = pd.concat(
+    test_pycytominer_select_mean_diff, axis="columns", sort=True
+)
+test_pycytominer_select_mean_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_completemean_diff_df = pd.DataFrame(
+    test_pycytominer_select_completemean_diff, index=["complete_mean_diff"]
+).transpose()
+
+test_pycytominer_select_median_diff_df = pd.concat(
+    test_pycytominer_select_median_diff, axis="columns", sort=True
+)
+test_pycytominer_select_median_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_completemedian_diff_df = pd.DataFrame(
+    test_pycytominer_select_completemedian_diff, index=["complete_median_diff"]
+).transpose()
+
+test_pycytominer_select_sum_diff_df = pd.concat(
+    test_pycytominer_select_sum_diff, axis="columns", sort=True
+)
+test_pycytominer_select_sum_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_completesum_diff_df = pd.DataFrame(
+    test_pycytominer_select_completesum_diff, index=["complete_sum_diff"]
+).transpose()
+
+
 # ## Output Results
 
-# In[12]:
+# In[13]:
 
 
 level = "level_3"
@@ -358,7 +421,7 @@ level_3_sum_diff_df.to_csv(
 )
 
 
-# In[13]:
+# In[14]:
 
 
 level = "level_4a"
@@ -380,7 +443,7 @@ level_4a_sum_diff_df.to_csv(
 )
 
 
-# In[14]:
+# In[15]:
 
 
 level = "level_4b"
@@ -406,7 +469,29 @@ output_file = f"{output_dir}/comparison_result_4b_feature_select.tsv.gz"
 level_4b_feature_select_df.to_csv(output_file, sep="\t", index=True, compression="gzip")
 
 
-# In[15]:
+# In[16]:
+
+
+level = "pycytominer_select"
+pycytominer_select_files = generate_output_filenames(output_dir, level)
+
+# Output mean
+test_pycytominer_select_mean_diff_df.to_csv(
+    pycytominer_select_files["mean"], sep="\t", index=True, compression="gzip"
+)
+
+# Output median
+test_pycytominer_select_median_diff_df.to_csv(
+    pycytominer_select_files["median"], sep="\t", index=True, compression="gzip"
+)
+
+# Output sum
+test_pycytominer_select_sum_diff_df.to_csv(
+    pycytominer_select_files["sum"], sep="\t", index=True, compression="gzip"
+)
+
+
+# In[17]:
 
 
 # Concatenate level 3 results
