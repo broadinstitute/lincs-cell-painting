@@ -18,7 +18,7 @@ batch = "2016_04_01_a549_48hr_batch1"
 profile_dir = pathlib.PurePath(
     "/home/ubuntu/bucket/projects/", project, "workspace/backend"
 )
-barcode_platemap_dir = pathlib.PurePath("../metadata/platemaps/platemap")
+barcode_platemap_dir = pathlib.PurePath(f"../metadata/platemaps/{batch}")
 output_base_dir = pathlib.PurePath(f"backend/{batch}")
 completed_file_match = "normalized_feature_select.csv.gz"
 
