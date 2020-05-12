@@ -2,9 +2,9 @@
 
 The repository stores data and data processing scripts for **a subset** of the [Broad Drug Repurposing Hub](https://clue.io/repurposing#home) collection of compounds.
 
-In this project, the [Connectivity Map](https://clue.io/team) perturbed A549 cells with ~1,500 compounds across 6 doses in 5 technical replicates. We refer to this dataset as `LINCS Pilot 1`.
+In this project, the [Connectivity Map](https://clue.io/team) team perturbed A549 cells with ~1,500 compounds across 6 doses in 5 technical replicates. We refer to this dataset as `LINCS Pilot 1`.
 
-For a specific list of compounds tested, see [`metadata`](https://github.com/broadinstitute/lincs-cell-painting/tree/master/metadata).
+For a specific list of compounds tested, see [`metadata`](https://github.com/broadinstitute/lincs-cell-painting/tree/master/metadata). Information about the compounds can be interactively explored in the [CLUE Repurposing app](https://clue.io/repurposing-app). The [Morphology Connectivity Hub](https://clue.io/morphology) is the primary source of this dataset.
 
 ## Image-Based Profiling
 
