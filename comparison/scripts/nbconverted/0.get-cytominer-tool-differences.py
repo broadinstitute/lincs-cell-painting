@@ -63,20 +63,6 @@ from util import build_file_dictionary, load_data, build_filenames
 # In[3]:
 
 
-# Set batch name
-batch = "2016_04_01_a549_48hr_batch1"
-
-# Pycytominer plates are saved with 5 floating point decimals
-round_decimals = 5
-
-# Create the output directory
-output_dir = pathlib.Path("results", batch)
-output_dir.mkdir(parents=True, exist_ok=True)
-
-
-# In[4]:
-
-
 def get_metrics(pycyto_df, cyto_df, features):
     # Align features
     pycyto_df = pycyto_df.reindex(features, axis="columns")
@@ -125,14 +111,34 @@ def find_feature_diff(pycyto_df, cyto_df, plate, all_features):
     return all_features_df
 
 
+# In[4]:
+
+
+# Set batch name
+project = "2015_10_05_DrugRepurposing_AravindSubramanian_GolubLab_Broad"
+batch = "2016_04_01_a549_48hr_batch1"
+
+# Pycytominer plates are saved with 5 floating point decimals
+round_decimals = 5
+
+# Create the output directory
+output_dir = pathlib.Path("results", batch)
+output_dir.mkdir(parents=True, exist_ok=True)
+
+
 # In[5]:
 
 
+# Set input directories
+# Note, pycytominer profiles are processed and exist in this repository
 pycytominer_dir = pathlib.Path("../profiles/backend/", batch)
+
+# Note, cytominer profiles were processed separately and exist in many different locations.
+# This location represents the exact files that were previously profiled using cytominer.
+# The files were deposited on the Imaging Platform AWS S3 Bucket and downloaded locally.
+# To reproduce the analysis, update the appropriate cytominer path.
 cytominer_dir = pathlib.Path(
-    "/Users/gway/work/projects/"
-    + "2015_10_05_DrugRepurposing_AravindSubramanian_GolubLab_Broad"
-    + f"/workspace/backend/{batch}/"
+    f"/Users/gway/work/projects/{project}/workspace/backend/{batch}/"
 )
 
 
