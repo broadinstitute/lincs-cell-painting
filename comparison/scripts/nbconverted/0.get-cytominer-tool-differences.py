@@ -137,8 +137,9 @@ pycytominer_dir = pathlib.Path("../profiles/backend/", batch)
 # This location represents the exact files that were previously profiled using cytominer.
 # The files were deposited on the Imaging Platform AWS S3 Bucket and downloaded locally.
 # To reproduce the analysis, update the appropriate cytominer path.
+home_dir = pycytominer_dir.home()
 cytominer_dir = pathlib.Path(
-    f"/Users/gway/work/projects/{project}/workspace/backend/{batch}/"
+    f"{home_dir}/work/projects/{project}/workspace/backend/{batch}/"
 )
 
 
