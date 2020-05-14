@@ -21,20 +21,21 @@ import numpy as np
 import pandas as pd
 import plotnine as gg
 
-from util import generate_output_filenames
+from util import build_filenames
 
 
 # In[3]:
 
 
 # Set constants
-input_dir = "results"
+batch = "2016_04_01_a549_48hr_batch1"
+input_dir = pathlib.Path("results", batch)
 levels = ["level_3", "level_4a", "level_4b", "pycytominer_select"]
 metrics = ["mean", "median", "sum"]
 
 # Set output directory
-output_fig_dir = "figures"
-os.makedirs(output_fig_dir, exist_ok=True)
+output_fig_dir = pathlib.Path("figures", batch)
+output_fig_dir.mkdir(parents=True, exist_ok=True)
 
 # Set plotting defaults
 dpi = 500
@@ -56,7 +57,7 @@ theme_summary = gg.theme_bw() + gg.theme(
 # Load Data
 results_files = {}
 for level in levels:
-    file_names = generate_output_filenames(input_dir, level=level)
+    file_names = build_filenames(input_dir, level=level)
     metric_df = {}
     for metric in file_names:
         df = pd.read_csv(file_names[metric], sep="\t", index_col=0)
@@ -258,7 +259,7 @@ for level in levels:
 
     output_dir = pathlib.Path(f"{output_fig_dir}/{level}")
     output_dir.mkdir(exist_ok=True)
-    
+
     # Figure 2 - Per feature plate differences
     per_feature_gg = (
         gg.ggplot(all_feature_results_subset_df, gg.aes(x="feature", y="metric_value"))

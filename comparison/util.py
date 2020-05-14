@@ -89,7 +89,7 @@ def load_data(
     return (pycyto_df, cyto_df)
 
 
-def generate_output_filenames(output_dir, level, metrics=["median", "mean", "sum"]):
+def build_filenames(output_dir, level, metrics=["median", "mean", "sum"]):
     output_files = {}
     for metric in metrics:
         output_files[metric] = pathlib.Path(

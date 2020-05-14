@@ -57,18 +57,21 @@ import pathlib
 import numpy as np
 import pandas as pd
 
-from util import build_file_dictionary, load_data, generate_output_filenames
+from util import build_file_dictionary, load_data, build_filenames
 
 
 # In[3]:
 
 
+# Set batch name
+batch = "2016_04_01_a549_48hr_batch1"
+
 # Pycytominer plates are saved with 5 floating point decimals
 round_decimals = 5
 
 # Create the output directory
-output_dir = "results"
-os.makedirs(output_dir, exist_ok=True)
+output_dir = pathlib.Path("results", batch)
+output_dir.mkdir(parents=True, exist_ok=True)
 
 
 # In[4]:
@@ -125,11 +128,11 @@ def find_feature_diff(pycyto_df, cyto_df, plate, all_features):
 # In[5]:
 
 
-pycytominer_dir = pathlib.Path("../profiles/backend/")
+pycytominer_dir = pathlib.Path("../profiles/backend/", batch)
 cytominer_dir = pathlib.Path(
     "/Users/gway/work/projects/"
     + "2015_10_05_DrugRepurposing_AravindSubramanian_GolubLab_Broad"
-    + "/workspace/backend/2016_04_01_a549_48hr_batch1/"
+    + f"/workspace/backend/{batch}/"
 )
 
 
@@ -270,7 +273,7 @@ for plate in list(cytominer_plates):
     level_4b_sum_diff.append(sum_diff)
     level_4b_completesum_diff[plate] = complete_sum_diff
     level_4b_feature_select.append(feature_select_df)
-    
+
     # Test pycytominer feature selection
     pycyto_df, cyto_df = load_data(
         plate,
@@ -403,7 +406,7 @@ test_pycytominer_select_completesum_diff_df = pd.DataFrame(
 
 
 level = "level_3"
-level_3_files = generate_output_filenames(output_dir, level)
+level_3_files = build_filenames(output_dir, level)
 
 # Output mean
 level_3_mean_diff_df.to_csv(
@@ -425,7 +428,7 @@ level_3_sum_diff_df.to_csv(
 
 
 level = "level_4a"
-level_4a_files = generate_output_filenames(output_dir, level)
+level_4a_files = build_filenames(output_dir, level)
 
 # Output mean
 level_4a_mean_diff_df.to_csv(
@@ -447,7 +450,7 @@ level_4a_sum_diff_df.to_csv(
 
 
 level = "level_4b"
-level_4b_files = generate_output_filenames(output_dir, level)
+level_4b_files = build_filenames(output_dir, level)
 
 # Output mean
 level_4b_mean_diff_df.to_csv(
@@ -473,7 +476,7 @@ level_4b_feature_select_df.to_csv(output_file, sep="\t", index=True, compression
 
 
 level = "pycytominer_select"
-pycytominer_select_files = generate_output_filenames(output_dir, level)
+pycytominer_select_files = build_filenames(output_dir, level)
 
 # Output mean
 test_pycytominer_select_mean_diff_df.to_csv(
