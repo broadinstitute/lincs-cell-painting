@@ -51,9 +51,9 @@ assert isinstance(
 # Process every plate
 for plate in plates:
     print(f"Now processing... Plate: {plate}")
-    output_dir = pathlib.PurePath(output_base_dir, plate)
+    output_dir = pathlib.Path(output_base_dir, plate)
     output_dir.mkdir(parents=True, exist_ok=True)
-    cell_count_dir = pathlib.PurePath("cell_count", batch, plate)
+    cell_count_dir = pathlib.Path("cell_count", batch, plate)
     cell_count_dir.mkdir(parents=True, exist_ok=True)
 
     platemap_id = barcode_platemap_df.query(
