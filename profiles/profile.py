@@ -59,9 +59,9 @@ ap.aggregate_profiles(
 )
 
 # Count cells
-count_file = pathlib.PurePath(cell_count_dir, f"{plate_name}_cell_count.tsv")
+count_file = pathlib.PurePath(cell_count_dir, f"{plate_name}_cell_count.csv")
 cell_count_df = ap.count_cells()
-cell_count_df.to_csv(count_file, sep="\t")
+cell_count_df.to_csv(count_file, sep=",", index=False)
 
 del ap
 
