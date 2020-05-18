@@ -18,8 +18,8 @@ In general, most doses are very near the following 7 dose points (mmoles per lit
 
 > [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
 
-Therefore, in order to align perturbations and doses to consensus signatures, we first align the doses collected in the dataset to their nearest dose point above.
-We also recode the dose points into ascending numerical levels.
+Therefore, to make it easier to filter by dose when comparing compounds, we first align the doses collected in the dataset to their nearest dose point above.
+We then recode the dose points into ascending numerical levels and add a new metadata annotation `dose_recode` to the consensus signatures.
 
 | Dose | Dose Recode |
 | :--: | :---------: |
