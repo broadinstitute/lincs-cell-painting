@@ -31,3 +31,8 @@ We also recode the dose points into ascending numerical levels.
 | ~3.33 | 5 |
 | ~10 | 6 |
 | ~20 | 7 |
+
+## DMSO vs. Compound Profiles
+
+Note we generated per-well DMSO consensus signatures and per compound-dose pair consensus signatures for compounds.
+The per-well DMSO profiles can help to assess plate-associated batch effects.
