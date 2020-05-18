@@ -19,7 +19,7 @@ profile_dir = pathlib.PurePath(
     "/home/ubuntu/bucket/projects/", project, "workspace/backend"
 )
 barcode_platemap_dir = pathlib.PurePath(f"../metadata/platemaps/{batch}")
-output_base_dir = pathlib.PurePath(f"backend/{batch}")
+output_base_dir = pathlib.PurePath(batch)
 completed_file_match = "normalized_feature_select.csv.gz"
 
 # Load barcode platemap information
@@ -51,8 +51,10 @@ assert isinstance(
 # Process every plate
 for plate in plates:
     print(f"Now processing... Plate: {plate}")
-    output_dir = pathlib.PurePath(output_base_dir, plate)
-    cell_count_dir = pathlib.PurePath("analysis", batch, plate)
+    output_dir = pathlib.Path(output_base_dir, plate)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    cell_count_dir = pathlib.Path("cell_count", batch, plate)
+    cell_count_dir.mkdir(parents=True, exist_ok=True)
 
     platemap_id = barcode_platemap_df.query(
         "Assay_Plate_Barcode == @plate"
