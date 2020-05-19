@@ -63,9 +63,10 @@ batch = "2016_04_01_a549_48hr_batch1"
 primary_dose_mapping = [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
 
 # Set file paths
-profile_dir = pathlib.Path("..", batch)
+profile_dir = pathlib.Path("..", "profiles", batch)
 plate_dirs = [x for x in profile_dir.iterdir() if x.name != ".DS_Store"]
 plates = [x.name for x in plate_dirs]
+print(len(plates))
 
 
 # In[5]:
@@ -140,6 +141,7 @@ all_profiles_df.plot(
 
 
 dmso_replicate_cols = [
+    "Metadata_Plate_Map_Name",
     "Metadata_broad_sample",
     "Metadata_pert_well",
     "Metadata_mmoles_per_liter",
@@ -152,7 +154,9 @@ dmso_profile_df = all_profiles_df.query("Metadata_broad_sample == 'DMSO'").reset
 )
 
 # How many DMSO profiles per well?
-dmso_profile_df.Metadata_pert_well.value_counts()
+print(dmso_profile_df.shape)
+
+pd.crosstab(dmso_profile_df.Metadata_pert_well, dmso_profile_df.Metadata_Plate_Map_Name)
 
 
 # In[11]:
@@ -175,6 +179,7 @@ for operation in operations:
 
 
 compound_replicate_cols = [
+    "Metadata_Plate_Map_Name",
     "Metadata_broad_sample",
     "Metadata_mmoles_per_liter",
     "Metadata_dose_recode",
@@ -197,8 +202,10 @@ for operation in operations:
         cp_features=cp_features,
         replicate_cols=compound_replicate_cols,
     )
-    
-    compound_profiles[operation] = compound_profiles[operation].assign(Metadata_pert_well="collapsed")
+
+    compound_profiles[operation] = compound_profiles[operation].assign(
+        Metadata_pert_well="collapsed"
+    )
 
 
 # ## Merge and Output Consensus Signatures
@@ -222,5 +229,19 @@ for operation in operations:
     print(operation)
     print(consensus_df.shape)
 
-    consensus_df.to_csv(consensus_file, sep=",", compression="gzip", float_format="%5g")
+    consensus_df.to_csv(
+        consensus_file, sep=",", compression="gzip", float_format="%5g", index=False
+    )
+
+
+# In[15]:
+
+
+consensus_df.head()
+
+
+# In[16]:
+
+
+consensus_df.tail()
 
