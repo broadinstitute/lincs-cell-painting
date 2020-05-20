@@ -214,7 +214,7 @@ for operation in operations:
 
 
 for operation in operations:
-    consensus_file = f"{operation}_consensus_signatures_level5.csv.gz"
+    consensus_file = f"{batch}_consensus_{operation}.csv.gz"
     consensus_file = pathlib.Path(batch, consensus_file)
 
     dmso_df = dmso_profiles[operation]
