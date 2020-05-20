@@ -20,6 +20,13 @@ and `md5`.
 library(tidyverse)
 ```
 
+# Define batch and versioned github commit hash
+
+``` r
+rep_batch <- "2016_04_01_a549_48hr_batch1"
+commit_hash <- "10d0fb44a8e87c076881a9c228fffb375c92d9d4"
+```
+
 # Define data levels
 
 ``` r
@@ -63,8 +70,6 @@ l5b_suffix <- "_consensus_modz.csv.gz"
 # Create a list of plates in this experiment
 
 ``` r
-rep_batch <- "2016_04_01_a549_48hr_batch1"
-
 all_rep_plates <- 
   read_csv(sprintf("../platemaps/%s/barcode_platemap.csv", rep_batch)) %>%
   distinct(Assay_Plate_Barcode)
@@ -121,7 +126,7 @@ rep_plates %>%
 Generate local paths to Level 3 and Level 4 data
 
 ``` r
-path_local <- "../../profiles/2016_04_01_a549_48hr_batch1"
+path_local <- paste0("../../profiles/", rep_batch)
 
 level_3_4_files_local <- 
   rep_plates$Assay_Plate_Barcode %>%
@@ -137,7 +142,12 @@ level_3_4_files_local <-
 Generate remote paths to Level 3 and Level 4 data
 
 ``` r
-path_url <- "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/master/profiles/2016_04_01_a549_48hr_batch1"
+path_url <- paste0(
+  "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/",
+  commit_hash,
+  "/profiles/",
+  rep_batch
+)
 
 level_3_4_files_url <- 
   rep_plates$Assay_Plate_Barcode %>%
@@ -166,7 +176,11 @@ level_5_files_local <-
 Generate remote paths to Level 5 data
 
 ``` r
-path_url <- "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/master/consensus"
+path_url <- paste0(
+  "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/",
+  commit_hash,
+  "/consensus"
+)
 
 level_5_files_url <-
   tibble(batch = rep_batch,
@@ -175,6 +189,9 @@ level_5_files_url <-
 ```
 
 # Create manifest file
+
+Note: this step requires the files to be locally available because it
+checks the size and computes `md5`.
 
 ## Level 3 and 4
 
@@ -207,9 +224,6 @@ manifest_3_4 <-
 ```
 
 ## Level 5
-
-Note: this requires the files to be locally available because it checks
-the size and computes `md5`.
 
 ``` r
 manifest_5_url <- 
@@ -255,18 +269,23 @@ manifest <-
 manifest_check <-
   manifest %>%
   rowwise() %>%
-  mutate(url_exists = RCurl::url.exists(file_name)) %>%
+  mutate(
+    url_exists = RCurl::url.exists(file_name),
+    na_md5 = is.na(md5),
+    na_size = is.na(size)
+    ) %>%
   ungroup()
 ```
 
 ``` r
 manifest_check %>%
-  filter(!url_exists)
+  filter(!url_exists | na_md5 | na_size)
 ```
 
-    ## # A tibble: 0 x 8
-    ## # … with 8 variables: file_name <chr>, assay_protocol <chr>, data_level <chr>,
-    ## #   level_code <chr>, level_desc <chr>, size <dbl>, md5 <chr>, url_exists <lgl>
+    ## # A tibble: 0 x 10
+    ## # … with 10 variables: file_name <chr>, assay_protocol <chr>,
+    ## #   data_level <chr>, level_code <chr>, level_desc <chr>, size <dbl>,
+    ## #   md5 <chr>, url_exists <lgl>, na_md5 <lgl>, na_size <lgl>
 
 # Write manifest
 
