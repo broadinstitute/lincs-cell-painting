@@ -19,23 +19,17 @@ This notebook generates the manifest file.
 
 All data files should be available locally in order to compute `size` and `md5`.
 
-```{r eval=TRUE, echo=FALSE}
+```{r, kable-alias, eval=TRUE, echo=FALSE}
 show_table <- knitr::kable
 ```
 
-
-```{r eval=FALSE, echo=FALSE}
-show_table <- print
-```
-
-
-```{r message=FALSE}
+```{r, load-tidyverse, message=FALSE}
 library(tidyverse)
 ```
 
 # Define batch and versioned github commit hash
 
-```{r}
+```{r, set-constants}
 rep_batch <- "2016_04_01_a549_48hr_batch1"
 commit_hash <- "10d0fb44a8e87c076881a9c228fffb375c92d9d4"
 ```
@@ -43,7 +37,7 @@ commit_hash <- "10d0fb44a8e87c076881a9c228fffb375c92d9d4"
 
 # Define data levels
 
-```{r}
+```{r, define-data-levels}
 cell_painting_data_levels <- 
   tribble(~data_level, ~level_code, ~level_desc,
           "Level1", "CPLevel1", "Raw unprocessed images from microscopes",
@@ -62,7 +56,7 @@ cell_painting_data_levels %>% show_table
 
 Specify suffixes for each data level
 
-```{r}
+```{r, define-suffixes}
 l2_suffix <- ".sqlite"
 l3_suffix <- "_augmented.csv.gz"
 l4a_suffix <- "_normalized.csv.gz"
@@ -74,7 +68,7 @@ l5b_suffix <- "_consensus_modz.csv.gz"
 
 # Create a list of plates in this experiment
 
-```{r}
+```{r, create-platelist}
 all_rep_plates <- 
   read_csv(sprintf("../platemaps/%s/barcode_platemap.csv", rep_batch)) %>%
   distinct(Assay_Plate_Barcode)
@@ -105,7 +99,7 @@ rep_plates %>%
 
 Generate local paths to Level 3 and Level 4 data 
 
-```{r}
+```{r, local-paths-levels34}
 path_local <- paste0("../../profiles/", rep_batch)
 
 level_3_4_files_local <- 
@@ -121,7 +115,7 @@ level_3_4_files_local <-
 
 Generate remote paths to Level 3 and Level 4 data
 
-```{r}
+```{r, remote-paths-levels34}
 path_url <- paste0(
   "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/",
   commit_hash,
@@ -144,7 +138,7 @@ level_3_4_files_url <-
 
 Generate local paths to Level 5 data 
 
-```{r}
+```{r, local-paths-level5}
 path_local <- "../../consensus"
 
 level_5_files_local <-
@@ -155,7 +149,7 @@ level_5_files_local <-
 
 Generate remote paths to Level 5 data
 
-```{r}
+```{r, remote-paths-level5}
 path_url <- paste0(
   "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/",
   commit_hash,
@@ -174,7 +168,7 @@ Note: this step requires the files to be locally available because it checks the
 
 ## Level 3 and 4
 
-```{r}
+```{r, manifest-file-levels34}
 manifest_3_4_url <- 
   level_3_4_files_url %>% 
   pivot_longer(-plate, 
@@ -204,7 +198,7 @@ manifest_3_4 <-
 
 ## Level 5
 
-```{r}
+```{r, manifest-file-level5}
 manifest_5_url <- 
   level_5_files_url %>% 
   pivot_longer(-batch, 
@@ -234,7 +228,7 @@ manifest_5 <-
 
 ## Combine 3,4,5
 
-```{r}
+```{r, bind-manifest-files}
 manifest <- 
   bind_rows(
     manifest_3_4,
@@ -244,12 +238,22 @@ manifest <-
 
 # Check if URLs exist
 
-```{r}
+```{r, check-manifest-file}
+check_file_exists <- function(url) {
+  response <- httr::GET(url)
+  if (response$status_code == 200) {
+    exists <- TRUE
+  } else {
+    exists <- FALSE
+  }
+  return(exists)
+}
+
 manifest_check <-
   manifest %>%
   rowwise() %>%
   mutate(
-    url_exists = RCurl::url.exists(file_name),
+    url_exists = check_file_exists(file_name),
     na_md5 = is.na(md5),
     na_size = is.na(size)
     ) %>%
@@ -257,14 +261,14 @@ manifest_check <-
 ```
 
 
-```{r}
+```{r, confirm-zero-rows}
 manifest_check %>%
   filter(!url_exists | na_md5 | na_size)
 ```
 
 # Write manifest
 
-```{r}
+```{r, write-manifest}
 manifest %>%
   write_tsv("cell_painting_lincs_pilot_1_manifest.txt")
 ```

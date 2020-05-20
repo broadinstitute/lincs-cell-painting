@@ -266,11 +266,21 @@ manifest <-
 # Check if URLs exist
 
 ``` r
+check_file_exists <- function(url) {
+  response <- httr::GET(url)
+  if (response$status_code == 200) {
+    exists <- TRUE
+  } else {
+    exists <- FALSE
+  }
+  return(exists)
+}
+
 manifest_check <-
   manifest %>%
   rowwise() %>%
   mutate(
-    url_exists = RCurl::url.exists(file_name),
+    url_exists = check_file_exists(file_name),
     na_md5 = is.na(md5),
     na_size = is.na(size)
     ) %>%
