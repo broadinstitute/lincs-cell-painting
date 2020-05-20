@@ -38,23 +38,23 @@ cell_painting_data_levels <-
           "Level3", "CPLevel3", "Per-well level median-aggregated measurements",
           "Level4a", "CPLevel4a", "Morphological profiles computed using z-scores relative to the plate population",
           "Level4b", "CPLevel4b", "Feature selection applied to Level4b",
-          "Level5a", "CPLevel5a", "Median-aggregated perturbation signatures",
-          "Level5b", "CPLevel5b", "MODZ-aggregated perturbation signatures"
+          "Level5_median", "CPLevel5_median", "Median-aggregated perturbation signatures",
+          "Level5_modz", "CPLevel5_modz", "MODZ-aggregated perturbation signatures"
 )
 cell_painting_data_levels$assay_protocol <- "CellPaintingv2"
 cell_painting_data_levels %>% show_table
 ```
 
-| data\_level | level\_code | level\_desc                                                                     | assay\_protocol |
-| :---------- | :---------- | :------------------------------------------------------------------------------ | :-------------- |
-| Level1      | CPLevel1    | Raw unprocessed images from microscopes                                         | CellPaintingv2  |
-| Level2a     | CPLevel2a   | Per-cell level measurements stored across multiple CSVs                         | CellPaintingv2  |
-| Level2b     | CPLevel2b   | Per-cell level measurements stored in a single backend file per assay plate     | CellPaintingv2  |
-| Level3      | CPLevel3    | Per-well level median-aggregated measurements                                   | CellPaintingv2  |
-| Level4a     | CPLevel4a   | Morphological profiles computed using z-scores relative to the plate population | CellPaintingv2  |
-| Level4b     | CPLevel4b   | Feature selection applied to Level4b                                            | CellPaintingv2  |
-| Level5a     | CPLevel5a   | Median-aggregated perturbation signatures                                       | CellPaintingv2  |
-| Level5b     | CPLevel5b   | MODZ-aggregated perturbation signatures                                         | CellPaintingv2  |
+| data\_level    | level\_code      | level\_desc                                                                     | assay\_protocol |
+| :------------- | :--------------- | :------------------------------------------------------------------------------ | :-------------- |
+| Level1         | CPLevel1         | Raw unprocessed images from microscopes                                         | CellPaintingv2  |
+| Level2a        | CPLevel2a        | Per-cell level measurements stored across multiple CSVs                         | CellPaintingv2  |
+| Level2b        | CPLevel2b        | Per-cell level measurements stored in a single backend file per assay plate     | CellPaintingv2  |
+| Level3         | CPLevel3         | Per-well level median-aggregated measurements                                   | CellPaintingv2  |
+| Level4a        | CPLevel4a        | Morphological profiles computed using z-scores relative to the plate population | CellPaintingv2  |
+| Level4b        | CPLevel4b        | Feature selection applied to Level4b                                            | CellPaintingv2  |
+| Level5\_median | CPLevel5\_median | Median-aggregated perturbation signatures                                       | CellPaintingv2  |
+| Level5\_modz   | CPLevel5\_modz   | MODZ-aggregated perturbation signatures                                         | CellPaintingv2  |
 
 Specify suffixes for each data level
 
@@ -63,8 +63,8 @@ l2_suffix <- ".sqlite"
 l3_suffix <- "_augmented.csv.gz"
 l4a_suffix <- "_normalized.csv.gz"
 l4b_suffix <- "_normalized_feature_select.csv.gz"
-l5a_suffix <- "_consensus_median.csv.gz"
-l5b_suffix <- "_consensus_modz.csv.gz"
+l5_median_suffix <- "_consensus_median.csv.gz"
+l5_modz_suffix <- "_consensus_modz.csv.gz"
 ```
 
 # Create a list of plates in this experiment
@@ -169,8 +169,8 @@ path_local <- "../../consensus"
 
 level_5_files_local <-
   tibble(batch = rep_batch,
-         CPLevel5a = file.path(path_local, rep_batch, paste0(rep_batch, l5a_suffix)),
-         CPLevel5b = file.path(path_local, rep_batch, paste0(rep_batch, l5b_suffix)))
+         CPLevel5_median = file.path(path_local, rep_batch, paste0(rep_batch, l5_median_suffix)),
+         CPLevel5_modz = file.path(path_local, rep_batch, paste0(rep_batch, l5_modz_suffix)))
 ```
 
 Generate remote paths to Level 5 data
@@ -184,8 +184,8 @@ path_url <- paste0(
 
 level_5_files_url <-
   tibble(batch = rep_batch,
-         CPLevel5a = file.path(path_url, rep_batch, paste0(rep_batch, l5a_suffix)),
-         CPLevel5b = file.path(path_url, rep_batch, paste0(rep_batch, l5b_suffix)))
+         CPLevel5_median = file.path(path_url, rep_batch, paste0(rep_batch, l5_median_suffix)),
+         CPLevel5_modz = file.path(path_url, rep_batch, paste0(rep_batch, l5_modz_suffix)))
 ```
 
 # Create manifest file
@@ -289,13 +289,12 @@ manifest_check <-
 
 ``` r
 manifest_check %>%
-  filter(!url_exists | na_md5 | na_size)
+  filter(!url_exists | na_md5 | na_size) %>%
+  show_table
 ```
 
-    ## # A tibble: 0 x 10
-    ## # … with 10 variables: file_name <chr>, assay_protocol <chr>,
-    ## #   data_level <chr>, level_code <chr>, level_desc <chr>, size <dbl>,
-    ## #   md5 <chr>, url_exists <lgl>, na_md5 <lgl>, na_size <lgl>
+| file\_name | assay\_protocol | data\_level | level\_code | level\_desc | size | md5 | url\_exists | na\_md5 | na\_size |
+| :--------- | :-------------- | :---------- | :---------- | :---------- | ---: | :-- | :---------- | :------ | :------- |
 
 # Write manifest
 
