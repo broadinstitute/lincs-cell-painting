@@ -75,13 +75,13 @@ rep_plates %>%
 
 ```{r}
 # URL prefix for L3 and L4 data
-path_url <- "https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/master/profiles/2016_04_01_a549_48hr_batch1"
+path_pointer <- "https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/master/profiles/2016_04_01_a549_48hr_batch1"
 
-path_local <- "../../profiles/2016_04_01_a549_48hr_batch1"
+path_url <- "https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/master/profiles/2016_04_01_a549_48hr_batch1"
 
 l3_suffix <- "_augmented.csv.gz"
 l4a_suffix <- "_normalized.csv.gz"
-l4b_suffix <- "_normalized_variable_selected.csv.gz"
+l4b_suffix <- "_normalized_feature_select.csv.gz"
 
 level_files <- 
   rep_plates$Assay_Plate_Barcode %>%
@@ -93,13 +93,13 @@ level_files <-
     )
   })
 
-level_files_local <- 
+level_files_pointer <- 
   rep_plates$Assay_Plate_Barcode %>%
   map_df(function(plate) {
     tibble(plate = plate,
-           CPLevel3  = file.path(path_local, plate, paste0(plate, l3_suffix)),
-           CPLevel4a = file.path(path_local, plate, paste0(plate, l4a_suffix)),
-           CPLevel4b = file.path(path_local, plate, paste0(plate, l4b_suffix))
+           CPLevel3  = file.path(path_pointer, plate, paste0(plate, l3_suffix)),
+           CPLevel4a = file.path(path_pointer, plate, paste0(plate, l4a_suffix)),
+           CPLevel4b = file.path(path_pointer, plate, paste0(plate, l4b_suffix))
     )
   })
 ```
@@ -115,19 +115,19 @@ manifest <-
   select(plate, file_name, assay_protocol, data_level, level_code, level_desc) %>%
   arrange(plate, data_level) 
 
-manifest_local <-
-  level_files_local %>% 
+manifest_pointer <-
+  level_files_pointer %>% 
   pivot_longer(-plate, 
                names_to = "level_code",
                values_to = "file_name") %>% 
   arrange(plate) %>%
   rowwise() %>%
-  mutate(size = file.size(file_name)) %>%
-  mutate(md5 = unname(tools::md5sum("environment.yml")))
+  mutate(sha256 = read_lines(file_name)[[2]] %>% str_remove("oid sha256:")) %>%
+  mutate(size = read_lines(file_name)[[3]] %>% str_remove("size "))
   
 manifest %<>%
   inner_join(
-    manifest_local %>% 
+    manifest_pointer %>% 
       select(-file_name),
     by = c("plate", "level_code")) %>%
   select(-plate)
