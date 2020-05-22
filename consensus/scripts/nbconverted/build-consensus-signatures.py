@@ -5,6 +5,15 @@
 # 
 # Here, we generate consensus signatures for the LINCS Drug Repurposing Hub Cell Painting subset.
 # See the project [README.md](README.md) for more details.
+# 
+# This notebook generates four files; one per plate normalization and consensus normalization strategy.
+# 
+# | Plate Normalization | Consensus Normalization | Consensus Suffix |
+# | :------------------: | :------------------------: | -----------------: |
+# | DMSO | Median | `<BATCH>_consensus_median_dmso.csv.gz` |
+# | DMSO | MODZ | `<BATCH>_consensus_modz_dmso.csv.gz` |
+# | Whole Plate | Median | `<BATCH>_consensus_median.csv.gz` |
+# | Whole Plate | MODZ | `<BATCH>_consensus_modz.csv.gz` |
 
 # In[1]:
 
@@ -57,7 +66,16 @@ def consensus_apply(df, operation, cp_features, replicate_cols):
 
 
 # Set constants
-file_base = "_normalized_dmso.csv.gz"
+file_bases = {
+    "whole_plate": {
+        "input_file_suffix": "_normalized.csv.gz",
+        "output_file_suffix": ".csv.gz",
+    },
+    "dmso": {
+        "input_file_suffix": "_normalized_dmso.csv.gz",
+        "output_file_suffix": "_dmso.csv.gz",
+    },
+}
 operations = ["median", "modz"]
 batch = "2016_04_01_a549_48hr_batch1"
 primary_dose_mapping = [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
@@ -76,71 +94,62 @@ print(len(plates))
 pathlib.Path(batch).mkdir(exist_ok=True)
 
 
-# ## Load Profile Data Per Plate and Concatenate
+# ## Load and Process Data
+# 
+# We load data per plate, concatenate, and recode dose information
 
 # In[6]:
 
 
 # Load Data
-all_profiles_df = []
-for plate_dir in plate_dirs:
-    plate = plate_dir.name
-    plate_file = plate_dir / f"{plate}{file_base}"
-    plate_df = pd.read_csv(plate_file)
-    all_profiles_df.append(plate_df)
+all_profiles_dfs = {}
+cp_features = {}
+for norm_strat, norm_file_base in file_bases.items():
+    file_base = norm_file_base["input_file_suffix"]
+    all_profiles_df = []
+    for plate_dir in plate_dirs:
+        plate = plate_dir.name
+        plate_file = plate_dir / f"{plate}{file_base}"
+        plate_df = pd.read_csv(plate_file)
+        all_profiles_df.append(plate_df)
 
-# Concatenate profiles
-all_profiles_df = pd.concat(all_profiles_df, axis="rows")
+    # Concatenate profiles
+    all_profiles_df = pd.concat(all_profiles_df, axis="rows")
 
-# Determine every CellProfiler feature measured
-cp_features = infer_cp_features(all_profiles_df)
-
-print(all_profiles_df.shape)
-all_profiles_df.head()
-
-
-# ## Recode Dose
-
-# In[7]:
-
-
-# Recode dose
-all_profiles_df = all_profiles_df.assign(
-    Metadata_dose_recode=(
-        all_profiles_df.Metadata_mmoles_per_liter.apply(
-            lambda x: recode_dose(x, primary_dose_mapping, return_level=True)
+    # Recode dose
+    all_profiles_df = all_profiles_df.assign(
+        Metadata_dose_recode=(
+            all_profiles_df.Metadata_mmoles_per_liter.apply(
+                lambda x: recode_dose(x, primary_dose_mapping, return_level=True)
+            )
         )
     )
-)
 
-# Make sure DMSO profiles recieve a zero dose level
-all_profiles_df.loc[
-    all_profiles_df.Metadata_broad_sample == "DMSO", "Metadata_dose_recode"
-] = 0
+    # Make sure DMSO profiles recieve a zero dose level
+    all_profiles_df.loc[
+        all_profiles_df.Metadata_broad_sample == "DMSO", "Metadata_dose_recode"
+    ] = 0
 
+    # Store concatenated data frame
+    all_profiles_dfs[norm_strat] = all_profiles_df
 
-# In[8]:
+    # Determine every CellProfiler feature measured
+    cp_features[norm_strat] = infer_cp_features(all_profiles_dfs[norm_strat])
 
-
-all_profiles_df.Metadata_dose_recode.value_counts()
-
-
-# In[9]:
-
-
-all_profiles_df.plot(
-    x="Metadata_mmoles_per_liter", y="Metadata_dose_recode", kind="scatter"
-)
+    # Clean up
+    print(all_profiles_df.shape)
+    del all_profiles_df
 
 
 # ## Create Consensus Profiles
 # 
-# ### a) Generate consensus profiles for DMSO by well
+# We generate two different consensus profiles for each of the normalization strategies. This generates four different files.
 
-# In[10]:
+# In[7]:
 
 
-dmso_replicate_cols = [
+# Aggregating columns
+replicate_cols = [
     "Metadata_Plate_Map_Name",
     "Metadata_broad_sample",
     "Metadata_pert_well",
@@ -148,100 +157,53 @@ dmso_replicate_cols = [
     "Metadata_dose_recode",
 ]
 
-# Isolate DMSO profiles
-dmso_profile_df = all_profiles_df.query("Metadata_broad_sample == 'DMSO'").reset_index(
-    drop=True
-)
 
-# How many DMSO profiles per well?
-print(dmso_profile_df.shape)
-
-pd.crosstab(dmso_profile_df.Metadata_pert_well, dmso_profile_df.Metadata_Plate_Map_Name)
+# In[8]:
 
 
-# In[11]:
+all_consensus_dfs = {}
+for norm_strat in file_bases:
+    all_profiles_df = all_profiles_dfs[norm_strat]
+    cp_norm_features = cp_features[norm_strat]
 
+    consensus_profiles = {}
+    for operation in operations:
+        print(f"Now calculating {operation} consensus for {norm_strat} normalization")
 
-# Form dmso consensus profiles with median and modz
-dmso_profiles = {}
-for operation in operations:
-    dmso_profiles[operation] = consensus_apply(
-        dmso_profile_df,
-        operation=operation,
-        cp_features=cp_features,
-        replicate_cols=dmso_replicate_cols,
-    )
+        consensus_profiles[operation] = consensus_apply(
+            all_profiles_df,
+            operation=operation,
+            cp_features=cp_norm_features,
+            replicate_cols=replicate_cols,
+        )
 
+        # How many DMSO profiles per well?
+        print(
+            f"There are {consensus_profiles[operation].shape[0]} {operation} consensus profiles for {norm_strat} normalization"
+        )
 
-# ### b) Generate consensus profiles per compound-dose pair
-
-# In[12]:
-
-
-compound_replicate_cols = [
-    "Metadata_Plate_Map_Name",
-    "Metadata_broad_sample",
-    "Metadata_mmoles_per_liter",
-    "Metadata_dose_recode",
-]
-
-compound_profile_df = all_profiles_df.query(
-    "Metadata_broad_sample != 'DMSO'"
-).reset_index(drop=True)
-
-
-# In[13]:
-
-
-# Form compound consensus profiles with median and modz
-compound_profiles = {}
-for operation in operations:
-    compound_profiles[operation] = consensus_apply(
-        compound_profile_df,
-        operation=operation,
-        cp_features=cp_features,
-        replicate_cols=compound_replicate_cols,
-    )
-
-    compound_profiles[operation] = compound_profiles[operation].assign(
-        Metadata_pert_well="collapsed"
-    )
+    all_consensus_dfs[norm_strat] = consensus_profiles
 
 
 # ## Merge and Output Consensus Signatures
 
-# In[14]:
+# In[9]:
 
 
-for operation in operations:
-    consensus_file = f"{batch}_consensus_{operation}.csv.gz"
-    consensus_file = pathlib.Path(batch, consensus_file)
+for norm_strat in file_bases:
+    file_suffix = file_bases[norm_strat]["output_file_suffix"]
+    for operation in operations:
+        consensus_file = f"{batch}_consensus_{operation}{file_suffix}"
+        consensus_file = pathlib.Path(batch, consensus_file)
 
-    dmso_df = dmso_profiles[operation]
-    compound_df = compound_profiles[operation]
+        consensus_df = all_consensus_dfs[norm_strat][operation]
 
-    consensus_df = (
-        pd.concat([dmso_df, compound_df], axis="rows", sort=True)
-        .reset_index(drop=True)
-        .loc[:, dmso_replicate_cols + cp_features]
-    )
+        print(
+            f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
+        )
+        print(consensus_df.shape)
 
-    print(operation)
-    print(consensus_df.shape)
-
-    consensus_df.to_csv(
-        consensus_file, sep=",", compression="gzip", float_format="%5g", index=False
-    )
-
-
-# In[15]:
-
-
-consensus_df.head()
-
-
-# In[16]:
-
-
-consensus_df.tail()
+        consensus_df.to_csv(
+            consensus_file, sep=",", compression="gzip", float_format="%5g", index=False
+        )
 
