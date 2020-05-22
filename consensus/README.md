@@ -11,6 +11,9 @@ The first approach weights each replicate equally.
 The second approach weights replicates by average similarity to other replicates.
 See https://github.com/cytomining/pycytominer/issues/52 for more details and pointers to the MODZ calculation.
 
+Also note that we form consensus profiles for two different normalization strategies: Whole plate z scoring and DMSO z scoring.
+Therefore, we generate a total of four consensus signature files.
+
 ## Recoding Dose Information
 
 The Drug Repurposing Hub collected data on 6 to 7 dose points per compound.
