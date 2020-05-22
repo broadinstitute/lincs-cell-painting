@@ -205,10 +205,24 @@ moa_df.head()
 
 # Perform the alignment
 platemap_moa_df = merged_platemap_df.merge(
-    moa_df.loc[:, [mapping_col, "pert_iname", "moa", "target"]].drop_duplicates(),
+    moa_df.loc[
+        :, [mapping_col, "pert_iname", "clinical_phase", "moa", "target"]
+    ].drop_duplicates(),
     on=mapping_col,
     how="left",
-).loc[:, ["broad_sample", "broad_id", mapping_col, "moa", "target", "broad_date"]]
+).loc[
+    :,
+    [
+        "broad_sample",
+        "broad_id",
+        "pert_iname",
+        mapping_col,
+        "moa",
+        "target",
+        "broad_date",
+        "clinical_phase",
+    ],
+]
 
 print(platemap_moa_df.shape)
 platemap_moa_df.head()
@@ -236,6 +250,7 @@ platemap_moa_with_inchi_df.head()
 # In[18]:
 
 
+# How many broad ids are missing an inchi key?
 missing_inchi_key = set(platemap_moa_df.broad_id.unique()).difference(
     set(platemap_moa_with_inchi_df.broad_id)
 )
@@ -245,6 +260,7 @@ len(missing_inchi_key)
 # In[19]:
 
 
+# How many unique broad ids?
 all_unique_broad_platemap_ids = set(platemap_moa_df.broad_id.unique())
 len(all_unique_broad_platemap_ids)
 
@@ -252,6 +268,14 @@ len(all_unique_broad_platemap_ids)
 # In[20]:
 
 
+# How many unique pert inames
+len(set(platemap_moa_with_inchi_df.pert_iname))
+
+
+# In[21]:
+
+
+# How many broad ids with complete moa and target info?
 complete_info = set(
     platemap_moa_with_inchi_df.loc[
         ~(
@@ -264,9 +288,10 @@ complete_info = set(
 len(complete_info)
 
 
-# In[21]:
+# In[22]:
 
 
+# How many examples of broad ids with missing moa?
 moa_missing = set(
     platemap_moa_with_inchi_df.sort_values(by="moa", na_position="last")
     .drop_duplicates(subset="broad_id", keep="first")
@@ -278,9 +303,10 @@ moa_present = all_unique_broad_platemap_ids.difference(moa_missing)
 len(moa_missing)
 
 
-# In[22]:
+# In[23]:
 
 
+# How many examples of broad ids with missing targets?
 target_missing = set(
     platemap_moa_with_inchi_df.sort_values(by="target", na_position="last")
     .drop_duplicates(subset="broad_id", keep="first")
@@ -292,21 +318,21 @@ target_present = all_unique_broad_platemap_ids.difference(target_missing)
 len(target_missing)
 
 
-# In[23]:
+# In[24]:
 
 
 missing_moa_info = moa_missing.difference(target_missing)
 len(missing_moa_info)
 
 
-# In[24]:
+# In[25]:
 
 
 missing_target_info = target_missing.difference(moa_missing)
 len(missing_target_info)
 
 
-# In[25]:
+# In[26]:
 
 
 missing_both_info = moa_missing.intersection(target_missing)
@@ -319,7 +345,7 @@ missing_both_info = (
 len(missing_both_info)
 
 
-# In[26]:
+# In[27]:
 
 
 pd.DataFrame(
@@ -337,13 +363,13 @@ pd.DataFrame(
 
 # ## Step 6 - Resolve Stereochemistry Differences
 
-# In[27]:
+# In[28]:
 
 
 alternative_delim = ";"
 
 
-# In[28]:
+# In[29]:
 
 
 # Drop rows in the following scenario:
@@ -367,7 +393,7 @@ broad_id_with_multiple_inchi = set(
 print(f"More than one InChIKey14: {len(broad_id_with_multiple_inchi)}")
 
 
-# In[29]:
+# In[30]:
 
 
 # First, drop entries that have missing values in BOTH moa and target
@@ -391,7 +417,7 @@ assert len(broad_id_with_multiple_inchi) == len(
 ), "Stop, a broad ID was dropped somewhere that shouldn't have"
 
 
-# In[30]:
+# In[31]:
 
 
 # After this step, are there any resolved broad_ids?
@@ -406,7 +432,7 @@ print(first_step_resolve_df.shape)
 first_step_resolve_df.head()
 
 
-# In[31]:
+# In[32]:
 
 
 # Remove these from other broad IDs that need to be resolved
@@ -426,7 +452,7 @@ print(platemap_alternative_inchi_df.shape)
 platemap_alternative_inchi_df.head()
 
 
-# In[32]:
+# In[33]:
 
 
 # Now resolve the remaining broad_ids
@@ -468,7 +494,7 @@ alternative_resolved_df.head()
 
 # ## Step 7 - Combine Annotated Platemap with Resolution
 
-# In[33]:
+# In[34]:
 
 
 # First, remove the broad_ids that needed to be resolved
@@ -483,7 +509,7 @@ assert (
 ), "Error, there are still broad_ids that require resolution"
 
 
-# In[34]:
+# In[35]:
 
 
 platemap_moa_easy_df = platemap_moa_easy_df.assign(
@@ -495,7 +521,7 @@ first_step_resolve_df = first_step_resolve_df.assign(
 )
 
 
-# In[35]:
+# In[36]:
 
 
 moa_map_df = (
@@ -513,21 +539,21 @@ print(moa_map_df.shape)
 moa_map_df.head()
 
 
-# In[36]:
+# In[37]:
 
 
 # Interpretation: This is the CLUE version the 2020 CLUE version (most recent) used to map
 moa_map_df.broad_date.value_counts()
 
 
-# In[37]:
+# In[38]:
 
 
 map_output_file = "repurposing_info_external_moa_map_resolved.tsv"
 moa_map_df.to_csv(map_output_file, sep="\t", index=False)
 
 
-# In[38]:
+# In[39]:
 
 
 pd.DataFrame(
