@@ -5,6 +5,15 @@
 # 
 # Here, we generate consensus signatures for the LINCS Drug Repurposing Hub Cell Painting subset.
 # See the project [README.md](README.md) for more details.
+# 
+# This notebook generates four files; one per plate normalization and consensus normalization strategy.
+# 
+# | Plate Normalization | Consensus Normalization | Consensus Suffix |
+# | :------------------: | :------------------------: | -----------------: |
+# | DMSO | Median | `<BATCH>_consensus_median_dmso.csv.gz` |
+# | DMSO | MODZ | `<BATCH>_consensus_modz_dmso.csv.gz` |
+# | Whole Plate | Median | `<BATCH>_consensus_median.csv.gz` |
+# | Whole Plate | MODZ | `<BATCH>_consensus_modz.csv.gz` |
 
 # In[1]:
 
@@ -85,7 +94,9 @@ print(len(plates))
 pathlib.Path(batch).mkdir(exist_ok=True)
 
 
-# ## Load Profile Data Per Plate and Concatenate
+# ## Load and Process Data
+# 
+# We load data per plate, concatenate, and recode dose information
 
 # In[6]:
 
@@ -132,23 +143,16 @@ for norm_strat, norm_file_base in file_bases.items():
 
 # ## Create Consensus Profiles
 # 
-# We aggregate differently for DMSO and Compounds. Specifically, we aggregate by well for DMSO profiles in order to determine the extent of batch effect.
+# We generate two different consensus profiles for each of the normalization strategies. This generates four different files.
 
 # In[7]:
 
 
 # Aggregating columns
-dmso_replicate_cols = [
+replicate_cols = [
     "Metadata_Plate_Map_Name",
     "Metadata_broad_sample",
     "Metadata_pert_well",
-    "Metadata_mmoles_per_liter",
-    "Metadata_dose_recode",
-]
-
-compound_replicate_cols = [
-    "Metadata_Plate_Map_Name",
-    "Metadata_broad_sample",
     "Metadata_mmoles_per_liter",
     "Metadata_dose_recode",
 ]
@@ -162,62 +166,15 @@ for norm_strat in file_bases:
     all_profiles_df = all_profiles_dfs[norm_strat]
     cp_norm_features = cp_features[norm_strat]
 
-    # Isolate DMSO profiles
-    dmso_profile_df = all_profiles_df.query(
-        "Metadata_broad_sample == 'DMSO'"
-    ).reset_index(drop=True)
-
-    # How many DMSO profiles per well?
-    print(
-        f"There are {dmso_profile_df.shape[0]} DMSO profiles per well with {norm_strat} normalization"
-    )
-
-    # Form dmso consensus profiles with median and modz
-    dmso_profiles = {}
-    for operation in operations:
-        print(
-            f"Now calculating DMSO {operation} consensus for {norm_strat} normalization"
-        )
-        dmso_profiles[operation] = consensus_apply(
-            dmso_profile_df,
-            operation=operation,
-            cp_features=cp_norm_features,
-            replicate_cols=dmso_replicate_cols,
-        )
-
-    compound_profile_df = all_profiles_df.query(
-        "Metadata_broad_sample != 'DMSO'"
-    ).reset_index(drop=True)
-
-    # Form compound consensus profiles with median and modz
-    compound_profiles = {}
-    for operation in operations:
-        print(
-            f"Now calculating Compound {operation} consensus for {norm_strat} normalization"
-        )
-        compound_profiles[operation] = consensus_apply(
-            compound_profile_df,
-            operation=operation,
-            cp_features=cp_norm_features,
-            replicate_cols=compound_replicate_cols,
-        )
-
-        compound_profiles[operation] = compound_profiles[operation].assign(
-            Metadata_pert_well="collapsed"
-        )
-
     consensus_profiles = {}
     for operation in operations:
-        consensus_file = f"{batch}_consensus_{operation}.csv.gz"
-        consensus_file = pathlib.Path(batch, consensus_file)
+        print(f"Now calculating {operation} consensus for {norm_strat} normalization")
 
-        dmso_df = dmso_profiles[operation]
-        compound_df = compound_profiles[operation]
-
-        consensus_profiles[operation] = (
-            pd.concat([dmso_df, compound_df], axis="rows", sort=True)
-            .reset_index(drop=True)
-            .loc[:, dmso_replicate_cols + cp_norm_features]
+        consensus_profiles[operation] = consensus_apply(
+            all_profiles_df,
+            operation=operation,
+            cp_features=cp_norm_features,
+            replicate_cols=replicate_cols,
         )
 
         # How many DMSO profiles per well?
@@ -242,7 +199,7 @@ for norm_strat in file_bases:
         consensus_df = all_consensus_dfs[norm_strat][operation]
 
         print(
-            f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}"
+            f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
         )
         print(consensus_df.shape)
 
