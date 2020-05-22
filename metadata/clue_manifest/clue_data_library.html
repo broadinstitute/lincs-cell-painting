@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="generate-manifest-file-for-uploading-on-the-clue-data-library">Generate manifest file for uploading on the CLUE data library</h1>
+<p>The clue.io manifest file requires the following fields</p>
+<pre><code>file_name   
+assay_protocol  
+data_level  
+level_code  
+level_desc  
+size
+md5
+</code></pre>
+<p>This notebook generates the manifest file.</p>
+<p>All data files should be available locally in order to compute <code>size</code> and <code>md5</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<h1 id="define-batch-and-versioned-github-commit-hash">Define batch and versioned github commit hash</h1>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>rep_batch &lt;-<span class="st"> &quot;2016_04_01_a549_48hr_batch1&quot;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>commit_hash &lt;-<span class="st"> &quot;1306dc468a8871e7f401db9a4b10debeae37ac0d&quot;</span></span></code></pre></div>
+<h1 id="define-data-levels">Define data levels</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>cell_painting_data_levels &lt;-<span class="st"> </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span><span class="kw">tribble</span>(<span class="op">~</span>data_level, <span class="op">~</span>level_code, <span class="op">~</span>level_desc,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>          <span class="st">&quot;Level1&quot;</span>, <span class="st">&quot;CPLevel1&quot;</span>, <span class="st">&quot;Raw unprocessed images from microscopes&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>          <span class="st">&quot;Level2a&quot;</span>, <span class="st">&quot;CPLevel2a&quot;</span>, <span class="st">&quot;Per-cell level measurements stored across multiple CSVs&quot;</span>, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>          <span class="st">&quot;Level2b&quot;</span>, <span class="st">&quot;CPLevel2b&quot;</span>, <span class="st">&quot;Per-cell level measurements stored in a single backend file per assay plate&quot;</span>, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>          <span class="st">&quot;Level3&quot;</span>, <span class="st">&quot;CPLevel3&quot;</span>, <span class="st">&quot;Per-well level median-aggregated measurements&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>          <span class="st">&quot;Level4a&quot;</span>, <span class="st">&quot;CPLevel4a&quot;</span>, <span class="st">&quot;Morphological profiles computed using z-scores relative to the plate population&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>          <span class="st">&quot;Level4b&quot;</span>, <span class="st">&quot;CPLevel4b&quot;</span>, <span class="st">&quot;Feature selection applied to Level4b&quot;</span>,</span>
+<span id="cb4-9"><a href="#cb4-9"></a>          <span class="st">&quot;Level5_median&quot;</span>, <span class="st">&quot;CPLevel5_median&quot;</span>, <span class="st">&quot;Median-aggregated perturbation signatures&quot;</span>,</span>
+<span id="cb4-10"><a href="#cb4-10"></a>          <span class="st">&quot;Level5_modz&quot;</span>, <span class="st">&quot;CPLevel5_modz&quot;</span>, <span class="st">&quot;MODZ-aggregated perturbation signatures&quot;</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>cell_painting_data_levels<span class="op">$</span>assay_protocol &lt;-<span class="st"> &quot;CellPaintingv2&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>cell_painting_data_levels <span class="op">%&gt;%</span><span class="st"> </span>show_table</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">data_level</th>
+<th align="left">level_code</th>
+<th align="left">level_desc</th>
+<th align="left">assay_protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Level1</td>
+<td align="left">CPLevel1</td>
+<td align="left">Raw unprocessed images from microscopes</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="even">
+<td align="left">Level2a</td>
+<td align="left">CPLevel2a</td>
+<td align="left">Per-cell level measurements stored across multiple CSVs</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="odd">
+<td align="left">Level2b</td>
+<td align="left">CPLevel2b</td>
+<td align="left">Per-cell level measurements stored in a single backend file per assay plate</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="even">
+<td align="left">Level3</td>
+<td align="left">CPLevel3</td>
+<td align="left">Per-well level median-aggregated measurements</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="odd">
+<td align="left">Level4a</td>
+<td align="left">CPLevel4a</td>
+<td align="left">Morphological profiles computed using z-scores relative to the plate population</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="even">
+<td align="left">Level4b</td>
+<td align="left">CPLevel4b</td>
+<td align="left">Feature selection applied to Level4b</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="odd">
+<td align="left">Level5_median</td>
+<td align="left">CPLevel5_median</td>
+<td align="left">Median-aggregated perturbation signatures</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+<tr class="even">
+<td align="left">Level5_modz</td>
+<td align="left">CPLevel5_modz</td>
+<td align="left">MODZ-aggregated perturbation signatures</td>
+<td align="left">CellPaintingv2</td>
+</tr>
+</tbody>
+</table>
+<p>Specify suffixes for each data level</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>l2_suffix &lt;-<span class="st"> &quot;.sqlite&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>l3_suffix &lt;-<span class="st"> &quot;_augmented.csv.gz&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>l4a_suffix &lt;-<span class="st"> &quot;_normalized.csv.gz&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>l4b_suffix &lt;-<span class="st"> &quot;_normalized_feature_select.csv.gz&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>l5_median_suffix &lt;-<span class="st"> &quot;_consensus_median.csv.gz&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>l5_modz_suffix &lt;-<span class="st"> &quot;_consensus_modz.csv.gz&quot;</span></span></code></pre></div>
+<h1 id="create-a-list-of-plates-in-this-experiment">Create a list of plates in this experiment</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>all_rep_plates &lt;-<span class="st"> </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">read_csv</span>(<span class="kw">sprintf</span>(<span class="st">&quot;../platemaps/%s/barcode_platemap.csv&quot;</span>, rep_batch)) <span class="op">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span><span class="kw">distinct</span>(Assay_Plate_Barcode)</span></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Assay_Plate_Barcode = col_character(),
+##   Plate_Map_Name = col_character(),
+##   Batch_Number = col_double(),
+##   Batch_Date = col_date(format = &quot;&quot;)
+## )
+</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># remove some missing plates</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>missing_rep_plates &lt;-<span class="st"> </span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span><span class="kw">tribble</span>(<span class="op">~</span>Assay_Plate_Barcode,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>          <span class="st">&quot;SQ00015225&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>          <span class="st">&quot;SQ00015226&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>          <span class="st">&quot;SQ00015227&quot;</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>          <span class="st">&quot;SQ00015228&quot;</span>)</span>
+<span id="cb8-8"><a href="#cb8-8"></a></span>
+<span id="cb8-9"><a href="#cb8-9"></a>rep_plates &lt;-</span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="st">  </span><span class="kw">setdiff</span>(all_rep_plates, missing_rep_plates)</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a>rep_plates <span class="op">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="st">  </span>head <span class="op">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="st">  </span>show_table</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Assay_Plate_Barcode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SQ00015201</td>
+</tr>
+<tr class="even">
+<td align="left">SQ00015202</td>
+</tr>
+<tr class="odd">
+<td align="left">SQ00015200</td>
+</tr>
+<tr class="even">
+<td align="left">SQ00015204</td>
+</tr>
+<tr class="odd">
+<td align="left">SQ00015205</td>
+</tr>
+<tr class="even">
+<td align="left">SQ00015203</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>rep_plates <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span>count <span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span>show_table</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">136</td>
+</tr>
+</tbody>
+</table>
+<h1 id="get-urls-to-files">Get URLs to files</h1>
+<h2 id="level-3-and-level-4">Level 3 and Level 4</h2>
+<p>Generate local paths to Level 3 and Level 4 data</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>path_local &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;../../profiles/&quot;</span>, rep_batch)</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>level_<span class="dv">3</span>_<span class="dv">4</span>_files_local &lt;-<span class="st"> </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span>rep_plates<span class="op">$</span>Assay_Plate_Barcode <span class="op">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(plate) {</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="kw">tibble</span>(<span class="dt">plate =</span> plate,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>           <span class="dt">CPLevel3  =</span> <span class="kw">file.path</span>(path_local, plate, <span class="kw">paste0</span>(plate, l3_suffix)),</span>
+<span id="cb10-8"><a href="#cb10-8"></a>           <span class="dt">CPLevel4a =</span> <span class="kw">file.path</span>(path_local, plate, <span class="kw">paste0</span>(plate, l4a_suffix)),</span>
+<span id="cb10-9"><a href="#cb10-9"></a>           <span class="dt">CPLevel4b =</span> <span class="kw">file.path</span>(path_local, plate, <span class="kw">paste0</span>(plate, l4b_suffix))</span>
+<span id="cb10-10"><a href="#cb10-10"></a>    )</span>
+<span id="cb10-11"><a href="#cb10-11"></a>  })</span></code></pre></div>
+<p>Generate remote paths to Level 3 and Level 4 data</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>path_url &lt;-<span class="st"> </span><span class="kw">paste0</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="st">&quot;https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  commit_hash,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="st">&quot;/profiles/&quot;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  rep_batch</span>
+<span id="cb11-6"><a href="#cb11-6"></a>)</span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a>level_<span class="dv">3</span>_<span class="dv">4</span>_files_url &lt;-<span class="st"> </span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="st">  </span>rep_plates<span class="op">$</span>Assay_Plate_Barcode <span class="op">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="st">  </span><span class="kw">map_df</span>(<span class="cf">function</span>(plate) {</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    <span class="kw">tibble</span>(<span class="dt">plate =</span> plate,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>           <span class="dt">CPLevel3  =</span> <span class="kw">file.path</span>(path_url, plate, <span class="kw">paste0</span>(plate, l3_suffix)),</span>
+<span id="cb11-13"><a href="#cb11-13"></a>           <span class="dt">CPLevel4a =</span> <span class="kw">file.path</span>(path_url, plate, <span class="kw">paste0</span>(plate, l4a_suffix)),</span>
+<span id="cb11-14"><a href="#cb11-14"></a>           <span class="dt">CPLevel4b =</span> <span class="kw">file.path</span>(path_url, plate, <span class="kw">paste0</span>(plate, l4b_suffix))</span>
+<span id="cb11-15"><a href="#cb11-15"></a>    )</span>
+<span id="cb11-16"><a href="#cb11-16"></a>  })</span></code></pre></div>
+<h2 id="level-5">Level 5</h2>
+<p>Generate local paths to Level 5 data</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>path_local &lt;-<span class="st"> &quot;../../consensus&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>level_<span class="dv">5</span>_files_local &lt;-</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">batch =</span> rep_batch,</span>
+<span id="cb12-5"><a href="#cb12-5"></a>         <span class="dt">CPLevel5_median =</span> <span class="kw">file.path</span>(path_local, rep_batch, <span class="kw">paste0</span>(rep_batch, l5_median_suffix)),</span>
+<span id="cb12-6"><a href="#cb12-6"></a>         <span class="dt">CPLevel5_modz =</span> <span class="kw">file.path</span>(path_local, rep_batch, <span class="kw">paste0</span>(rep_batch, l5_modz_suffix)))</span></code></pre></div>
+<p>Generate remote paths to Level 5 data</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>path_url &lt;-<span class="st"> </span><span class="kw">paste0</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="st">&quot;https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/&quot;</span>,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  commit_hash,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="st">&quot;/consensus&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a>level_<span class="dv">5</span>_files_url &lt;-</span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">batch =</span> rep_batch,</span>
+<span id="cb13-9"><a href="#cb13-9"></a>         <span class="dt">CPLevel5_median =</span> <span class="kw">file.path</span>(path_url, rep_batch, <span class="kw">paste0</span>(rep_batch, l5_median_suffix)),</span>
+<span id="cb13-10"><a href="#cb13-10"></a>         <span class="dt">CPLevel5_modz =</span> <span class="kw">file.path</span>(path_url, rep_batch, <span class="kw">paste0</span>(rep_batch, l5_modz_suffix)))</span></code></pre></div>
+<h1 id="create-manifest-file">Create manifest file</h1>
+<p>Note: this step requires the files to be locally available because it checks the size and computes <code>md5</code>.</p>
+<h2 id="level-3-and-4">Level 3 and 4</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>manifest_<span class="dv">3</span>_<span class="dv">4</span>_url &lt;-<span class="st"> </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="st">  </span>level_<span class="dv">3</span>_<span class="dv">4</span>_files_url <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span>plate, </span>
+<span id="cb14-4"><a href="#cb14-4"></a>               <span class="dt">names_to =</span> <span class="st">&quot;level_code&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>               <span class="dt">values_to =</span> <span class="st">&quot;file_name&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">inner_join</span>(cell_painting_data_levels, <span class="dt">by =</span> <span class="st">&quot;level_code&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span><span class="kw">select</span>(plate, file_name, assay_protocol, data_level, level_code, level_desc) <span class="op">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span><span class="kw">arrange</span>(plate, data_level) </span>
+<span id="cb14-9"><a href="#cb14-9"></a></span>
+<span id="cb14-10"><a href="#cb14-10"></a>manifest_<span class="dv">3</span>_<span class="dv">4</span>_local &lt;-</span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="st">  </span>level_<span class="dv">3</span>_<span class="dv">4</span>_files_local <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span>plate, </span>
+<span id="cb14-13"><a href="#cb14-13"></a>               <span class="dt">names_to =</span> <span class="st">&quot;level_code&quot;</span>,</span>
+<span id="cb14-14"><a href="#cb14-14"></a>               <span class="dt">values_to =</span> <span class="st">&quot;file_name&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="st">  </span><span class="kw">arrange</span>(plate) <span class="op">%&gt;%</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">size =</span> <span class="kw">file.size</span>(file_name)) <span class="op">%&gt;%</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">md5 =</span> <span class="kw">unname</span>(tools<span class="op">::</span><span class="kw">md5sum</span>(file_name)))</span>
+<span id="cb14-19"><a href="#cb14-19"></a>  </span>
+<span id="cb14-20"><a href="#cb14-20"></a>manifest_<span class="dv">3</span>_<span class="dv">4</span> &lt;-</span>
+<span id="cb14-21"><a href="#cb14-21"></a><span class="st">  </span><span class="kw">inner_join</span>(</span>
+<span id="cb14-22"><a href="#cb14-22"></a>    manifest_<span class="dv">3</span>_<span class="dv">4</span>_url,</span>
+<span id="cb14-23"><a href="#cb14-23"></a>    manifest_<span class="dv">3</span>_<span class="dv">4</span>_local <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>file_name),</span>
+<span id="cb14-24"><a href="#cb14-24"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;plate&quot;</span>, <span class="st">&quot;level_code&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb14-25"><a href="#cb14-25"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>plate)</span></code></pre></div>
+<h2 id="level-5-1">Level 5</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>manifest_<span class="dv">5</span>_url &lt;-<span class="st"> </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">  </span>level_<span class="dv">5</span>_files_url <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span>batch, </span>
+<span id="cb15-4"><a href="#cb15-4"></a>               <span class="dt">names_to =</span> <span class="st">&quot;level_code&quot;</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>               <span class="dt">values_to =</span> <span class="st">&quot;file_name&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="st">  </span><span class="kw">inner_join</span>(cell_painting_data_levels, <span class="dt">by =</span> <span class="st">&quot;level_code&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="st">  </span><span class="kw">select</span>(batch, file_name, assay_protocol, data_level, level_code, level_desc) <span class="op">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="st">  </span><span class="kw">arrange</span>(batch, data_level) </span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a>manifest_<span class="dv">5</span>_local &lt;-</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="st">  </span>level_<span class="dv">5</span>_files_local <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span>batch, </span>
+<span id="cb15-13"><a href="#cb15-13"></a>               <span class="dt">names_to =</span> <span class="st">&quot;level_code&quot;</span>,</span>
+<span id="cb15-14"><a href="#cb15-14"></a>               <span class="dt">values_to =</span> <span class="st">&quot;file_name&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="st">  </span><span class="kw">arrange</span>(batch) <span class="op">%&gt;%</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">size =</span> <span class="kw">file.size</span>(file_name)) <span class="op">%&gt;%</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">md5 =</span> <span class="kw">unname</span>(tools<span class="op">::</span><span class="kw">md5sum</span>(file_name)))</span>
+<span id="cb15-19"><a href="#cb15-19"></a>  </span>
+<span id="cb15-20"><a href="#cb15-20"></a>manifest_<span class="dv">5</span> &lt;-</span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="st">  </span><span class="kw">inner_join</span>(</span>
+<span id="cb15-22"><a href="#cb15-22"></a>    manifest_<span class="dv">5</span>_url,</span>
+<span id="cb15-23"><a href="#cb15-23"></a>    manifest_<span class="dv">5</span>_local <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>file_name),</span>
+<span id="cb15-24"><a href="#cb15-24"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;batch&quot;</span>, <span class="st">&quot;level_code&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>batch)</span></code></pre></div>
+<h2 id="combine-345">Combine 3,4,5</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>manifest &lt;-<span class="st"> </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="st">  </span><span class="kw">bind_rows</span>(</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    manifest_<span class="dv">3</span>_<span class="dv">4</span>,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    manifest_<span class="dv">5</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>  )</span></code></pre></div>
+<h1 id="check-if-urls-exist">Check if URLs exist</h1>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>check_file_exists &lt;-<span class="st"> </span><span class="cf">function</span>(url) {</span>
+<span id="cb17-2"><a href="#cb17-2"></a>  response &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">GET</span>(url)</span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="cf">if</span> (response<span class="op">$</span>status_code <span class="op">==</span><span class="st"> </span><span class="dv">200</span>) {</span>
+<span id="cb17-4"><a href="#cb17-4"></a>    exists &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>  } <span class="cf">else</span> {</span>
+<span id="cb17-6"><a href="#cb17-6"></a>    exists &lt;-<span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>  }</span>
+<span id="cb17-8"><a href="#cb17-8"></a>  <span class="kw">return</span>(exists)</span>
+<span id="cb17-9"><a href="#cb17-9"></a>}</span>
+<span id="cb17-10"><a href="#cb17-10"></a></span>
+<span id="cb17-11"><a href="#cb17-11"></a>manifest_check &lt;-</span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="st">  </span>manifest <span class="op">%&gt;%</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb17-15"><a href="#cb17-15"></a>    <span class="dt">url_exists =</span> <span class="kw">check_file_exists</span>(file_name),</span>
+<span id="cb17-16"><a href="#cb17-16"></a>    <span class="dt">na_md5 =</span> <span class="kw">is.na</span>(md5),</span>
+<span id="cb17-17"><a href="#cb17-17"></a>    <span class="dt">na_size =</span> <span class="kw">is.na</span>(size)</span>
+<span id="cb17-18"><a href="#cb17-18"></a>    ) <span class="op">%&gt;%</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a><span class="st">  </span><span class="kw">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>manifest_check <span class="op">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>url_exists <span class="op">|</span><span class="st"> </span>na_md5 <span class="op">|</span><span class="st"> </span>na_size) <span class="op">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">  </span>show_table</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">file_name</th>
+<th align="left">assay_protocol</th>
+<th align="left">data_level</th>
+<th align="left">level_code</th>
+<th align="left">level_desc</th>
+<th align="right">size</th>
+<th align="left">md5</th>
+<th align="left">url_exists</th>
+<th align="left">na_md5</th>
+<th align="left">na_size</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<h1 id="write-manifest">Write manifest</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>manifest <span class="op">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="st">  </span><span class="kw">write_tsv</span>(<span class="st">&quot;cell_painting_lincs_pilot_1_manifest.txt&quot;</span>)</span></code></pre></div>
+
+</body>
+</html>

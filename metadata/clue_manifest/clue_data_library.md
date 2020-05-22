@@ -24,7 +24,7 @@ library(tidyverse)
 
 ``` r
 rep_batch <- "2016_04_01_a549_48hr_batch1"
-commit_hash <- "10d0fb44a8e87c076881a9c228fffb375c92d9d4"
+commit_hash <- "1306dc468a8871e7f401db9a4b10debeae37ac0d"
 ```
 
 # Define data levels
