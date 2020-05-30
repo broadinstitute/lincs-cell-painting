@@ -207,3 +207,28 @@ for norm_strat in file_bases:
             consensus_file, sep=",", compression="gzip", float_format="%5g", index=False
         )
 
+
+# ## Save whole plate MODZ consensus signature as GCT
+# 
+# Whole-plate-normalized + MODZ aggregated consensus profiles will be made available on clue.io/morphology as a GCT file.
+
+# In[10]:
+
+
+import pycytominer.write_gct
+
+operation = "modz"
+norm_strat = "whole_plate"
+file_suffix = ".gct"
+consensus_file = f"{batch}_consensus_{operation}{file_suffix}"
+consensus_file = pathlib.Path(batch, consensus_file)
+
+consensus_df = all_consensus_dfs[norm_strat][operation]
+
+print(
+    f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
+)
+print(consensus_df.shape)
+
+pycytominer.write_gct(consensus_df, consensus_file)
+
