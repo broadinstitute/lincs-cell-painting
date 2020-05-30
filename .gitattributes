@@ -1,2 +1,2 @@
-*.gz filter=lfs diff=gzip merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
 *.gct filter=lfs diff=lfs merge=lfs -text
