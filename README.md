@@ -34,3 +34,8 @@ conda activate lincs
 ```
 
 Also note that when contributing to the repository, make sure to add any new package in the `environment.yml` file.
+
+## License
+
+We use a dual license in this repository.
+We license the source code as [BSD 3-Clause](LICENSE_BSD3.md), and license the data, results, and figures as [CC0 1.0](LICENSE_CC0.md).
