@@ -30,7 +30,7 @@ This repository and workflow begins after we applied cytominer-database.
 | Level 5 | Consensus Perturbation Profiles | `.csv.gz` | Yes |
 
 Importantly, we include files for _two_ different types of normalization: Whole-plate normalization, and DMSO-specific normalization.
-See [`profile.py`](profile.py) for more details.
+See [`profile_cells.py`](profile_cells.py) for more details.
 
 ^ Note that these files are being prepared
 
@@ -53,4 +53,4 @@ python profiling_pipeline.py
 ## Critical Details
 
 There are several critical details that are important for understanding data generation and processing.
-See [`profile.py`](profile.py) for more details about the specific processing steps and decisions.
+See [`profile_cells.py`](profile_cells.py) for more details about the specific processing steps and decisions.
