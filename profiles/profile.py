@@ -27,17 +27,20 @@ platemap_file = args.platemap_file
 barcode_platemap_file = args.barcode_platemap_file
 moa_file = args.moa_file
 cell_count_dir = args.cell_count_dir
+cell_id = args.cell_id
 output_dir = args.output_dir
+plate_col = args.plate_col  # Default is "Image_Metadata_Plate"
+well_col = args.well_col  # Default is "Image_Metadata_Well"
 
 # Initialize profile processing
 os.makedirs(output_dir, exist_ok=True)
 os.makedirs(cell_count_dir, exist_ok=True)
-cell_id = "A549"
+
 aggregate_method = "median"
 norm_method = "mad_robustize"
 compression = "gzip"
 float_format = "%.5g"
-strata = ["Image_Metadata_Plate", "Image_Metadata_Well"]
+strata = [plate_col, well_col]
 feature_select_ops = [
     "drop_na_columns",
     "variance_threshold",
@@ -70,7 +73,7 @@ anno_file = pathlib.PurePath(output_dir, f"{plate_name}_augmented.csv.gz")
 anno_df = annotate(
     profiles=out_file,
     platemap=platemap_file,
-    join_on=["Metadata_well_position", "Image_Metadata_Well"],
+    join_on=["Metadata_well_position", well_col],
     cell_id=cell_id,
     format_broad_cmap=True,
     perturbation_mode="chemical",
@@ -86,12 +89,18 @@ anno_df = anno_df.rename(
 )
 
 # Add barcode platemap info
-anno_df = anno_df.assign(
-    Metadata_Assay_Plate_Barcode=barcode_platemap_df.Assay_Plate_Barcode.values[0],
-    Metadata_Plate_Map_Name=barcode_platemap_df.Plate_Map_Name.values[0],
-    Metadata_Batch_Number=barcode_platemap_df.Batch_Number.values[0],
-    Metadata_Batch_Date=barcode_platemap_df.Batch_Date.values[0],
-)
+try:
+    anno_df = anno_df.assign(
+        Metadata_Assay_Plate_Barcode=barcode_platemap_df.Assay_Plate_Barcode.values[0],
+        Metadata_Plate_Map_Name=barcode_platemap_df.Plate_Map_Name.values[0],
+        Metadata_Batch_Number=barcode_platemap_df.Batch_Number.values[0],
+        Metadata_Batch_Date=barcode_platemap_df.Batch_Date.values[0],
+    )
+except AttributeError:
+    anno_df = anno_df.assign(
+        Metadata_Assay_Plate_Barcode=barcode_platemap_df.Assay_Plate_Barcode.values[0],
+        Metadata_Plate_Map_Name=barcode_platemap_df.Plate_Map_Name.values[0],
+    )
 
 # Reoroder columns
 metadata_cols = cyto_utils.infer_cp_features(anno_df, metadata=True)

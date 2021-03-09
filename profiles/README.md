@@ -48,6 +48,9 @@ conda activate lincs
 
 # Reproduce the entire image-based profiling pipeline for CellProfiler derived features
 python profiling_pipeline.py
+
+# Apply the same profiling pipeline to process batch 2 data
+python profiling_pipeline.py --batch "2017_12_05_Batch2" --plate_prefix "BR" --well_col "Metadata_Well" --plate_col "Metadata_Plate" --extract_cell_line
 ```
 
 ## Critical Details
