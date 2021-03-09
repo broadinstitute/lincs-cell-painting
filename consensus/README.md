@@ -39,3 +39,15 @@ We then recode the dose points into ascending numerical levels and add a new met
 
 Note we generated per-well DMSO consensus signatures and per compound-dose pair consensus signatures for compounds.
 The per-well DMSO profiles can help to assess plate-associated batch effects.
+
+## Reproduce Pipeline
+
+The pipeline can be reproduced by executing the following:
+
+```bash
+# Make sure conda environment is activated
+conda activate lincs
+
+# Reproduce thepipeline for producing bulk signatures
+python scripts/build-consensus-signatures.py
+```
