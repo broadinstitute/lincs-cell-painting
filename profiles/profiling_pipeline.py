@@ -11,10 +11,14 @@ from profile_utils import get_pipeline_args, find_incomplete_plates
 # Load Command Line Arguments
 args = get_pipeline_args()
 overwrite = args.overwrite  # The default is False
+batch = args.batch  # The default is 2016_04_01_a549_48hr_batch1
+plate_prefix = args.plate_prefix  # The default is "SQ"
+well_col = args.well_col  # The default is "Image_Metadata_Well"
+plate_col = args.plate_col  # The default is "Image_Metadata_Plate"
+extract_cell_line = args.extract_cell_line  # The default is False
 
 # Load constants
 project = "2015_10_05_DrugRepurposing_AravindSubramanian_GolubLab_Broad"
-batch = "2016_04_01_a549_48hr_batch1"
 profile_dir = pathlib.PurePath(
     "/home/ubuntu/bucket/projects/", project, "workspace/backend"
 )
@@ -31,7 +35,7 @@ platemap_dir = pathlib.PurePath(barcode_platemap_dir, "platemap")
 
 # Load plate information
 plate_dir = pathlib.PurePath(profile_dir, batch)
-plates = [x for x in os.listdir(plate_dir) if x.startswith("SQ")]
+plates = [x for x in os.listdir(plate_dir) if x.startswith(plate_prefix)]
 
 if not overwrite:
     # Only process plates that are not already completely processed
@@ -60,6 +64,11 @@ for plate in plates:
         "Assay_Plate_Barcode == @plate"
     ).Plate_Map_Name.values[0]
 
+    if extract_cell_line:
+        cell_id = platemap_id.split("_")[1]
+    else:
+        cell_id = "A549"
+
     platemap_file = pathlib.PurePath(platemap_dir, f"{platemap_id}.txt")
     sql_base = pathlib.PurePath(profile_dir, batch, plate, f"{plate}.sqlite")
     sql_file = f"sqlite:////{sql_base}"
@@ -81,7 +90,13 @@ for plate in plates:
         moa_file,
         "--output_dir",
         output_dir,
+        "--cell_id",
+        cell_id,
         "--cell_count_dir",
         cell_count_dir,
+        "--well_col",
+        well_col,
+        "--plate_col",
+        plate_col,
     ]
     subprocess.call(cmd)
