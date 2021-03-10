@@ -51,3 +51,9 @@ conda activate lincs
 # Reproduce thepipeline for producing bulk signatures
 ipython scripts/nbconverted/build-consensus-signatures.py
 ```
+
+`scripts/nbconverted/*.py` were created from the Jupyter notebooks in this folder, like this:
+
+```sh
+jupyter nbconvert --to=script --FilesWriter.build_directory=scripts/nbconverted *.ipynb
+```
