@@ -22,16 +22,24 @@ from pycytominer.cyto_utils import output, infer_cp_features
 # In[2]:
 
 
+input_dir = pathlib.Path("../profiles/")
 batches = ["2016_04_01_a549_48hr_batch1", "2017_12_05_Batch2"]
-suffix = "_normalized.csv.gz"
+
+suffixes = {
+    "whole_plate": "_normalized.csv.gz",
+    "dmso": "_normalized_dmso.csv.gz"
+}
 
 plates = {
-    batch: [x.name for x in pathlib.Path(batch).iterdir() if ".DS_Store" not in x.name]
+    batch: [x.name for x in pathlib.Path(f"{input_dir}/{batch}").iterdir() if ".DS_Store" not in x.name]
     for batch in batches
 }
 
 files = {
-    batch: [pathlib.Path(f"{batch}/{x}/{x}{suffix}") for x in plates[batch]]
+    batch: {
+        suffix: [pathlib.Path(f"{input_dir}/{batch}/{x}/{x}{suffixes[suffix]}") for x in plates[batch]]
+        for suffix in suffixes
+    }
     for batch in batches
 }
 
@@ -45,44 +53,48 @@ feature_select_ops = [
 
 na_cut = 0
 corr_threshold = 0.95
-outlier_cutoff = 50
+outlier_cutoff = 60
+
+output_dir = "profiles"
 
 
 # In[3]:
 
 
 for batch in batches:
-    print(f"Now processing {batch}...")
+    for suffix in suffixes:
+        output_file = pathlib.Path(
+            f"{output_dir}/{batch}_dmso_spherized_profiles_with_input_normalized_by_{suffix}.csv.gz"
+        )
+        print(f"Now processing {output_file}...")
 
-    profile_df = pd.concat([pd.read_csv(x) for x in files[batch]]).reset_index(drop=True)
+        profile_df = pd.concat([pd.read_csv(x) for x in files[batch][suffix]]).reset_index(drop=True)
 
-    # Perform feature selection
-    profile_df = feature_select(
-        profiles=profile_df,
-        operation=feature_select_ops,
-        na_cutoff=0,
-        corr_threshold=corr_threshold,
-        outlier_cutoff=outlier_cutoff
-    )
+        # Perform feature selection
+        profile_df = feature_select(
+            profiles=profile_df,
+            operation=feature_select_ops,
+            na_cutoff=0,
+            corr_threshold=corr_threshold,
+            outlier_cutoff=outlier_cutoff
+        )
 
-    print(profile_df.shape)
-    profile_df.head()
-    
-    spherize_df = normalize(
-        profiles=profile_df,
-        features="infer",
-        meta_features="infer",
-        samples="Metadata_broad_sample == 'DMSO'",
-        method="whiten",
-    )
+        print(profile_df.shape)
+        profile_df.head()
 
-    print(spherize_df.shape)
-    spherize_df.head()
-    
-    output_file = f"{batch}_spherized_profiles.csv.gz"
+        spherize_df = normalize(
+            profiles=profile_df,
+            features="infer",
+            meta_features="infer",
+            samples="Metadata_broad_sample == 'DMSO'",
+            method="whiten",
+        )
 
-    output(
-        df=spherize_df,
-        output_filename=output_file
-    )
+        print(spherize_df.shape)
+        spherize_df.head()
+
+        output(
+            df=spherize_df,
+            output_filename=output_file
+        )
 
