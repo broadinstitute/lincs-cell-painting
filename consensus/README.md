@@ -48,7 +48,7 @@ The pipeline can be reproduced by executing the following:
 # Make sure conda environment is activated
 conda activate lincs
 
-# Reproduce thepipeline for producing bulk signatures
+# Reproduce the pipeline for producing bulk signatures
 ipython scripts/nbconverted/build-consensus-signatures.py
 ```
 

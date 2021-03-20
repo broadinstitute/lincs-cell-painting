@@ -36,7 +36,6 @@ import pandas as pd
 from pycytominer.aggregate import aggregate
 from pycytominer.consensus import modz_base
 from pycytominer.feature_select import feature_select
-
 from pycytominer.cyto_utils import infer_cp_features
 
 
@@ -269,35 +268,4 @@ for norm_strat in file_bases:
             float_format=float_format,
             index=False,
         )
-
-
-# ## Save whole plate MODZ consensus signature as GCT
-# 
-# Whole-plate-normalized + MODZ aggregated consensus profiles will be made available on clue.io/morphology as a GCT file.
-
-# In[11]:
-
-
-import pycytominer.write_gct
-
-operation = "modz"
-norm_strat = "whole_plate"
-file_suffix = ".gct"
-consensus_file = f"{batch}_consensus_{operation}{file_suffix}"
-consensus_file = pathlib.Path(batch, consensus_file)
-
-consensus_df = all_consensus_dfs[norm_strat][operation]["no_feat_select"]
-
-print(
-    f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
-)
-print(consensus_df.shape)
-
-pycytominer.write_gct(consensus_df, consensus_file)
-
-
-# In[ ]:
-
-
-
 
