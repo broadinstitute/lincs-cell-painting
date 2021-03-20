@@ -75,7 +75,7 @@ for plate in plates:
 
     cmd = [
         "python",
-        "profile.py",
+        "profile_cells.py",
         "--sql_file",
         sql_file,
         "--batch",
