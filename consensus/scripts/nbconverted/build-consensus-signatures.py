@@ -6,14 +6,18 @@
 # Here, we generate consensus signatures for the LINCS Drug Repurposing Hub Cell Painting subset.
 # See the project [README.md](README.md) for more details.
 # 
-# This notebook generates four files; one per plate normalization and consensus normalization strategy.
+# This notebook generates eight files; one per plate normalization and consensus normalization strategy, with and without feature selection.
 # 
-# | Plate Normalization | Consensus Normalization | Consensus Suffix |
-# | :------------------: | :------------------------: | -----------------: |
-# | DMSO | Median | `<BATCH>_consensus_median_dmso.csv.gz` |
-# | DMSO | MODZ | `<BATCH>_consensus_modz_dmso.csv.gz` |
-# | Whole Plate | Median | `<BATCH>_consensus_median.csv.gz` |
-# | Whole Plate | MODZ | `<BATCH>_consensus_modz.csv.gz` |
+# |Feature selection | Plate Normalization | Consensus Normalization | Consensus Suffix |
+# |:---------------- | :------------------: | :------------------------: | -----------------: |
+# | No  | DMSO | Median | `<BATCH>_consensus_median_dmso.csv.gz` |
+# | No  | DMSO | MODZ | `<BATCH>_consensus_modz_dmso.csv.gz` |
+# | No  | Whole Plate | Median | `<BATCH>_consensus_median.csv.gz` |
+# | No  | Whole Plate | MODZ | `<BATCH>_consensus_modz.csv.gz` |
+# | Yes | DMSO | Median | `<BATCH>_consensus_median_feature_select_dmso.csv.gz` |
+# | Yes | DMSO | MODZ | `<BATCH>_consensus_modz_feature_select_dmso.csv.gz` |
+# | Yes | Whole Plate | Median | `<BATCH>_consensus_median_feature_select.csv.gz` |
+# | Yes | Whole Plate | MODZ | `<BATCH>_consensus_modz_feature_select.csv.gz` |
 
 # In[1]:
 
@@ -31,7 +35,7 @@ import pandas as pd
 
 from pycytominer.aggregate import aggregate
 from pycytominer.consensus import modz_base
-
+from pycytominer.feature_select import feature_select
 from pycytominer.cyto_utils import infer_cp_features
 
 
@@ -141,9 +145,9 @@ for norm_strat, norm_file_base in file_bases.items():
     del all_profiles_df
 
 
-# ## Create Consensus Profiles
+# ## Create Consensus Profiles, with and without feature selection
 # 
-# We generate two different consensus profiles for each of the normalization strategies. This generates four different files.
+# We generate two different consensus profiles for each of the normalization strategies, with and without feature selection. This generates eight different files.
 
 # In[7]:
 
@@ -155,11 +159,21 @@ replicate_cols = [
     "Metadata_pert_well",
     "Metadata_mmoles_per_liter",
     "Metadata_dose_recode",
+    "Metadata_moa",
+    "Metadata_target",
 ]
 
 
 # In[8]:
 
+
+# feature selection operations
+feature_select_ops = [
+    "drop_na_columns",
+    "variance_threshold",
+    "correlation_threshold",
+    "blacklist",
+]
 
 all_consensus_dfs = {}
 for norm_strat in file_bases:
@@ -170,7 +184,9 @@ for norm_strat in file_bases:
     for operation in operations:
         print(f"Now calculating {operation} consensus for {norm_strat} normalization")
 
-        consensus_profiles[operation] = consensus_apply(
+        consensus_profiles[operation] = {}
+
+        consensus_profiles[operation]["no_feat_select"] = consensus_apply(
             all_profiles_df,
             operation=operation,
             cp_features=cp_norm_features,
@@ -179,31 +195,77 @@ for norm_strat in file_bases:
 
         # How many DMSO profiles per well?
         print(
-            f"There are {consensus_profiles[operation].shape[0]} {operation} consensus profiles for {norm_strat} normalization"
+            f"There are {consensus_profiles[operation]['no_feat_select'].shape[0]} {operation} consensus profiles for {norm_strat} normalization"
+        )
+
+        # feature selection
+        print(
+            f"Now feature selecting on {operation} consensus for {norm_strat} normalization"
+        )
+
+        consensus_profiles[operation]["feat_select"] = feature_select(
+            profiles=consensus_profiles[operation]["no_feat_select"],
+            features="infer",
+            operation=feature_select_ops,
+        )
+
+        # How many features in feature selected profile?
+        print(
+            f"There are {consensus_profiles[operation]['feat_select'].shape[1]} features in {operation} consensus profiles for {norm_strat} normalization"
         )
 
     all_consensus_dfs[norm_strat] = consensus_profiles
 
 
-# ## Merge and Output Consensus Signatures
+# ## Merge and Output Consensus Signatures, with and without feature selection
 
 # In[9]:
 
 
+float_format = "%5g"
+compression = "gzip"
+
 for norm_strat in file_bases:
     file_suffix = file_bases[norm_strat]["output_file_suffix"]
     for operation in operations:
+
+        # No feature selection
         consensus_file = f"{batch}_consensus_{operation}{file_suffix}"
         consensus_file = pathlib.Path(batch, consensus_file)
 
-        consensus_df = all_consensus_dfs[norm_strat][operation]
+        consensus_df = all_consensus_dfs[norm_strat][operation]["no_feat_select"]
 
         print(
-            f"Now Writing: Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
+            f"Now Writing: Feature selection: No; Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_file}"
         )
         print(consensus_df.shape)
 
         consensus_df.to_csv(
-            consensus_file, sep=",", compression="gzip", float_format="%5g", index=False
+            consensus_file,
+            sep=",",
+            compression=compression,
+            float_format=float_format,
+            index=False,
+        )
+
+        # With feature selection
+        consensus_feat_df = all_consensus_dfs[norm_strat][operation]["feat_select"]
+
+        consensus_feat_file = (
+            f"{batch}_consensus_{operation}_feature_select{file_suffix}"
+        )
+        consensus_feat_file = pathlib.Path(batch, consensus_feat_file)
+
+        print(
+            f"Now Writing: Feature selection: Yes; Consensus Operation: {operation}; Norm Strategy: {norm_strat}\nFile: {consensus_feat_file}"
+        )
+        print(consensus_feat_df.shape)
+
+        consensus_feat_df.to_csv(
+            consensus_feat_file,
+            sep=",",
+            compression=compression,
+            float_format=float_format,
+            index=False,
         )
 

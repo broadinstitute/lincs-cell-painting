@@ -2,6 +2,7 @@ name: lincs
 channels:
 - conda-forge
 dependencies:
+- pip=21.0.1
 - conda-forge::pandas=1.0.1
 - conda-forge::tabulate=0.8.7
 - conda-forge::jupyter=1.0.0
