@@ -86,6 +86,7 @@ replicate_cols = [
     "Metadata_pert_well",
     "Metadata_mmoles_per_liter",
     "Metadata_dose_recode",
+    "Metadata_time_point",
     "Metadata_moa",
     "Metadata_target",
 ]
@@ -130,7 +131,7 @@ for batch in batches:
         x.name for x in file_path_info["plate_dirs"][batch]
     ]
     print(len(file_path_info["plates"][batch]))
-    
+
 # The output directory is also the batch name
 for batch in batches:
     pathlib.Path(batch).mkdir(exist_ok=True)
@@ -175,6 +176,16 @@ for batch in batches:
         all_profiles_df.loc[
             all_profiles_df.Metadata_broad_sample == "DMSO", "Metadata_dose_recode"
         ] = 0
+
+        # Add time metadata for batch 1 data
+        if batch == "2016_04_01_a549_48hr_batch1":
+            all_profiles_df = all_profiles_df.assign(Metadata_time_point="48H")
+
+        # Recode missing values to be "unknown"
+        all_profiles_df.Metadata_moa = all_profiles_df.Metadata_moa.fillna("unknown")
+        all_profiles_df.Metadata_target = all_profiles_df.Metadata_target.fillna(
+            "unknown"
+        )
 
         # Store concatenated data frame
         all_profiles_dfs[batch][norm_strat] = all_profiles_df
