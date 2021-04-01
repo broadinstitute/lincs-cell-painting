@@ -62,7 +62,7 @@ barcode_platemap_df = pd.read_csv(barcode_platemap_file).query(
 out_file = pathlib.PurePath(output_dir, f"{plate_name}.csv.gz")
 sc = SingleCells(file_or_conn=sql_file, strata=strata, aggregation_operation=aggregate_method)
 sc.aggregate_profiles(
-    output_file=out_file, float_format=float_format, compression_options="gzip"
+    output_file=out_file, float_format=float_format, compression_options=compression
 )
 
 # Count cells
