@@ -6,12 +6,7 @@ import os
 import sys
 import pathlib
 import pandas as pd
-from pycytominer import (
-    aggregate,
-    annotate,
-    normalize,
-    feature_select,
-)
+from pycytominer import aggregate, annotate, normalize, feature_select, cyto_utils
 from pycytominer.cyto_utils.cells import SingleCells
 
 from profile_utils import get_args
@@ -60,7 +55,9 @@ barcode_platemap_df = pd.read_csv(barcode_platemap_file).query(
 
 # Aggregate profiles
 out_file = pathlib.PurePath(output_dir, f"{plate_name}.csv.gz")
-sc = SingleCells(file_or_conn=sql_file, strata=strata, aggregation_operation=aggregate_method)
+sc = SingleCells(
+    file_or_conn=sql_file, strata=strata, aggregation_operation=aggregate_method
+)
 sc.aggregate_profiles(
     output_file=out_file, float_format=float_format, compression_options=compression
 )
@@ -82,7 +79,7 @@ anno_df = annotate(
     external_metadata=moa_df,
     external_join_left=["Metadata_broad_sample"],
     external_join_right=["Metadata_broad_sample"],
-    cmap_args={"cell_id": cell_id, "perturbation_mode": "chemical"}
+    cmap_args={"cell_id": cell_id, "perturbation_mode": "chemical"},
 )
 
 # Rename columns
@@ -113,7 +110,7 @@ anno_df = anno_df.assign(
         )
     )
 )
-    
+
 # Reoroder columns
 metadata_cols = cyto_utils.infer_cp_features(anno_df, metadata=True)
 cp_cols = cyto_utils.infer_cp_features(anno_df)
