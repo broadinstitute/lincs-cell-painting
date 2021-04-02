@@ -59,17 +59,17 @@ TBD
 
 ## Reproduce pipeline
 
-The pipeline can be reproduced by simply executing the following:
+After activating the conda environment with:
 
 ```bash
-# Make sure conda environment is activated
 conda activate lincs
+```
 
-# Reproduce the entire image-based profiling pipeline for CellProfiler derived features
-python profiling_pipeline.py
+you can reproduce the pipeline by simply executing the following:
 
-# Apply the same profiling pipeline to process batch 2 data
-python profiling_pipeline.py --batch "2017_12_05_Batch2" --plate_prefix "BR" --well_col "Metadata_Well" --plate_col "Metadata_Plate" --extract_cell_line
+```bash
+# Make sure you are in the profiles/ directory
+./run.sh
 ```
 
 ## Critical details
