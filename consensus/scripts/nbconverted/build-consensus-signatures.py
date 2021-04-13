@@ -3,7 +3,7 @@
 
 # # Consensus signatures
 # 
-# Here, we generate consensus signatures for the LINCS Drug Repurposing Hub Cell Painting subset.
+# Here, we generate consensus signatures for two batches of the LINCS Drug Repurposing Hub Cell Painting subset.
 # Consensus signatures are level 5 data.
 # 
 # See the project [README.md](README.md) for more details.
@@ -39,38 +39,11 @@ import pandas as pd
 
 from pycytominer import aggregate, feature_select
 
-from pycytominer.consensus import modz_base
-from pycytominer.cyto_utils import infer_cp_features
+from pycytominer import consensus
+from pycytominer.cyto_utils import infer_cp_features, output
 
 
 # In[3]:
-
-
-def recode_dose(x, doses, return_level=False):
-    closest_index = np.argmin([np.abs(dose - x) for dose in doses])
-    if np.isnan(x):
-        return 0
-    if return_level:
-        return closest_index + 1
-    else:
-        return doses[closest_index]
-
-
-def consensus_apply(df, operation, cp_features, replicate_cols):
-    if operation == "modz":
-        consensus_df = (
-            df.groupby(replicate_cols)
-            .apply(lambda x: modz_base(x.loc[:, cp_features]))
-            .reset_index()
-        )
-    elif operation == "median":
-        consensus_df = aggregate(
-            df, operation="median", features="infer", strata=replicate_cols
-        )
-    return consensus_df
-
-
-# In[4]:
 
 
 # Set constants
@@ -96,15 +69,15 @@ feature_select_ops = [
     "drop_na_columns",
     "variance_threshold",
     "correlation_threshold",
-    "blacklist",
+    "blocklist",
 ]
 
 # Output option
 float_format = "%5g"
-compression = "gzip"
+compression_options = {"method": "gzip", "mtime": 1}
 
 
-# In[5]:
+# In[4]:
 
 
 # Set file information
@@ -139,11 +112,11 @@ for batch in batches:
 
 # ## Load and Process Data
 # 
-# We load data per plate, concatenate, and recode dose information.
+# We load data per plate, concatenate, add make minor modifications.
 # 
 # We perform this operation once per batch.
 
-# In[6]:
+# In[5]:
 
 
 # Load Data
@@ -163,25 +136,11 @@ for batch in batches:
         # Concatenate profiles
         all_profiles_df = pd.concat(all_profiles_df, axis="rows")
 
-        # Recode dose
-        all_profiles_df = all_profiles_df.assign(
-            Metadata_dose_recode=(
-                all_profiles_df.Metadata_mmoles_per_liter.apply(
-                    lambda x: recode_dose(x, primary_dose_mapping, return_level=True)
-                )
-            )
-        )
-
-        # Make sure DMSO profiles recieve a zero dose level
-        all_profiles_df.loc[
-            all_profiles_df.Metadata_broad_sample == "DMSO", "Metadata_dose_recode"
-        ] = 0
-
         # Add time metadata for batch 1 data
         if batch == "2016_04_01_a549_48hr_batch1":
             all_profiles_df = all_profiles_df.assign(Metadata_time_point="48H")
 
-        # Recode missing values to be "unknown"
+        # Recode missing MOA and target values to be "unknown"
         all_profiles_df.Metadata_moa = all_profiles_df.Metadata_moa.fillna("unknown")
         all_profiles_df.Metadata_target = all_profiles_df.Metadata_target.fillna(
             "unknown"
@@ -207,7 +166,7 @@ for batch in batches:
 # We generate two different consensus profiles for each of the normalization strategies, with and without feature selection.
 # This generates eight different files _per batch_.
 
-# In[7]:
+# In[6]:
 
 
 all_consensus_dfs = {batch: {} for batch in batches}
@@ -225,11 +184,11 @@ for batch in batches:
 
             consensus_profiles[operation] = {}
 
-            consensus_profiles[operation]["no_feat_select"] = consensus_apply(
-                all_profiles_df,
+            consensus_profiles[operation]["no_feat_select"] = consensus(
+                profiles=all_profiles_df,
+                replicate_columns=replicate_cols,
                 operation=operation,
-                cp_features=cp_norm_features,
-                replicate_cols=replicate_cols,
+                features=cp_norm_features
             )
 
             # How many DMSO profiles per well?
@@ -237,11 +196,10 @@ for batch in batches:
                 f"  There are {consensus_profiles[operation]['no_feat_select'].shape[0]} {operation} consensus profiles for {norm_strat} normalization"
             )
 
-            # feature selection
+            # Perform feature selection
             print(
                 f"  Now feature selecting on {operation} consensus for {norm_strat} normalization"
             )
-
             consensus_profiles[operation]["feat_select"] = feature_select(
                 profiles=consensus_profiles[operation]["no_feat_select"],
                 features="infer",
@@ -261,7 +219,7 @@ for batch in batches:
 # 
 # Output with and without feature selection.
 
-# In[8]:
+# In[7]:
 
 
 for batch in batches:
@@ -284,12 +242,12 @@ for batch in batches:
             print(f"  File: {consensus_file}")
             print(consensus_df.shape)
 
-            consensus_df.to_csv(
-                consensus_file,
+            output(
+                df=consensus_df,
+                output_filename=consensus_file,
                 sep=",",
-                compression=compression,
                 float_format=float_format,
-                index=False,
+                compression_options=compression_options,
             )
 
             # With feature selection
@@ -308,12 +266,12 @@ for batch in batches:
             print(f"  File: {consensus_feat_file}")
             print(consensus_feat_df.shape)
 
-            consensus_feat_df.to_csv(
-                consensus_feat_file,
+            output(
+                df=consensus_feat_df,
+                output_filename=consensus_feat_file,
                 sep=",",
-                compression=compression,
                 float_format=float_format,
-                index=False,
+                compression_options=compression_options,
             )
     print("\n")
 
