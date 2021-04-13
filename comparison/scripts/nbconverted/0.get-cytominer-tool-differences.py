@@ -131,7 +131,7 @@ output_dir.mkdir(parents=True, exist_ok=True)
 
 # Set input directories
 # Note, pycytominer profiles are processed and exist in this repository
-pycytominer_dir = pathlib.Path("../profiles/backend/", batch)
+pycytominer_dir = pathlib.Path("../profiles/", batch)
 
 # Note, cytominer profiles were processed separately and exist in many different locations.
 # This location represents the exact files that were previously profiled using cytominer.
@@ -139,7 +139,7 @@ pycytominer_dir = pathlib.Path("../profiles/backend/", batch)
 # To reproduce the analysis, update the appropriate cytominer path.
 home_dir = pycytominer_dir.home()
 cytominer_dir = pathlib.Path(
-    f"{home_dir}/work/projects/{project}/workspace/backend/{batch}/"
+    f"{home_dir}/bucket/projects/{project}/workspace/backend/{batch}/"
 )
 
 
@@ -199,114 +199,140 @@ test_pycytominer_select_feature_select = []
 # Calculate metrics per plate
 for plate in list(cytominer_plates):
     # Calculate level 3 metrics
-    pycyto_df, cyto_df = load_data(
-        plate,
-        pycytominer_plate_files,
-        cytominer_plate_files,
-        level="level_3",
-        round_decimals=round_decimals,
-    )
-    # Define features (note that the features were checked and aligned in load_data)
-    features = pycyto_df.columns.tolist()
-    # Get differences
-    (
-        mean_diff,
-        complete_mean_diff,
-        median_diff,
-        complete_median_diff,
-        sum_diff,
-        complete_sum_diff,
-    ) = get_metrics(pycyto_df, cyto_df, features)
-    # Store results
-    level_3_mean_diff.append(mean_diff)
-    level_3_completemean_diff[plate] = complete_mean_diff
-    level_3_median_diff.append(median_diff)
-    level_3_completemedian_diff[plate] = complete_median_diff
-    level_3_sum_diff.append(sum_diff)
-    level_3_completesum_diff[plate] = complete_sum_diff
+    try:
+        pycyto_df, cyto_df = load_data(
+            plate,
+            pycytominer_plate_files,
+            cytominer_plate_files,
+            level="level_3",
+            round_decimals=round_decimals,
+        )
 
-    # Calculate level 4a metrics
-    pycyto_df, cyto_df = load_data(
-        plate,
-        pycytominer_plate_files,
-        cytominer_plate_files,
-        level="level_4a",
-        round_decimals=round_decimals,
-    )
-    # Get differences
-    (
-        mean_diff,
-        complete_mean_diff,
-        median_diff,
-        complete_median_diff,
-        sum_diff,
-        complete_sum_diff,
-    ) = get_metrics(pycyto_df, cyto_df, features)
-    # Store results
-    level_4a_mean_diff.append(mean_diff)
-    level_4a_completemean_diff[plate] = complete_mean_diff
-    level_4a_median_diff.append(median_diff)
-    level_4a_completemedian_diff[plate] = complete_median_diff
-    level_4a_sum_diff.append(sum_diff)
-    level_4a_completesum_diff[plate] = complete_sum_diff
+        # Define features (note that the features were checked and aligned in load_data)
+        features = pycyto_df.columns.tolist()
 
-    # Calculate level 4b metrics
-    pycyto_df, cyto_df = load_data(
-        plate,
-        pycytominer_plate_files,
-        cytominer_plate_files,
-        level="level_4b",
-        round_decimals=round_decimals,
-    )
-    # Determine feature selection differences
-    feature_select_df = find_feature_diff(pycyto_df, cyto_df, plate, features)
-    features_present_in_both = feature_select_df.loc[
-        feature_select_df.loc[:, plate] == "present_both", plate
-    ].index.tolist()
-    # Get differences
-    (
-        mean_diff,
-        complete_mean_diff,
-        median_diff,
-        complete_median_diff,
-        sum_diff,
-        complete_sum_diff,
-    ) = get_metrics(pycyto_df, cyto_df, features_present_in_both)
-    # Store results
-    level_4b_mean_diff.append(mean_diff)
-    level_4b_completemean_diff[plate] = complete_mean_diff
-    level_4b_median_diff.append(median_diff)
-    level_4b_completemedian_diff[plate] = complete_median_diff
-    level_4b_sum_diff.append(sum_diff)
-    level_4b_completesum_diff[plate] = complete_sum_diff
-    level_4b_feature_select.append(feature_select_df)
+        # Get differences
+        (
+            mean_diff,
+            complete_mean_diff,
+            median_diff,
+            complete_median_diff,
+            sum_diff,
+            complete_sum_diff,
+        ) = get_metrics(pycyto_df, cyto_df, features)
 
-    # Test pycytominer feature selection
-    pycyto_df, cyto_df = load_data(
-        plate,
-        pycytominer_plate_files,
-        cytominer_plate_files,
-        level="pycytominer_select",
-        round_decimals=round_decimals,
-    )
-    # Define features (note that the features were checked and aligned in load_data)
-    features = pycyto_df.columns.tolist()
-    # Get differences
-    (
-        mean_diff,
-        complete_mean_diff,
-        median_diff,
-        complete_median_diff,
-        sum_diff,
-        complete_sum_diff,
-    ) = get_metrics(pycyto_df, cyto_df, features)
-    # Store results
-    test_pycytominer_select_mean_diff.append(mean_diff)
-    test_pycytominer_select_completemean_diff[plate] = complete_mean_diff
-    test_pycytominer_select_median_diff.append(median_diff)
-    test_pycytominer_select_completemedian_diff[plate] = complete_median_diff
-    test_pycytominer_select_sum_diff.append(sum_diff)
-    test_pycytominer_select_completesum_diff[plate] = complete_sum_diff
+        # Store results
+        level_3_mean_diff.append(mean_diff)
+        level_3_completemean_diff[plate] = complete_mean_diff
+        level_3_median_diff.append(median_diff)
+        level_3_completemedian_diff[plate] = complete_median_diff
+        level_3_sum_diff.append(sum_diff)
+        level_3_completesum_diff[plate] = complete_sum_diff
+
+    except KeyError:
+        continue
+
+    try:
+        # Calculate level 4a metrics
+        pycyto_df, cyto_df = load_data(
+            plate,
+            pycytominer_plate_files,
+            cytominer_plate_files,
+            level="level_4a",
+            round_decimals=round_decimals,
+        )
+
+        # Get differences
+        (
+            mean_diff,
+            complete_mean_diff,
+            median_diff,
+            complete_median_diff,
+            sum_diff,
+            complete_sum_diff,
+        ) = get_metrics(pycyto_df, cyto_df, features)
+
+        # Store results
+        level_4a_mean_diff.append(mean_diff)
+        level_4a_completemean_diff[plate] = complete_mean_diff
+        level_4a_median_diff.append(median_diff)
+        level_4a_completemedian_diff[plate] = complete_median_diff
+        level_4a_sum_diff.append(sum_diff)
+        level_4a_completesum_diff[plate] = complete_sum_diff
+
+    except KeyError:
+        continue
+
+    try:
+        # Calculate level 4b metrics
+        pycyto_df, cyto_df = load_data(
+            plate,
+            pycytominer_plate_files,
+            cytominer_plate_files,
+            level="level_4b",
+            round_decimals=round_decimals,
+        )
+
+        # Determine feature selection differences
+        feature_select_df = find_feature_diff(pycyto_df, cyto_df, plate, features)
+        features_present_in_both = feature_select_df.loc[
+            feature_select_df.loc[:, plate] == "present_both", plate
+        ].index.tolist()
+
+        # Get differences
+        (
+            mean_diff,
+            complete_mean_diff,
+            median_diff,
+            complete_median_diff,
+            sum_diff,
+            complete_sum_diff,
+        ) = get_metrics(pycyto_df, cyto_df, features_present_in_both)
+
+        # Store results
+        level_4b_mean_diff.append(mean_diff)
+        level_4b_completemean_diff[plate] = complete_mean_diff
+        level_4b_median_diff.append(median_diff)
+        level_4b_completemedian_diff[plate] = complete_median_diff
+        level_4b_sum_diff.append(sum_diff)
+        level_4b_completesum_diff[plate] = complete_sum_diff
+        level_4b_feature_select.append(feature_select_df)
+
+    except KeyError:
+        continue
+
+    try:
+        # Test pycytominer feature selection
+        pycyto_df, cyto_df = load_data(
+            plate,
+            pycytominer_plate_files,
+            cytominer_plate_files,
+            level="pycytominer_select",
+            round_decimals=round_decimals,
+        )
+
+        # Define features (note that the features were checked and aligned in load_data)
+        features = pycyto_df.columns.tolist()
+
+        # Get differences
+        (
+            mean_diff,
+            complete_mean_diff,
+            median_diff,
+            complete_median_diff,
+            sum_diff,
+            complete_sum_diff,
+        ) = get_metrics(pycyto_df, cyto_df, features)
+
+        # Store results
+        test_pycytominer_select_mean_diff.append(mean_diff)
+        test_pycytominer_select_completemean_diff[plate] = complete_mean_diff
+        test_pycytominer_select_median_diff.append(median_diff)
+        test_pycytominer_select_completemedian_diff[plate] = complete_median_diff
+        test_pycytominer_select_sum_diff.append(sum_diff)
+        test_pycytominer_select_completesum_diff[plate] = complete_sum_diff
+    except KeyError:
+        continue
 
 
 # ## Compile Results
@@ -314,20 +340,27 @@ for plate in list(cytominer_plates):
 # In[9]:
 
 
+missing_plate = list(
+    set(cytominer_plates).difference(set(list(level_3_completemean_diff.keys())))
+)
+
+level_3_plates = list(cytominer_plates)
+level_3_plates.remove(missing_plate[0])
+
 level_3_mean_diff_df = pd.concat(level_3_mean_diff, axis="columns", sort=True)
-level_3_mean_diff_df.columns = list(cytominer_plates)
+level_3_mean_diff_df.columns = level_3_plates
 level_3_completemean_diff_df = pd.DataFrame(
     level_3_completemean_diff, index=["complete_mean_diff"]
 ).transpose()
 
 level_3_median_diff_df = pd.concat(level_3_median_diff, axis="columns", sort=True)
-level_3_median_diff_df.columns = list(cytominer_plates)
+level_3_median_diff_df.columns = level_3_plates
 level_3_completemedian_diff_df = pd.DataFrame(
     level_3_completemedian_diff, index=["complete_median_diff"]
 ).transpose()
 
 level_3_sum_diff_df = pd.concat(level_3_sum_diff, axis="columns", sort=True)
-level_3_sum_diff_df.columns = list(cytominer_plates)
+level_3_sum_diff_df.columns = level_3_plates
 level_3_completesum_diff_df = pd.DataFrame(
     level_3_completesum_diff, index=["complete_sum_diff"]
 ).transpose()
@@ -336,20 +369,27 @@ level_3_completesum_diff_df = pd.DataFrame(
 # In[10]:
 
 
+missing_plate = list(
+    set(cytominer_plates).difference(set(list(level_4a_completemean_diff.keys())))
+)
+
+level_4a_plates = list(cytominer_plates)
+level_4a_plates.remove(missing_plate[0])
+
 level_4a_mean_diff_df = pd.concat(level_4a_mean_diff, axis="columns")
-level_4a_mean_diff_df.columns = list(cytominer_plates)
+level_4a_mean_diff_df.columns = level_4a_plates
 level_4a_completemean_diff_df = pd.DataFrame(
     level_4a_completemean_diff, index=["complete_mean_diff"]
 ).transpose()
 
 level_4a_median_diff_df = pd.concat(level_4a_median_diff, axis="columns", sort=True)
-level_4a_median_diff_df.columns = list(cytominer_plates)
+level_4a_median_diff_df.columns = level_4a_plates
 level_4a_completemedian_diff_df = pd.DataFrame(
     level_4a_completemedian_diff, index=["complete_median_diff"]
 ).transpose()
 
 level_4a_sum_diff_df = pd.concat(level_4a_sum_diff, axis="columns", sort=True)
-level_4a_sum_diff_df.columns = list(cytominer_plates)
+level_4a_sum_diff_df.columns = level_4a_plates
 level_4a_completesum_diff_df = pd.DataFrame(
     level_4a_completesum_diff, index=["complete_sum_diff"]
 ).transpose()
@@ -358,20 +398,27 @@ level_4a_completesum_diff_df = pd.DataFrame(
 # In[11]:
 
 
+missing_plate = list(
+    set(cytominer_plates).difference(set(list(level_4b_completemean_diff.keys())))
+)
+
+level_4b_plates = list(cytominer_plates)
+level_4b_plates.remove(missing_plate[0])
+
 level_4b_mean_diff_df = pd.concat(level_4b_mean_diff, axis="columns")
-level_4b_mean_diff_df.columns = list(cytominer_plates)
+level_4b_mean_diff_df.columns = level_4b_plates
 level_4b_completemean_diff_df = pd.DataFrame(
     level_4b_completemean_diff, index=["complete_mean_diff"]
 ).transpose()
 
 level_4b_median_diff_df = pd.concat(level_4b_median_diff, axis="columns", sort=True)
-level_4b_median_diff_df.columns = list(cytominer_plates)
+level_4b_median_diff_df.columns = level_4b_plates
 level_4b_completemedian_diff_df = pd.DataFrame(
     level_4b_completemedian_diff, index=["complete_median_diff"]
 ).transpose()
 
 level_4b_sum_diff_df = pd.concat(level_4b_sum_diff, axis="columns", sort=True)
-level_4b_sum_diff_df.columns = list(cytominer_plates)
+level_4b_sum_diff_df.columns = level_4b_plates
 level_4b_completesum_diff_df = pd.DataFrame(
     level_4b_completesum_diff, index=["complete_sum_diff"]
 ).transpose()
@@ -382,10 +429,19 @@ level_4b_feature_select_df = pd.concat(level_4b_feature_select, axis="columns")
 # In[12]:
 
 
+missing_plate = list(
+    set(cytominer_plates).difference(
+        set(list(test_pycytominer_select_completemean_diff.keys()))
+    )
+)
+
+test_pycytominer_select_plates = list(cytominer_plates)
+test_pycytominer_select_plates.remove(missing_plate[0])
+
 test_pycytominer_select_mean_diff_df = pd.concat(
     test_pycytominer_select_mean_diff, axis="columns", sort=True
 )
-test_pycytominer_select_mean_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_mean_diff_df.columns = test_pycytominer_select_plates
 test_pycytominer_select_completemean_diff_df = pd.DataFrame(
     test_pycytominer_select_completemean_diff, index=["complete_mean_diff"]
 ).transpose()
@@ -393,7 +449,7 @@ test_pycytominer_select_completemean_diff_df = pd.DataFrame(
 test_pycytominer_select_median_diff_df = pd.concat(
     test_pycytominer_select_median_diff, axis="columns", sort=True
 )
-test_pycytominer_select_median_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_median_diff_df.columns = test_pycytominer_select_plates
 test_pycytominer_select_completemedian_diff_df = pd.DataFrame(
     test_pycytominer_select_completemedian_diff, index=["complete_median_diff"]
 ).transpose()
@@ -401,7 +457,7 @@ test_pycytominer_select_completemedian_diff_df = pd.DataFrame(
 test_pycytominer_select_sum_diff_df = pd.concat(
     test_pycytominer_select_sum_diff, axis="columns", sort=True
 )
-test_pycytominer_select_sum_diff_df.columns = list(cytominer_plates)
+test_pycytominer_select_sum_diff_df.columns = test_pycytominer_select_plates
 test_pycytominer_select_completesum_diff_df = pd.DataFrame(
     test_pycytominer_select_completesum_diff, index=["complete_sum_diff"]
 ).transpose()
@@ -542,7 +598,12 @@ level_4b_complete_df.columns = [f"level_4b_{x}" for x in level_4b_complete_df.co
 
 # Combine all results
 complete_df = pd.concat(
-    [level_3_complete_df, level_4a_complete_df, level_4b_complete_df,], axis="columns",
+    [
+        level_3_complete_df,
+        level_4a_complete_df,
+        level_4b_complete_df,
+    ],
+    axis="columns",
 )
 
 # Output file
