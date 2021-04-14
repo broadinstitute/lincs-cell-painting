@@ -47,7 +47,7 @@ feature_select_ops = [
     "variance_threshold",
     "correlation_threshold",
     "drop_na_columns",
-    "blacklist",
+    "blocklist",
     "drop_outliers"
 ]
 
@@ -87,7 +87,7 @@ for batch in batches:
             features="infer",
             meta_features="infer",
             samples="Metadata_broad_sample == 'DMSO'",
-            method="whiten",
+            method="spherize",
         )
 
         print(spherize_df.shape)
