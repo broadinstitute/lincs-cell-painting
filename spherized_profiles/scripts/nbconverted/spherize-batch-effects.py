@@ -80,15 +80,30 @@ for batch in batches:
         )
 
         print(profile_df.shape)
-        profile_df.head()
 
-        spherize_df = normalize(
-            profiles=profile_df,
-            features="infer",
-            meta_features="infer",
-            samples="Metadata_broad_sample == 'DMSO'",
-            method="spherize",
-        )
+        # The second batch has multiple cell lines
+        if batch == "2017_12_05_Batch2":
+            spherize_df = (
+                profile_df
+                .groupby("Metadata_cell_line")
+                .apply(
+                    lambda x: normalize(
+                        profiles=x,
+                        features="infer",
+                        meta_features="infer",
+                        samples="Metadata_broad_sample == 'DMSO'",
+                        method="spherize"
+                    )
+                )
+            )
+        else:
+            spherize_df = normalize(
+                profiles=profile_df,
+                features="infer",
+                meta_features="infer",
+                samples="Metadata_broad_sample == 'DMSO'",
+                method="spherize",
+            )
 
         print(spherize_df.shape)
         spherize_df.head()
