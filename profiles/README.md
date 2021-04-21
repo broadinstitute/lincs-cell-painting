@@ -37,6 +37,9 @@ For each batch, we include:
 Importantly, we include files for _two_ different types of normalization: Whole-plate normalization, and DMSO-specific normalization.
 See [`profile_cells.py`](profile_cells.py) for more details.
 
+> Note: If you use normalized profiles without feature selection, you may need to remove additional outlier features.
+See https://github.com/broadinstitute/lincs-cell-painting/issues/65 for more details and a list of features.
+
 #### Batch corrected profiles
 
 We use a spherize (a.k.a. whiten) transform to adjust for plate position effects.
