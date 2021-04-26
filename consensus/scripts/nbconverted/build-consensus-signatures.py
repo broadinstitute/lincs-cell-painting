@@ -76,8 +76,34 @@ feature_select_ops = [
 float_format = "%5g"
 compression_options = {"method": "gzip", "mtime": 1}
 
+# Two different blocklist feature sets (traditional and outlier)
+commit = "838ac2eee8bee09b50a1ec8077201c01f7882c69"
+traditional_blocklist_file = f"https://raw.githubusercontent.com/cytomining/pycytominer/{commit}/pycytominer/data/blocklist_features.txt"
+outlier_blocklist_file = pathlib.Path("../utils/outlier_blocklist_features.txt")
+
+full_blocklist_file = pathlib.Path("../utils/consensus_blocklist.txt")
+
 
 # In[4]:
+
+
+# Procees blocklist output
+blocklist_df = pd.read_csv(traditional_blocklist_file)
+outlier_blocklist_df = pd.read_csv(outlier_blocklist_file, names=["blocklist"])
+
+full_blocklist_df = (
+    pd.concat([blocklist_df, outlier_blocklist_df], axis="rows")
+    .drop_duplicates()
+    .reset_index(drop=True)
+)
+
+# Note, we need to output a file to be compatible with pycytominer
+print(full_blocklist_df.shape)
+
+full_blocklist_df.to_csv(full_blocklist_file, sep=",", index=False)
+
+
+# In[5]:
 
 
 # Set file information
@@ -116,7 +142,7 @@ for batch in batches:
 # 
 # We perform this operation once per batch.
 
-# In[5]:
+# In[6]:
 
 
 # Load Data
@@ -166,7 +192,7 @@ for batch in batches:
 # We generate two different consensus profiles for each of the normalization strategies, with and without feature selection.
 # This generates eight different files _per batch_.
 
-# In[6]:
+# In[7]:
 
 
 all_consensus_dfs = {batch: {} for batch in batches}
@@ -188,7 +214,7 @@ for batch in batches:
                 profiles=all_profiles_df,
                 replicate_columns=replicate_cols,
                 operation=operation,
-                features=cp_norm_features
+                features=cp_norm_features,
             )
 
             # How many DMSO profiles per well?
@@ -204,6 +230,7 @@ for batch in batches:
                 profiles=consensus_profiles[operation]["no_feat_select"],
                 features="infer",
                 operation=feature_select_ops,
+                blocklist_file=full_blocklist_file,
             )
 
             # How many features in feature selected profile?
@@ -219,7 +246,7 @@ for batch in batches:
 # 
 # Output with and without feature selection.
 
-# In[7]:
+# In[8]:
 
 
 for batch in batches:
