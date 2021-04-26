@@ -75,6 +75,27 @@ you can reproduce the pipeline by simply executing the following:
 ./run.sh
 ```
 
+## Recoding dose information
+
+The Drug Repurposing Hub collected data on 6 to 7 dose points per compound.
+In general, most doses are very near the following 7 dose points (mmoles per liter):
+
+> [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
+
+Therefore, to make it easier to filter by dose when comparing compounds, we first align the doses collected in the dataset to their nearest dose point above.
+We then recode the dose points into ascending numerical levels and add a new metadata annotation `Metadata_dose_recode` to all profiles.
+
+| Dose | Dose Recode |
+| :--: | :---------: |
+| 0 (DMSO) | 0 |
+| ~0.04 | 1 |
+| ~0.12 | 2 |
+| ~0.37 | 3 |
+| ~1.11 | 4 |
+| ~3.33 | 5 |
+| ~10 | 6 |
+| ~20 | 7 |
+
 ## Critical details
 
 There are several critical details that are important for understanding data generation and processing.
