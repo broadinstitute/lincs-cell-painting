@@ -1,1 +1,2 @@
 *.gz filter=lfs diff=lfs merge=lfs -text
+spherized_profiles/figures/ filter=lfs diff=lfs merge=lfs -text
