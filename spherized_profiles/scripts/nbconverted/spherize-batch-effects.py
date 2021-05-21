@@ -47,15 +47,14 @@ feature_select_ops = [
     "variance_threshold",
     "correlation_threshold",
     "drop_na_columns",
-    "blacklist",
-    "drop_outliers"
+    "blocklist",
 ]
 
 na_cut = 0
 corr_threshold = 0.95
-outlier_cutoff = 60
-
 output_dir = "profiles"
+
+full_blocklist_file = pathlib.Path("../utils/consensus_blocklist.txt")
 
 
 # In[3]:
@@ -69,30 +68,67 @@ for batch in batches:
         print(f"Now processing {output_file}...")
 
         profile_df = pd.concat([pd.read_csv(x) for x in files[batch][suffix]]).reset_index(drop=True)
-
-        # Perform feature selection
-        profile_df = feature_select(
-            profiles=profile_df,
-            operation=feature_select_ops,
-            na_cutoff=0,
-            corr_threshold=corr_threshold,
-            outlier_cutoff=outlier_cutoff
-        )
-
         print(profile_df.shape)
-        profile_df.head()
+        
+        # Step 1: Perform feature selection
+        if batch == "2017_12_05_Batch2":
+            profile_df = (
+                profile_df
+                .groupby(["Metadata_cell_line", "Metadata_time_point"])
+                .apply(
+                    lambda x: feature_select(
+                        profiles=x,
+                        operation=feature_select_ops,
+                        na_cutoff=na_cut,
+                        corr_threshold=corr_threshold,
+                        blocklist_file=full_blocklist_file
+                    )
+                )
+            )
+            
+            # Drop features that weren't selected in the grouped splits
+            profile_df = feature_select(
+                profiles=profile_df,
+                operation="drop_na_columns",
+                na_cutoff=na_cut
+            )
+        else:
+            profile_df = feature_select(
+                profiles=profile_df,
+                operation=feature_select_ops,
+                na_cutoff=na_cut,
+                corr_threshold=corr_threshold,
+                blocklist_file=full_blocklist_file
+            )
 
-        spherize_df = normalize(
-            profiles=profile_df,
-            features="infer",
-            meta_features="infer",
-            samples="Metadata_broad_sample == 'DMSO'",
-            method="whiten",
-        )
+        # Step 2: Spherize transform
+        if batch == "2017_12_05_Batch2":
+            spherize_df = (
+                profile_df
+                .groupby(["Metadata_cell_line", "Metadata_time_point"])
+                .apply(
+                    lambda x: normalize(
+                        profiles=x,
+                        features="infer",
+                        meta_features="infer",
+                        samples="Metadata_broad_sample == 'DMSO'",
+                        method="spherize"
+                    )
+                )
+            )
+        else:
+            spherize_df = normalize(
+                profiles=profile_df,
+                features="infer",
+                meta_features="infer",
+                samples="Metadata_broad_sample == 'DMSO'",
+                method="spherize"
+            )
 
         print(spherize_df.shape)
         spherize_df.head()
 
+        # Step 3: Output profiles
         output(
             df=spherize_df,
             output_filename=output_file

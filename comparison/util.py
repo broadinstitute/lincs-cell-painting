@@ -21,8 +21,10 @@ def build_file_dictionary(base_dir, tool="pycytominer"):
 
     file_dict = {}
     for plate in base_dir.iterdir():
+        if plate.is_file():
+            continue
         plate_name = plate.name
-        if plate_name == ".DS_Store":
+        if plate_name in [".DS_Store", ".Rhistory"]:
             continue
         file_dict[plate_name] = {}
         for plate_file in plate.iterdir():
@@ -50,12 +52,21 @@ def load_data(
     sample_col="Metadata_broad_sample",
 ):
     # Extract file from file dictionary
-    pycyto_file = pycyto_dict[plate][level]
-    cyto_file = cyto_dict[plate][level]
+    try:
+        pycyto_file = pycyto_dict[plate][level]
+        cyto_file = cyto_dict[plate][level]
+    except KeyError:
+        raise KeyError(f"Data not found, skipping! {plate}: {level}")
 
     # Load data
     pycyto_df = pd.read_csv(pycyto_file)
-    cyto_df = pd.read_csv(cyto_file)
+    try:
+        cyto_df = pd.read_csv(cyto_file).drop(
+            ["Cytoplasm_Parent_Cells", "Cytoplasm_Parent_Nuclei"], axis="columns"
+        )
+    except KeyError:
+        cyto_df = pd.read_csv(cyto_file)
+        
 
     # Confirm metadata are aligned
     pd.testing.assert_series_equal(pycyto_df.loc[:, well_col], cyto_df.loc[:, well_col])

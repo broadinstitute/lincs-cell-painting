@@ -37,6 +37,9 @@ For each batch, we include:
 Importantly, we include files for _two_ different types of normalization: Whole-plate normalization, and DMSO-specific normalization.
 See [`profile_cells.py`](profile_cells.py) for more details.
 
+> Note: If you use normalized profiles without feature selection, you may need to remove additional outlier features.
+See https://github.com/broadinstitute/lincs-cell-painting/issues/65 for more details and a list of features.
+
 #### Batch corrected profiles
 
 We use a spherize (a.k.a. whiten) transform to adjust for plate position effects.
@@ -59,18 +62,39 @@ TBD
 
 ## Reproduce pipeline
 
-The pipeline can be reproduced by simply executing the following:
+After activating the conda environment with:
 
 ```bash
-# Make sure conda environment is activated
 conda activate lincs
-
-# Reproduce the entire image-based profiling pipeline for CellProfiler derived features
-python profiling_pipeline.py
-
-# Apply the same profiling pipeline to process batch 2 data
-python profiling_pipeline.py --batch "2017_12_05_Batch2" --plate_prefix "BR" --well_col "Metadata_Well" --plate_col "Metadata_Plate" --extract_cell_line
 ```
+
+you can reproduce the pipeline by simply executing the following:
+
+```bash
+# Make sure you are in the profiles/ directory
+./run.sh
+```
+
+## Recoding dose information
+
+The Drug Repurposing Hub collected data on 6 to 7 dose points per compound.
+In general, most doses are very near the following 7 dose points (mmoles per liter):
+
+> [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
+
+Therefore, to make it easier to filter by dose when comparing compounds, we first align the doses collected in the dataset to their nearest dose point above.
+We then recode the dose points into ascending numerical levels and add a new metadata annotation `Metadata_dose_recode` to all profiles.
+
+| Dose | Dose Recode |
+| :--: | :---------: |
+| 0 (DMSO) | 0 |
+| ~0.04 | 1 |
+| ~0.12 | 2 |
+| ~0.37 | 3 |
+| ~1.11 | 4 |
+| ~3.33 | 5 |
+| ~10 | 6 |
+| ~20 | 7 |
 
 ## Critical details
 

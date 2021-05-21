@@ -5,6 +5,16 @@
 # 
 # In the following notebook, we summarize the differences we calculated in `0.get-cytominer-tool-differences`.
 # We summarize the results in a series of visualizations and descriptive statistics.
+# 
+# In the plots, interpret the following facets:
+# 
+# 1. Mean - The mean of how much the feature varies between the two tools
+# 2. Median - The median of how much the feature varies between the two tools
+# 3. Sum - The total variation in the feature between the two tools
+# 
+# We plot per plate and per feature.
+# When the plot is per-plate, each point represents all features measured in that plate.
+# When the plot is per feature, each point represents all plates measured in the experiment.
 
 # In[1]:
 

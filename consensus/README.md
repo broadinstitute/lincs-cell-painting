@@ -1,4 +1,4 @@
-# Consensus Signatures
+# Consensus signatures
 
 A consensus signature can be defined as a perturbation-specific summary profile acquired by aggregating replicate level information.
 In the following notebook, we generate consensus profiles for each compound-dose pair.
@@ -13,27 +13,6 @@ See https://github.com/cytomining/pycytominer/issues/52 for more details and poi
 
 Also note that we form consensus profiles for two different normalization strategies: Whole plate z scoring and DMSO z scoring.
 Therefore, we generate a total of four consensus signature files.
-
-## Recoding Dose Information
-
-The Drug Repurposing Hub collected data on 6 to 7 dose points per compound.
-In general, most doses are very near the following 7 dose points (mmoles per liter):
-
-> [0.04, 0.12, 0.37, 1.11, 3.33, 10, 20]
-
-Therefore, to make it easier to filter by dose when comparing compounds, we first align the doses collected in the dataset to their nearest dose point above.
-We then recode the dose points into ascending numerical levels and add a new metadata annotation `dose_recode` to the consensus signatures.
-
-| Dose | Dose Recode |
-| :--: | :---------: |
-| 0 (DMSO) | 0 |
-| ~0.04 | 1 |
-| ~0.12 | 2 |
-| ~0.37 | 3 |
-| ~1.11 | 4 |
-| ~3.33 | 5 |
-| ~10 | 6 |
-| ~20 | 7 |
 
 ## DMSO vs. Compound Profiles
 
