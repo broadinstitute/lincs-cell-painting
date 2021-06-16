@@ -15,6 +15,8 @@ dependencies:
 - conda-forge::umap-learn=0.5.1
 - conda-forge::rdkit=2019.09.3
 - conda-forge::nb_black=1.0.7
+- conda-forge::dvc=2.3.0
+- conda-forge::dvc-s3=2.3.0
 - conda-forge::r-base=3.5.1
 - conda-forge::r-knitr=1.22
 - conda-forge::r-rmarkdown=1.12
