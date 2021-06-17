@@ -1,0 +1,4 @@
+[core]
+    remote = cellpainting-datasets
+['remote "cellpainting-datasets"']
+    url = s3://cellpainting-datasets/lincs-cell-painting
