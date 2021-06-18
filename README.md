@@ -38,6 +38,9 @@ After installing conda, execute the following to install and navigate to the env
 # First, install the `lincs` conda environment
 conda env create --force --file environment.yml
 
+# If you had already installed this environment and now want to update it
+conda env update --file environment.yml --prune
+
 # Then, activate the environment and you're all set!
 conda activate lincs
 ```
