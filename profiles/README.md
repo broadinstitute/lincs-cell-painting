@@ -59,7 +59,16 @@ These data include all level 4b profiles for every batch.
 ### Data access
 
 We use a combination of [`git lfs`](https://git-lfs.github.com/) and [`dvc`](https://dvc.org/) to version all the data in this repository (see tables above for a breakdown).
-In order to access the data locally, you must first install both services and then run:
+In order to access the data locally, you must first install both services. 
+
+For example, in OSX:
+
+```bash
+brew install dvc
+brew install git-lfs
+```
+
+You are now ready to pull the data:
 
 ```bash
 # Download consensus profiles and spherized data
