@@ -51,3 +51,9 @@ Also note that when contributing to the repository, make sure to add any new pac
 
 We use a dual license in this repository.
 We license the source code as [BSD 3-Clause](LICENSE_BSD3.md), and license the data, results, and figures as [CC0 1.0](LICENSE_CC0.md).
+
+## Citation
+
+If you use these data or software, please cite our [Zenodo archive](https://zenodo.org/record/5008187):
+
+> Natoli, Ted, Way, Gregory, Lu, Xiaodong, Logan, David, Alimova, Maria, Hartland, Kate, Golub, Todd, Carpenter, Anne, Singh, Shantanu, Subramanian, Aravind. (2021). broadinstitute/lincs-cell-painting: Full release of LINCS Cell Painting dataset (Version v1) [Data set]. Zenodo. http://doi.org/10.5281/zenodo.5008187
