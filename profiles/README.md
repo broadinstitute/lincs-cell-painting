@@ -10,9 +10,32 @@ Specifically, we include:
 2. Processed data for each Cell Painting plate (for several "data levels")
 3. Instructions on how to reproduce the profiling pipeline
 
-## Workflow
+## Workflow 
 
 ![Cytominer workflow](media/cytominer_workflow.png)
+
+## Pycytominer
+[Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics and @niranjchandrasekaran. 
+It allows easy processing CellProfiler data.
+
+
+### Aggregation
+The 
+
+[aggregate code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py)
+
+### Normalization
+[normalization code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py)
+The different normalization techniques (short word summary and links)
+
+### Feature selection
+The different pipelines (mad vs sphere) and where exactly there are normalized to what.
+[feature_select code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py)
+
+### Consensus
+[consensus code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py)
+An exact list of steps how to reproduce the consensus data 
+
 
 Note here that we do not include the intermediate step of generating `.sqlite` files per plate using a tool called [cytominer-database](https://github.com/cytomining/cytominer-database).
 This repository and workflow begins after we applied cytominer-database.
