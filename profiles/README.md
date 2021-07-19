@@ -12,33 +12,41 @@ Specifically, we include:
 
 ## Workflow 
 
-![Cytominer workflow](media/cytominer_workflow.png)
+![Cytominer workflow](media/cytominer_workflow_new.png)
 
 ## Pycytominer
 [Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics and @niranjchandrasekaran. 
-It allows easy processing CellProfiler data.
+It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
 
-
-### Aggregation
-The 
-
-[aggregate code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py)
-
-### Normalization
-[normalization code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py)
-The different normalization techniques (short word summary and links)
-
-### Feature selection
-The different pipelines (mad vs sphere) and where exactly there are normalized to what.
-[feature_select code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py)
-
-### Consensus
-[consensus code](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py)
-An exact list of steps how to reproduce the consensus data 
-
+Part of the pipeline, from Level 3 to Level 4b, can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script and the final aggregation to the consensus data is found in this [notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
 
 Note here that we do not include the intermediate step of generating `.sqlite` files per plate using a tool called [cytominer-database](https://github.com/cytomining/cytominer-database).
 This repository and workflow begins after we applied cytominer-database.
+
+
+### Aggregation
+The [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) is used twice in the workflow. Firstly, the median of all cells within a well is aggregated to one profiler per well. The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
+Secondly, the normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.    
+
+
+### Normalization
+[Normalization](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py) can be done via different methods and over all wells in a plate or only the negative controls (DMSOs). In this case, the `mad_robustize` method was used and both the output of the whole-plate and the DMSO normalization were saved in this repository. 
+It is important to note that the normalization is done over each plate but not over the full batch.
+
+
+### Spherizing
+[Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to account for batch effects. Within Pycytominer, Spherizing is a method within the normalization function.
+Unlike the other normalizations, spherizing is done on the full batch (all plates). Check the code for details and relevant papers.
+
+
+### Feature selection
+The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
+These functions were developed to drop useless features and to improve post processing.
+
+
+### Consensus
+The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline.  
+
 
 ## Data levels
 
@@ -69,8 +77,8 @@ We use a spherize (a.k.a. whiten) transform to adjust for plate position effects
 The spherize transform adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix.
 See [`spherize-batch-effects.ipynb`](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
 
-For each batch we include four different spherized profiles.
-These data include all level 4b profiles for every batch.
+For each batch we include four different spherized profiles. 
+These data include all level 4b profiles for every batch. 
 
 | Batch | Input data | Spherized output file | Version control |
 | :---: | :--------: | :-------------------: | :-------------- |
