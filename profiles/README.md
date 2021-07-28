@@ -41,7 +41,7 @@ Unlike the other normalizations, spherizing is done on the full batch (all plate
 
 ### Feature selection
 The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
-These functions were developed to drop useless features and to improve post processing.
+These functions were developed to drop redundant and invariant features and to improve post processing.
 
 
 ### Consensus
