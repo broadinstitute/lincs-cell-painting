@@ -18,15 +18,15 @@ Specifically, we include:
 [Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics and @niranjchandrasekaran. 
 It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
 
-Part of the pipeline, from Level 3 to Level 4b, can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script and the final aggregation to the consensus data is found in this [notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
+The steps from Level 3 to Level 4b can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script, the steps for spherizing can be found in [this script](https://github.com/michaelbornholdt/lincs-cell-painting/blob/master/spherized_profiles/spherize-batch-effects.ipynb), and the final aggregation to the consensus data is found in [this notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
 
 Note here that we do not include the intermediate step of generating `.sqlite` files per plate using a tool called [cytominer-database](https://github.com/cytomining/cytominer-database).
 This repository and workflow begins after we applied cytominer-database.
 
 
 ### Aggregation
-The [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) is used twice in the workflow. Firstly, the median of all cells within a well is aggregated to one profiler per well. The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
-Secondly, the normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.    
+The [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) is used twice in the workflow at this point and for the creation fot the consensus. Here, the median of all cells within a well is aggregated to one profiler per well. The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
+    
 
 
 ### Normalization
@@ -45,7 +45,7 @@ These functions were developed to drop useless features and to improve post proc
 
 
 ### Consensus
-The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline.  
+The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. The normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.  
 
 
 ## Data levels
