@@ -48,6 +48,15 @@ These functions were developed to drop redundant and invariant features and to i
 The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. The normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.  
 
 
+### Normalization vs Spherizing
+While having the same overall goal, these two processes target different artifacts:
+The normalization step simply aligns all plates by scaling each plates values to a "unit height". The specific transformation used is [`RobustMad`](https://github.com/cytomining/pycytominer/blob/372f1086318841670a916f20334333b06e6b84c9/pycytominer/operations/transform.py#L111).  
+
+On the other hand, we use a spherize (a.k.a. whiten) transformation to adjust for plate and plate position effects (e.g. some plates may influence the data while the position within a plate could also create artifacts).
+The spherize transform adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix. Note that this operation is done on the full dataset, not per plate.
+See [spherize-batch-effects.ipynb](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
+
+
 ## Data levels
 
 We include two batches of Cell Painting data in this repository: `2016_04_01_a549_48hr_batch1` and `2017_12_05_Batch2`.
@@ -66,16 +75,12 @@ For each batch, we include:
 | Level 5 | Consensus perturbation profiles | `.csv.gz` | Yes | git lfs |
 
 Importantly, we include files for _two_ different types of normalization: Whole-plate normalization, and DMSO-specific normalization.
-See [`profile_cells.py`](profile_cells.py) for more details.
+See [profile_cells.py](profile_cells.py) for more details.
 
 > Note: If you use normalized profiles without feature selection, you may need to remove additional outlier features.
-See https://github.com/broadinstitute/lincs-cell-painting/issues/65 for more details and a list of features.
+See [issues/65](https://github.com/broadinstitute/lincs-cell-painting/issues/65) for more details and a list of features.
 
 #### Batch corrected profiles
-
-We use a spherize (a.k.a. whiten) transform to adjust for plate position effects.
-The spherize transform adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix.
-See [`spherize-batch-effects.ipynb`](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
 
 For each batch we include four different spherized profiles. 
 These data include all level 4b profiles for every batch. 
