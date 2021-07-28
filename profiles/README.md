@@ -15,7 +15,7 @@ Specifically, we include:
 ![Cytominer workflow](media/cytominer_workflow_new.png)
 
 ## Pycytominer
-[Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics and @niranjchandrasekaran. 
+[Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics et al.
 It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
 
 Part of the pipeline, from Level 3 to Level 4b, can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script and the final aggregation to the consensus data is found in this [notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
