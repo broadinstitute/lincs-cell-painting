@@ -15,7 +15,7 @@ Specifically, we include:
 ![Cytominer workflow](media/cytominer_workflow_new.png)
 
 ## Pycytominer
-[Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics and @niranjchandrasekaran. 
+[Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics et al.
 It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
 
 The steps from Level 3 to Level 4b can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script, the steps for spherizing can be found in [this script](https://github.com/michaelbornholdt/lincs-cell-painting/blob/master/spherized_profiles/spherize-batch-effects.ipynb), and the final aggregation to the consensus data is found in [this notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
@@ -35,13 +35,13 @@ It is important to note that the normalization is done over each plate but not o
 
 
 ### Spherizing
-[Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to account for batch effects. Within Pycytominer, Spherizing is a method within the normalization function.
+[Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to correct batch effects. Within Pycytominer, Spherizing is a method within the normalization function.
 Unlike the other normalizations, spherizing is done on the full batch (all plates). Check the code for details and relevant papers.
 
 
 ### Feature selection
 The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
-These functions were developed to drop useless features and to improve post processing.
+These functions were developed to drop redundant and invariant features and to improve post processing.
 
 
 ### Consensus
