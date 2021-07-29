@@ -56,7 +56,6 @@ On the other hand, we use a spherize (a.k.a. whiten) transformation to adjust fo
 The spherize transform adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix. Note that this operation is done on the full dataset, not per plate.
 See [spherize-batch-effects.ipynb](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
 
-
 ## Data levels
 
 We include two batches of Cell Painting data in this repository: `2016_04_01_a549_48hr_batch1` and `2017_12_05_Batch2`.
