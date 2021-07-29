@@ -49,6 +49,7 @@ The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytomine
 
 
 ### Normalization vs Spherizing
+
 While having the same overall goal, these two processes target different artifacts:
 The normalization step simply aligns all plates by scaling each plates values to a "unit height". The specific transformation used is [`RobustMad`](https://github.com/cytomining/pycytominer/blob/372f1086318841670a916f20334333b06e6b84c9/pycytominer/operations/transform.py#L111).  
 
