@@ -20,7 +20,8 @@ More details on normalization can be found in the profiles [README](../profiles/
 Note we generated per-well DMSO consensus signatures and per compound-dose pair consensus signatures for compounds.
 That means, we collapse DMSO data per well, thus creating 24 DMSO consensus profiles per plate while combining all replicates into a single signature for all other pertubations (per dose).
 
-The per-well DMSO profiles can help to assess plate-associated batch effects. This information would be lost if we would treat DMSO like any other perturbation when creating consensus profiles.
+The per-well DMSO profiles can help to assess plate-associated batch effects.
+This information would be lost if we would treat DMSO like any other perturbation when creating consensus profiles.
 
 ## Reproduce Pipeline
 
