@@ -10,7 +10,7 @@ Specifically, we include:
 2. Processed data for each Cell Painting plate (for several "data levels")
 3. Instructions on how to reproduce the profiling pipeline
 
-## Workflow 
+## Workflow
 
 ![Cytominer workflow](media/cytominer_workflow_new.png)
 
