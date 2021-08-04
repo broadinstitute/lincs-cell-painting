@@ -44,6 +44,7 @@ The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycyt
 These functions were developed to drop redundant and invariant features and to improve post processing.
 
 ### Consensus
+
 The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. The normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.  
 
 
