@@ -43,7 +43,6 @@ Unlike the other normalizations, spherizing is done on the full batch (all plate
 The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
 These functions were developed to drop redundant and invariant features and to improve post processing.
 
-
 ### Consensus
 The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. The normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.  
 
