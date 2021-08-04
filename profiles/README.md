@@ -52,7 +52,6 @@ Check the code for details and relevant papers.
 
 ### Feature selection
 
-
 The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
 We developed these functions to drop redundant and invariant features and to improve post processing.
 
