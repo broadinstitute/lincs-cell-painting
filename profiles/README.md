@@ -12,9 +12,10 @@ Specifically, we include:
 
 ## Workflow
 
-![Cytominer workflow](media/cytominer_workflow_new.png)
+![Cytominer workflow](media/cytominer_workflow.png)
 
 ## Pycytominer
+
 [Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics et al.
 It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
 
@@ -25,35 +26,48 @@ This repository and workflow begins after we applied cytominer-database.
 
 
 ### Aggregation
-The [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) is used twice in the workflow at this point and for the creation fot the consensus. Here, the median of all cells within a well is aggregated to one profiler per well. The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
+
+We use the [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) twice in the workflow. First at this point and later for the creation of the consensus profiles. 
+Here, the median of all cells within a well is aggregated to one profiler per well. 
+The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
     
 
 
 ### Normalization
-[Normalization](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py) can be done via different methods and over all wells in a plate or only the negative controls (DMSOs). In this case, the `mad_robustize` method was used and both the output of the whole-plate and the DMSO normalization were saved in this repository. 
-It is important to note that the normalization is done over each plate but not over the full batch.
+
+[Normalization](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py) can be done via different methods and over all wells in a plate or only the negative controls (DMSOs). 
+In this case, we used `mad_robustize` method and both the output of the whole-plate and the DMSO normalization are saved in this repository. 
+It is important to note that we normalize over each plate but not over the full batch.
 
 
 ### Spherizing
-[Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to correct batch effects. Within Pycytominer, Spherizing is a method within the normalization function.
-Unlike the other normalizations, spherizing is done on the full batch (all plates). Check the code for details and relevant papers.
+
+[Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to correct batch effects. 
+Within Pycytominer, Spherizing can be found in the normalization function.
+Unlike the other normalizations, we perform spherizing on the full batch (all plates).
+Check the code for details and relevant papers.
 
 
 ### Feature selection
+
 The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
-These functions were developed to drop redundant and invariant features and to improve post processing.
+We developed these functions to drop redundant and invariant features and to improve post processing.
 
 ### Consensus
 
-The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. The normalized and feature selected data (4b) is aggregated via Median or MODZ to consensus data. This means that each of the five replicates are combined  to one profile representing one pertubation with a given dose.  
+The [consensus](https://github.com/cytomining/pycytominer/blob/master/pycytominer/consensus.py) function is another step of aggregation and completes the pipeline. 
+We aggregate the normalized and feature selected data (4b) via the Median or MODZ functions to consensus data. 
+This means that each of the five replicates are combined to one profile representing one perturbation with a given dose.  
 
 ### Normalization vs Spherizing
 
 While having the same overall goal, these two processes target different artifacts:
-The normalization step simply aligns all plates by scaling each plates values to a "unit height". The specific transformation used is [`RobustMad`](https://github.com/cytomining/pycytominer/blob/372f1086318841670a916f20334333b06e6b84c9/pycytominer/operations/transform.py#L111).  
+The normalization step simply aligns all plates by scaling each plates values to a "unit height". 
+The specific transformation used is [`RobustMad`](https://github.com/cytomining/pycytominer/blob/372f1086318841670a916f20334333b06e6b84c9/pycytominer/operations/transform.py#L111).  
 
 On the other hand, we use a spherize (a.k.a. whiten) transformation to adjust for plate and plate position effects (e.g. some plates may influence the data while the position within a plate could also create artifacts).
-The spherize transform adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix. Note that this operation is done on the full dataset, not per plate.
+The spherize transformation adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix. 
+Note that this operation is done on the full dataset, not per plate.
 See [spherize-batch-effects.ipynb](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
 
 ## Data levels
