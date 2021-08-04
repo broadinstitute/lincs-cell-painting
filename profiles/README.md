@@ -29,7 +29,6 @@ This repository and workflow begins after we applied cytominer-database.
 
 ### Aggregation
 
-
 We use the [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) twice in the workflow. First at this point and later for the creation of the consensus profiles. 
 Here, the median of all cells within a well is aggregated to one profiler per well. 
 The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
