@@ -35,7 +35,6 @@ The aggregation method doesn't persist the metadata which is why this step is fo
     
 ### Normalization
 
-
 [Normalization](https://github.com/cytomining/pycytominer/blob/master/pycytominer/normalize.py) can be done via different methods and over all wells in a plate or only the negative controls (DMSOs). 
 In this case, we used `mad_robustize` method and both the output of the whole-plate and the DMSO normalization are saved in this repository. 
 It is important to note that we normalize over each plate but not over the full batch.
