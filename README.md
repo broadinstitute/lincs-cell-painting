@@ -19,7 +19,7 @@ The [Morphology Connectivity Hub](https://clue.io/morphology) is the primary sou
 We apply a unified, image-based profiling pipeline to all 136 384-well plates from `LINCS Pilot 1`, and all 135 384-well plates from `LKCP`.
 We use [pycytominer](https://github.com/cytomining/pycytominer) as the primary tool for image-based profiling.
 
-We process and store level 3 to level 5 profiles in the [profiles/](profiles/) directory. 
+We process and store level 3 to level 5 profiles in the [profiles/](profiles/) directory.
 Furthermore, spherized and conensus profiles can be found in their relevant folders.
 
 See [`profiles/README.md`](profiles/README.md) for more details and for instructions on how to reproduce the pipeline.
