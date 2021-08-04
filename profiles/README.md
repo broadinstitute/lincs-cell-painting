@@ -42,7 +42,6 @@ It is important to note that we normalize over each plate but not over the full 
 
 ### Spherizing
 
-
 [Spherizing](https://github.com/cytomining/pycytominer/blob/c0d3e86aa64de8b1c6c3213d48937aab8e9d1c1d/pycytominer/operations/transform.py#L13) (aka whitening) is a transformation of the data that tries to correct batch effects. 
 Within Pycytominer, Spherizing can be found in the normalization function.
 Unlike the other normalizations, we perform spherizing on the full batch (all plates).
