@@ -16,7 +16,6 @@ Specifically, we include:
 
 ## Pycytominer
 
-
 [Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics et al.
 It allows for easy processing of CellProfiler data and contains all functions that were used to create the data in this repository.
 Below, we describe the different steps of the pipeline.
