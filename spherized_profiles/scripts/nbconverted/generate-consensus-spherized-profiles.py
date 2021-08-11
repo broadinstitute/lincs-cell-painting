@@ -93,9 +93,13 @@ for batch in batches:
         spherized_df = pd.read_csv(spherized_file, low_memory=False)
         print(spherized_df.shape)
 
+        # Recode missing MOA and target values to be "unknown"
+        spherized_df.Metadata_moa = spherized_df.Metadata_moa.fillna("unknown")
+        spherized_df.Metadata_target = spherized_df.Metadata_target.fillna("unknown")
+
         # Set a timepoint variable only for batch 1
         if batch == "2016_04_01_a549_48hr_batch1":
-            spherized_df = spherized_df.assign(Metadata_time_point="24H")
+            spherized_df = spherized_df.assign(Metadata_time_point="48H")
 
         for operation in operations:
             output_file = pathlib.Path(
