@@ -17,7 +17,9 @@ Specifically, we include:
 ## Pycytominer
 
 [Pycytominer](https://github.com/cytomining/pycytominer) is a code base built by @gwaygenomics et al.
-It allows easy processing CellProfiler data and contains all functions that were used to create the data in this repository. Below, we describe the different steps of the pipeline. Please check the pycytominer repo for more details. 
+It allows for easy processing of CellProfiler data and contains all functions that were used to create the data in this repository.
+Below, we describe the different steps of the pipeline.
+Please check the pycytominer repo for more details. 
 
 The steps from Level 3 to Level 4b can be found in the [profile_cells](https://github.com/broadinstitute/lincs-cell-painting/blob/master/profiles/profile_cells.py) script, the steps for spherizing can be found in [this script](https://github.com/michaelbornholdt/lincs-cell-painting/blob/master/spherized_profiles/spherize-batch-effects.ipynb), and the final aggregation to the consensus data is found in [this notebook](https://github.com/broadinstitute/lincs-cell-painting/blob/master/consensus/build-consensus-signatures.ipynb).  
 
@@ -26,7 +28,8 @@ This repository and workflow begins after we applied cytominer-database.
 
 ### Aggregation
 
-We use the [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) twice in the workflow. First at this point and later for the creation of the consensus profiles. 
+We use the [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) twice in the workflow.
+First at this point and later for the creation of the consensus profiles. 
 Here, the median of all cells within a well is aggregated to one profiler per well. 
 The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others.
 
