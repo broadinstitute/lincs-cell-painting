@@ -24,14 +24,11 @@ The steps from Level 3 to Level 4b can be found in the [profile_cells](https://g
 Note here that we do not include the intermediate step of generating `.sqlite` files per plate using a tool called [cytominer-database](https://github.com/cytomining/cytominer-database).
 This repository and workflow begins after we applied cytominer-database.
 
-
 ### Aggregation
 
 We use the [aggregation method](https://github.com/cytomining/pycytominer/blob/master/pycytominer/aggregate.py) twice in the workflow. First at this point and later for the creation of the consensus profiles. 
 Here, the median of all cells within a well is aggregated to one profiler per well. 
-The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others. 
-    
-
+The aggregation method doesn't persist the metadata which is why this step is followed by an annotation step to add the MOA data and others.
 
 ### Normalization
 
@@ -39,6 +36,10 @@ The aggregation method doesn't persist the metadata which is why this step is fo
 In this case, we used `mad_robustize` method and both the output of the whole-plate and the DMSO normalization are saved in this repository. 
 It is important to note that we normalize over each plate but not over the full batch.
 
+### Feature selection
+
+The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
+We developed these functions to drop redundant and invariant features and to improve post processing.
 
 ### Spherizing
 
@@ -46,12 +47,6 @@ It is important to note that we normalize over each plate but not over the full 
 Within Pycytominer, Spherizing can be found in the normalization function.
 Unlike the other normalizations, we perform spherizing on the full batch (all plates).
 Check the code for details and relevant papers.
-
-
-### Feature selection
-
-The [feature_select](https://github.com/cytomining/pycytominer/blob/master/pycytominer/feature_select.py) method incorporates `["variance_threshold", "correlation_threshold", "drop_na_columns", "drop_outliers"]`. 
-We developed these functions to drop redundant and invariant features and to improve post processing.
 
 ### Consensus
 
@@ -69,6 +64,8 @@ On the other hand, we use a spherize (a.k.a. whiten) transformation to adjust fo
 The spherize transformation adjusts for plate position effects by transforming the profile data such that the DMSO profiles are left with an identity covariance matrix. 
 Note that this operation is done on the full dataset, not per plate.
 See [spherize-batch-effects.ipynb](spherized_profiles/spherize-batch-effects.ipynb) for implementation details.
+
+Since CellProfiler data is not naturally normalized to zero, mean all data is 'MadRobustized' before Spherizing to maximize the usefulness of the spherize transformation.   
 
 ## Data levels
 
