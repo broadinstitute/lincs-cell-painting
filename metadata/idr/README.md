@@ -2,8 +2,6 @@
 
 This folder contains input files and an .Rmd notebook for generating the library metadata file for submitting the imaging data to IDR. 
 
-The resulting file are stored along with a manually-created study file in a shared google folder linked below:
-
 The input files are as follows:
 
 - In this folder:
@@ -14,4 +12,5 @@ The input files are as follows:
   - repurposing_drugs_20200324.txt - repurposing drug annotations
   - repurposing_samples_20200324.txt - repurposing sample annotations
 
-The .Rmd notebook generates an updated version of the file `idr0000-screenA-library.txt.`
+The output file file is
+- idr0000-screenA-library_batch_1.txt – generated using idr0000-screenA-library.txt as the template
