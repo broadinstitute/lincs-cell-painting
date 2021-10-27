@@ -13,4 +13,4 @@ The input files are as follows:
   - repurposing_samples_20200324.txt - repurposing sample annotations
 
 The output file file is
-- idr0000-screenA-library_batch_1.txt – generated using idr0000-screenA-library.txt as the template
+- idr0000-screenA-library_batch_1.txt.gz – generated using idr0000-screenA-library.txt as the template
