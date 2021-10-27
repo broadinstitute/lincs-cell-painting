@@ -24,14 +24,14 @@ template_lib <- fread("idr0000-lastname-example-master/screenA/idr0000-screenA-l
 # sample meta from L1000 (may not really need this)
 # sample_meta_l1k <- fread("col_meta_level_3_n421176.txt")
 # same from cp
-sample_meta_cp <- fread("https://github.com/cmap/lincs-cell-painting/blob/master/profiles/cell_count/2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv.gz")
+sample_meta_cp <- fread("https://media.githubusercontent.com/media/cmap/lincs-cell-painting/master/profiles/cell_count/2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv.gz")
 cp_plates <- scan(file="lincs_plates_final.txt", what="char", sep="\n")
 ```
 
 ```{r}
 # pert meta (for pert_iname, etc) from repurposing hub
-repo_drugs <- fread("repurposing_drugs_20200324.txt", skip=9)
-repo_samples <- fread("repurposing_samples_20200324.txt", skip=9)
+repo_drugs <- fread("https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/b00a81c2bd1af73283ddd579aafb42eda50b53f9/metadata/moa/clue/repurposing_drugs_20200324.txt", skip=9)
+repo_samples <- fread("https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/b00a81c2bd1af73283ddd579aafb42eda50b53f9/metadata/moa/clue/repurposing_samples_20200324.txt", skip=9)
 ```
 
 ```{r}
