@@ -15,7 +15,7 @@ The input files for the notebook are as follows:
 - At other locations in this repository: 
   - `repurposing_drugs_20200324.txt` - repurposing drug annotations
   - `repurposing_samples_20200324.txt` - repurposing sample annotations
-  - `2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv` - raw screen metadata
+  - `2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv.gz` and `2017_12_05_Batch2_metadata_cell_count_summary.tsv.gz` - raw screen metadata
 
 The output file  is:
 
