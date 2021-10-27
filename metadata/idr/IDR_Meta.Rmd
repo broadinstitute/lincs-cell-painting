@@ -1,9 +1,7 @@
 ---
-title: "R Notebook"
+title: "Organize metadata for image submission to IDR"
 output: html_notebook
 ---
-
-Organize metadata for image submission to IDR.
 
 ```{r}
 library(data.table)
