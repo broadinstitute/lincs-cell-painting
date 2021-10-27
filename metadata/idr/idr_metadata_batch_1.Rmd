@@ -15,7 +15,7 @@ if (!dir.exists(outpath)) dir.create(outpath)
 
 ```{r}
 # template to fill in
-template_lib <- fread("idr0000-lastname-example-master/screenA/idr0000-screenA-library.txt")
+template_lib <- fread("idr0000-screenA-library.txt")
 ```
 
 ```{r}
