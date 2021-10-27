@@ -1,9 +1,11 @@
 # IDR submission
 
+_TODO: Batch 2 files are currently missing_
+
 This folder contains the following files
 
-- input files, an R notebook for generating the library metadata file for submitting the imaging data to IDR, and the output of the notebook
-- a manually generated study file `idr0000-study_batch_1.csv`
+- input files, R notebooks (one per batch of data) for generating the library metadata file for submitting the imaging data to IDR, and the output of the notebook
+- manually generated study files `idr0000-study_batch_1.csv` and `idr0000-study_batch_2.csv`
 
 The input files for the notebook are as follows:
 
