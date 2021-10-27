@@ -24,7 +24,7 @@ template_lib <- fread("idr0000-lastname-example-master/screenA/idr0000-screenA-l
 # sample meta from L1000 (may not really need this)
 # sample_meta_l1k <- fread("col_meta_level_3_n421176.txt")
 # same from cp
-sample_meta_cp <- fread("2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv")
+sample_meta_cp <- fread("https://github.com/cmap/lincs-cell-painting/blob/master/profiles/cell_count/2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv.gz")
 cp_plates <- scan(file="lincs_plates_final.txt", what="char", sep="\n")
 ```
 
