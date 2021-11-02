@@ -1,0 +1,211 @@
+---
+title: "Organize metadata for image submission to IDR for Batch 1"
+output: html_notebook
+---
+
+```{r}
+library(data.table)
+```
+
+```{r}
+# template to fill in
+template_lib <- fread("idr0000-screenA-library.txt")
+```
+
+```{r}
+# sample meta from L1000 (may not really need this)
+# sample_meta_l1k <- fread("col_meta_level_3_n421176.txt")
+# same from cp
+sample_meta_cp <- fread("https://media.githubusercontent.com/media/broadinstitute/lincs-cell-painting/b00a81c2bd1af73283ddd579aafb42eda50b53f9/profiles/cell_count/2016_04_01_a549_48hr_batch1_metadata_cell_count_summary.tsv.gz")
+cp_plates <- scan(file="lincs_plates_final_batch_1.txt", what="char", sep="\n")
+```
+
+```{r}
+# pert meta (for pert_iname, etc) from repurposing hub
+repo_drugs <- fread("https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/b00a81c2bd1af73283ddd579aafb42eda50b53f9/metadata/moa/clue/repurposing_drugs_20200324.txt", skip=9)
+repo_samples <- fread("https://raw.githubusercontent.com/broadinstitute/lincs-cell-painting/b00a81c2bd1af73283ddd579aafb42eda50b53f9/metadata/moa/clue/repurposing_samples_20200324.txt", skip=9)
+```
+
+```{r}
+# merge
+repo_samples[, pert_id := substr(broad_id, 1, 13), .(broad_id)]
+repo <- merge(repo_drugs, repo_samples, by="pert_iname", all.y=T)
+```
+
+```{r}
+# add this info to the cp meta
+sample_meta_cp <- merge(sample_meta_cp, repo,
+                        by.x="broad_sample", by.y="broad_id", all.x=T)
+```
+
+
+```{r}
+# merge them to derive a mapping b/w l1k and cp plate names
+# sample_meta_cp[, pert_id := substr(broad_sample, 1, 13)]
+# compute the number of shared compounds for each plate combination
+# grps_l1k <- with(sample_meta_l1k[pert_type == "trt_cp"],
+#                  split(pert_id, det_plate))
+# grps_cp <- with(sample_meta_cp[!pert_id %in% c("DMSO", "")],
+#                 split(pert_id, Metadata_Plate))
+```
+
+```{r}
+# overlaps
+# olap_mat <- sapply(grps_l1k, \(x) {
+#   sapply(grps_cp, \(y) {
+#     length(intersect(x, y))
+#   })
+# })
+```
+
+```{r}
+# how many compounds plates does each l1k plate share with each cp plate?
+# we expect the max should be 60 for each, since plates were LM6 format
+# hist(olap_mat)
+```
+
+```{r}
+# simplify
+# maxes <- apply(olap_mat, 2, max)
+# table(maxes)
+```
+Odd that a small number of plates share only a few compounds. Suppose this could be due to QC failures on the L1000 side. We can confirm this.
+
+```{r}
+# make the map
+# idx <- apply(olap_mat, 2, which.max)
+# plate_map <- data.table(l1k_plate = colnames(olap_mat),
+#                         cp_plate = rownames(olap_mat)[idx],
+#                         ncp = olap_mat[cbind(idx, seq_len(ncol(olap_mat)))])
+# table(plate_map$ncp)
+```
+
+```{r}
+# how many times does each plate appear in the l1k meta?
+# l1k_count <- table(sample_meta_l1k$det_plate)
+# plate_map[, ndp_l1k := l1k_count[l1k_plate], .(l1k_plate)]
+```
+
+```{r}
+# plot(ncp ~ ndp_l1k, data=plate_map)
+```
+
+Ok cool. So the low overlaps correspond to plates w/ fewer l1k samples.
+
+```{r}
+# plate_map[ncp < 50]
+```
+
+None of these are A549 so probably dont need to worry about them.
+
+Add the full cp plate name
+
+```{r}
+idx <- match(sample_meta_cp$Metadata_Plate, substr(cp_plates, 1, 10))
+sample_meta_cp$cp_plate_full <- cp_plates[idx]
+```
+
+Save
+
+```{r}
+# fwrite(plate_map, "l1k_cp_plate_name_map.txt", sep="\t")
+```
+
+Now add the full plate name to the l1k meta
+
+```{r}
+# idx <- match(sample_meta_l1k$det_plate, plate_map$l1k_plate)
+# sample_meta_l1k$cp_plate_full <- plate_map$cp_plate_full[idx]
+```
+
+# Map fields
+
+```{r}
+# fields we want to add to the template
+new_fields <- data.table(
+  "Name" = "Compound canonical name",
+  "Dose" = "Compound dose used to treat cells (uM)",
+  "MoA" = "Compound mechanism of action",
+  "SMILES" = "Compound SMILES structure",
+  "PubChem_ID" = "Compound PubChem identifier"
+)
+```
+
+```{r}
+template_lib <- cbind(template_lib, new_fields)
+```
+
+```{r}
+# construct a mapping b/w columns in sample meta and template
+field_map <- c(
+  "Plate" = "cp_plate_full", # may need to change this to correspond to image directory names
+  "Well" = "Metadata_Well",
+  # "Characteristics [Cell Line or Strain]" = "cell_id", # need to get this info from Shantanu
+  "Reagent Identifier e.g. siRNA Identifier, Compound Name, ORF Identifier" = "broad_sample",
+  # custom fields we've added (see above)
+  "Name" = "pert_iname",
+  "Dose" = "mmoles_per_liter",
+  "MoA" = "moa",
+  "SMILES" = "smiles",
+  "PubChem_ID" = "pubchem_cid"
+)
+```
+
+```{r}
+out_lib <- sample_meta_cp[, field_map, with=F]
+```
+
+```{r}
+# fix control types
+out_lib["Control Type"] <- NA
+out_lib[broad_sample %in% c("", "DMSO"), `Control Type` := "negative control"]
+```
+
+```{r}
+# change the names back
+setnames(out_lib, field_map, names(field_map))
+```
+
+# Fill in defaults
+
+```{r}
+def_map <- c(
+  "Characteristics [Organism]" = "Homo sapiens",
+  "Characteristics [Cell Line or Strain]" = "A549", # all are A549 in this batch
+  "Term Source 1 REF" = "9606",
+  "Channels" = "Hoechst 33342 (DNA); Concanavalin A/Alexa 488 (endoplasmic reticulum); 488 Long (nucleoli and cytoplasmic RNA); Phalloidin/Alexa 568 and wheat-germ agglutinin/Alexa 555 (actin cytoskeleton, golgi, and plasma membrane (AGP)); MitoTracker Deep Red/Alexa 647 (mitochondria)",
+  "Comments" = "images are not further processed after acquisition"
+)
+```
+
+```{r}
+for (x in names(def_map)) {
+  out_lib[[x]] <- def_map[[x]]
+}
+```
+
+# Rearrange columns and add comments
+
+```{r}
+# add any missing columns
+for (x in setdiff(names(template_lib), names(out_lib))) {
+  out_lib[[x]] <- NA
+}
+```
+
+```{r}
+setcolorder(out_lib, names(template_lib))
+```
+
+```{r}
+# add the 1-row template on top to get the comments back in place
+out_lib <- rbind(template_lib, out_lib)
+```
+
+# Save
+
+```{r}
+opath <- file.path(outpath, "screenA")
+if (!dir.exists(opath)) dir.create(opath)
+fwrite(out_lib, file.path(opath, "idr0000-screenA-library_batch_1.txt.gz"), sep="\t")
+```
