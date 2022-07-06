@@ -1,4 +1,4 @@
 [core]
     remote = cellpainting-datasets
 ['remote "cellpainting-datasets"']
-    url = s3://cellpainting-datasets/lincs-cell-painting/.dvc/cache
+    url = s3://cellpainting-gallery/cpg0004-lincs/broad/workspace/software/lincs-cell-painting_DVC
