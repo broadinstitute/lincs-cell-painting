@@ -137,6 +137,7 @@ To access the files stored via DVC, you will need to created a IAM user with the
         }
     ]
 }
+```
 
 ### DeepProfiler-derived profiles
 
