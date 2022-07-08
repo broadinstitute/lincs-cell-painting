@@ -118,6 +118,35 @@ git lfs pull
 dvc pull
 ```
 
+**Note:** The DVC remote is an AWS S3 bucket. You must have aws cli installed and configured (see details).
+
+<details>
+
+To access the files stored via DVC, you will need to created a AWS IAM user, who should, minimally, be able to Get objects and List buckets.
+One way of achieving this is to attach the `AmazonS3ReadOnlyAccess` policy, which is:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:Get*",
+                "s3:List*",
+                "s3-object-lambda:Get*",
+                "s3-object-lambda:List*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+(Note that the `s3-object-lambda:Get*` and `s3-object-lambda:List*` are not required but they don't hurt)
+
+</details>
+
 ### DeepProfiler-derived profiles
 
 TBD
