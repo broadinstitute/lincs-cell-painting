@@ -118,8 +118,9 @@ git lfs pull
 dvc pull
 ```
 
-**Note:** The DVC cache is stored in an AWS S3 bucket. 
-To access the files stored via DVC, you will need to created a IAM user with the `AmazonS3ReadOnlyAccess` policy attached:
+**Note:** The DVC remote is an AWS S3 bucket. 
+To access the files stored via DVC, you will need to created a AWS IAM user, who should, minimally, be able to Get objects and List buckets.
+One way of achieving this is to attach the `AmazonS3ReadOnlyAccess` policy, which is:
 
 ```json
 {
@@ -138,6 +139,8 @@ To access the files stored via DVC, you will need to created a IAM user with the
     ]
 }
 ```
+
+(Note that the `s3-object-lambda:Get*` and `s3-object-lambda:List*` are not required but they don't hurt)
 
 ### DeepProfiler-derived profiles
 
