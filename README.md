@@ -1,5 +1,7 @@
 # LINCS Cell Painting profile data repository
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5008187.svg)](https://doi.org/10.5281/zenodo.5008187)
+
 The Library of Integrated Network-Based Cellular Signatures (LINCS) Project aims to create publicly available resources to characterize how cells respond to perturbation.
 This repository stores Cell Painting readouts and associated data-processing pipelines for the LINCS Cell Painting dataset.
 
